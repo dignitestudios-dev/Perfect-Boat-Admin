@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer utilities {
+  
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 0px;
+}
+
+
+::-webkit-scrollbar-track {
+  background: #001229;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #5c7799;
+  border-radius: 50px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 46, 46, 0.831);
+  cursor: pointer;
+}

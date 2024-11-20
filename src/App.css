@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
+
+.desktop_screen {
+  display: block;
+}
+.mobile_screen {
+  display: none;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  font-family: "Manrope", sans-serif;
+  overflow-x: hidden;
+}
+.bg-gradient {
+  background: linear-gradient(to right, #199ad13d, #06afb2);
+}
+
+.font {
+  font-family: sans-serif !important;
+}
+.rainbow-calendar_month-text {
+  color: white !important;
+}
+.rainbow-calendar_day-adjacent {
+  color: #7e7e7e !important;
+}
+.rainbow-calendar_day-button {
+  color: #fff !important;
+}
+.rainbow-select {
+  background-color: rgb(26 41 61) !important;
+  color: white !important;
+}
+.calender{
+  background-color: #243347 !important;
+
+}
+@media screen and (max-width: 1024px) {
+  .mobile_screen {
+    display: block;
+  }
+  .desktop_screen {
+    display: none;
+  }
+}
+@media screen and (max-width: 768px) {
+  .profile_sec_mob {
+  margin-top: 260px;
+  
+  }
+ 
+}
