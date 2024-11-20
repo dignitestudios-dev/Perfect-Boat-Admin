@@ -49,8 +49,8 @@ const Home = () => {
           </div>
         ))}
       </div>
-      <div className="grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-3">
-        <div className="card bg-[#001229] p-5 rounded-[24px] lg:col-span-3 w-full h-[465px]">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-3">
+        <div className="card bg-[#001229] p-5 rounded-[24px] lg:col-span-2 w-full h-auto">
           <div className="flex items-center pb-5 justify-between">
             <h4 className="text-[14px] text-white font-[700] leading-[18.9px]">
               Sales Overview
@@ -68,7 +68,7 @@ const Home = () => {
           </div>
           <LineChartDash />
         </div>
-        <div className="card bg-[#001229] p-5 rounded-[24px] col-span-2 w-full h-[465px]">
+        <div className="card bg-[#001229] p-5 rounded-[24px] col-span-2 w-full h-auto">
           <div className="flex items-center pb-5 justify-between">
             <h4 className="text-[14px] text-white font-[700] leading-[18.9px]">
               Customer Overview

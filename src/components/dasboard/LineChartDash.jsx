@@ -82,9 +82,9 @@ const LineChartDash = () => {
   };
 
   return (
-    <>
+    <div className="mt-12 w-full">
       <Line data={data} options={options} maintainAspectRatio={false}  />
-    </>
+    </div>
   );
 };
 

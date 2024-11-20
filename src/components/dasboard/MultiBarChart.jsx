@@ -12,7 +12,7 @@ import { Bar } from "react-chartjs-2";
 Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const options = {
-  responsive: false,
+  responsive: true,
   plugins: {
     legend: {
       position: "top",
@@ -81,7 +81,7 @@ const MultiBarChart = () => {
         data={data}
         options={options}
         maintainAspectRatio={false}
-        style={{ height: "300px", width: "100%" }}
+        style={{width: "100%" }}
       />
     </div>
   );
