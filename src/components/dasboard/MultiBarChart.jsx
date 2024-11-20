@@ -6,7 +6,6 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js";
-//
 import React from "react";
 import { Bar } from "react-chartjs-2";
 
@@ -68,7 +67,7 @@ const MultiBarChart = () => {
       },
       {
         label: "",
-        data: [10, 15, 10, 20, 18, 25, 20],
+        data: [50, 55, 60, 20, 18, 25, 20],
         backgroundColor: "#FD8D49",
         borderRadius: { topLeft: 10, topRight: 10 },
         borderSkipped: "bottom",
@@ -77,13 +76,8 @@ const MultiBarChart = () => {
   };
 
   return (
-    <div className="">
-      <Bar
-        style={{ height: 320 }}
-        data={data}
-        options={options}
-        maintainAspectRatio={false}
-      />
+    <div className="mt-11" style={{ height: "450px" }}>
+      <Bar data={data} options={options} style={{ height: "325px" }} />
     </div>
   );
 };
