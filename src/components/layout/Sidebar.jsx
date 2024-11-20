@@ -109,7 +109,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         } transition-transform duration-300 md:relative md:translate-x-0 z-30`}
       >
         <div className="p-6">
-          <div className="text-2xl font-bold ">
+          <div className="text-2xl font-bold cursor-pointer " onClick={()=> navigate('/home')}>
             <img
               src={SideBarLogo}
               className="w-[190.36px] h-[117.18px] top-18px left-24px"
