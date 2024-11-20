@@ -45,7 +45,7 @@ const OwnerDelete = () => {
         <div className="">
           <Link
             to={"/deleteownerdetail"}
-            className="underline text-white hover:text-white text-[11px]  font-[500]"
+            className="underline text-white text-nowrap hover:text-white text-[11px]  font-[500]"
           >
             View Details
           </Link>

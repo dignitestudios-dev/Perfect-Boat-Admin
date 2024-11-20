@@ -14,7 +14,7 @@ const Deleteuser = () => {
           <div className="flex justify-between mb-4">
             <div>
               <h3 className="text-[18px] font-[700] mb-3 text-white">
-                Owners List
+                Deleted Users
               </h3>
               <div className="flex w-1/2 lg:w-[295px] h-[32px] justify-start items-center rounded-[8px] bg-[#1A293D] relative">
                 <span className="w-[32px] h-full flex items-center justify-center">

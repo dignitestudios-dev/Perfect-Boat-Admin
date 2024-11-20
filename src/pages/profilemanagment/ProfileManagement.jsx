@@ -84,7 +84,7 @@ const ProfileManagement = () => {
         </div>
 
         <div className="col-span-12 lg:col-span-8 rounded-md text-white">
-          {/* Tab Content */}
+    
           {tabs === "1" && <UserInformation />}
           {tabs === "2" && <UserNotifications />}
           {tabs === "3" && <UserChangePass />}
