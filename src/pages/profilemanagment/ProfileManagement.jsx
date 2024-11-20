@@ -15,7 +15,7 @@ const ProfileManagement = () => {
   const [tabs, setTabs] = useState("1");
 
   return (
-    <div className="bg-[#0E1B31] h-[928px] p-5 rounded-[18px]">
+    <div className="bg-[#0E1B31] h-[928px] p-5 rounded-[18px] overflow-y-auto  scrollbar-thin ">
       <div className="grid grid-cols-12 gap-4 ">
         <div className="col-span-12 lg:col-span-4 p-3 border-[#243347] border-r-2 text-white">
           <h2 className="text-[18px] font-[700]">Profile Management</h2>

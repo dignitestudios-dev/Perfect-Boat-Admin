@@ -10,7 +10,7 @@ const Deleteuser = () => {
   return (
     <div>
       <div className="p-5 bg-[#001229] rounded-[20px] h-[944px] overflow-y-auto scrollbar-thin">
-        <div className="desktop_screen">
+        <div className="">
           <div className="flex justify-between mb-4">
             <div>
               <h3 className="text-[18px] font-[700] mb-3 text-white">
