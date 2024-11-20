@@ -57,6 +57,9 @@ import White6 from "./sidebaricons/whiteicon6.png";
 import White7 from "./sidebaricons/whiteicon7.png";
 import White8 from "./sidebaricons/whiteicon8.png";
 import White9 from "./sidebaricons/whiteicon9.png";
+import Bellblue from "./bellblue.png";
+import BlueLock from "./blueLock.png";
+import Whitepro from "./whitepro.png";
 
 
 export {
@@ -101,6 +104,10 @@ export {
   Tidestales,
   DeleteuserIcon,
   Blogsimg,
+  Bellblue,
+  BlueLock,
+  Whitepro,
+
   //side bar icons start
   Gray1,
   Gray2,
