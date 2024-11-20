@@ -45,6 +45,11 @@ const DateTime = ({
   const hours = Array.from({ length: 12 }, (_, i) =>
     String(i + 1).padStart(2, "0")
   );
+
+  const minutes = Array.from({ length: 60 }, (_, i) =>
+    String(i + 1).padStart(2, "0")
+  );
+
   return (
     <div
       onClick={toggleModal}
@@ -69,26 +74,47 @@ const DateTime = ({
             <p className="text-[#D1D5DB] text-sm mb-5">
               Set the clock to your convenience by selecting a suitable time
             </p>
-
-            <div className="flex justify-between  gap-4">
-              <div className="grid grid-cols-2 gap-2 w-[100px]">
-                {hours?.map((hour) => (
-                  <div
-                    key={hour}
-                    className={`flex     justify-center w-10 h-10 rounded border ${
-                      selectedTime === hour
-                        ? "border-blue-500 text-blue-500"
-                        : "border-transparent text-white"
-                    } hover:border-blue-400 text-[16px] items-center cursor-pointer`}
-                    onClick={() => setSelectedTime(hour)}
-                  >
-                    {hour}
-                  </div>
-                ))}
+            <div className="flex gap-4 w-full justify-between  h-[400px]">
+              
+              <div className="flex gap-12 w-[170px] overflow-hidden">
+                
+                <div className="flex flex-col gap-2 ">
+                  {hours.map((hour) => (
+                    <div
+                      key={hour}
+                      className={`flex justify-center w-10 h-10 rounded border ${
+                        selectedTime === hour
+                          ? "border-blue-500 text-blue-500"
+                          : "border-transparent text-white"
+                      } hover:border-blue-400 text-[16px] items-center cursor-pointer`}
+                      onClick={() => setSelectedTime(hour)}
+                    >
+                      {hour}
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex flex-col gap-2  h-[400px]">
+                  {minutes.map((minute) => (
+                    <div
+                      key={minute}
+                      className={`flex justify-center w-10 h-10 rounded border ${
+                        selectedTime === minute
+                          ? "border-blue-500 text-blue-500"
+                          : "border-transparent text-white"
+                      } hover:border-blue-400 text-[16px] items-center cursor-pointer`}
+                      onClick={() => setSelectedTime(minute)}
+                    >
+                      {minute}
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="flex gap-3 ">
+
+            
+              <div className="flex  gap-2">
                 <button
-                  className={`w-[60px] h-[32px] py-2 rounded text-white ${
+                  className={`w-[35px] h-[32px] py-2 rounded text-white ${
                     selectedPeriod === "AM"
                       ? "bg-blue-500"
                       : "bg-[#1E293B] hover:bg-blue-400"
@@ -98,7 +124,7 @@ const DateTime = ({
                   AM
                 </button>
                 <button
-                  className={`w-[60px] h-[32px] py-2 rounded text-white ${
+                  className={`w-[35px] h-[32px] py-2 rounded text-white ${
                     selectedPeriod === "PM"
                       ? "bg-blue-500"
                       : "bg-[#1E293B] hover:bg-blue-400"
