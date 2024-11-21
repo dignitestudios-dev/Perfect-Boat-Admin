@@ -114,14 +114,14 @@ const OwnerDetail = () => {
               </div>
             </div>
           </div>
-            <div className="flex justify-end mt-4">
-              <button
-                className="bg-[#199BD1] w-[235px]  h-[54px] rounded-[8px] text-white"
-                onClick={() => setTab("1")}
-              >
-                Back
-              </button>
-            </div>
+          <div className="flex justify-end mt-4">
+            <button
+              className="bg-[#199BD1] w-[235px]  h-[54px] rounded-[8px] text-white"
+              onClick={() => setTab("1")}
+            >
+              Back
+            </button>
+          </div>
         </div>
       )}
       <GenerateCrediantial

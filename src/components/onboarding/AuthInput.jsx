@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const AuthInput = ({ state, setState, text, type, error, placeholder }) => {
+const AuthInput = ({ register, text, type, error, placeholder }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
   return (
@@ -11,7 +11,9 @@ const AuthInput = ({ state, setState, text, type, error, placeholder }) => {
       </label>
       <div
         className={`w-full h-[52px] lg:w-[434px] focus-within:border-[1px] focus-within:border-[#55C9FA] rounded-[12px] bg-[#1A293D] flex items-center justify-start  ${
-          error && "error"
+          error
+            ? "focus-within:border-[#FF453A]"
+            : "focus-within:border-[#55C9FA]"
         } `}
       >
         <div
@@ -21,8 +23,7 @@ const AuthInput = ({ state, setState, text, type, error, placeholder }) => {
             type={isPassVisible ? "text" : type}
             placeholder={placeholder}
             className="w-full outline-none  rounded-[12px] placeholder:text-[13px] placeholder:font-normal placeholder:text-[#6B737E] text-white bg-transparent h-full px-3 text-sm font-medium "
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            {...register}
           />
           <button
             type="button"
@@ -37,6 +38,7 @@ const AuthInput = ({ state, setState, text, type, error, placeholder }) => {
           </button>
         </div>
       </div>
+      {error && <p className="text-red-500 text-sm">{error.message}</p>}
     </div>
   );
 };
