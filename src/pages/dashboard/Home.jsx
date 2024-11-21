@@ -9,12 +9,16 @@ import Dropdown from "../../components/dropdown/Dropdown";
 import axios from "../../axios";
 
 const Home = () => {
-  const cardData = [
-    { icon: UserIcon, number: 16, label: "Managers" },
-    { icon: User_icon2, number: 200, label: "Single Users" },
-    { icon: BoatIcon, number: 240, label: "Boats" },
-    { icon: BookIcon, number: 37, label: "Tasks" },
+  const [cardData, setCardData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const cardDataTemplate = [
+    { icon: UserIcon, key: "owner", label: "Managers" },
+    { icon: User_icon2, key: "user", label: "Single Users" },
+    { icon: BoatIcon, key: "boat", label: "Boats" },
+    { icon: BookIcon, key: "task", label: "Tasks" },
   ];
+
   const [dropdownStates, setDropdownStates] = useState({});
 
   const toggleDropdown = (id) => {
@@ -24,17 +28,20 @@ const Home = () => {
     }));
   };
 
-  const [dashboardData, setDashboardData] = useState([]);
-  console.log("🚀 ~ Home ~ dashboardData:", dashboardData);
-  const [loading, setLoading] = useState(false);
-
   const getDashboardData = async () => {
     try {
       setLoading(true);
-
       const { data } = await axios.get("/admin/dashboard");
-      setDashboardData(data?.data);
+      const dashboardStats = data?.data;
+
+      const updatedCardData = cardDataTemplate.map((template) => ({
+        ...template,
+        number: dashboardStats[template.key] || 0,
+      }));
+
+      setCardData(updatedCardData);
     } catch (error) {
+      console.error("Error fetching dashboard data:", error);
     } finally {
       setLoading(false);
     }
@@ -47,28 +54,39 @@ const Home = () => {
   return (
     <>
       <div className="flex flex-wrap gap-3">
-        {cardData.map((card, index) => (
-          <div
-            key={index}
-            className="card bg-[#001229] p-2 rounded-[24px] w-[214px]"
-          >
-            <div className="flex gap-3 items-center">
-              <div className="bg-[#1A293D] p-5 rounded-[18px]">
-                <img
-                  src={card.icon}
-                  className="w-[41px] h-[41px]"
-                  alt={`${card.label} icon`}
-                />
-              </div>
-              <div>
-                <h3 className="text-[18px] font-[700]">{card.number}</h3>
-                <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
-                  {card.label}
-                </h3>
-              </div>
+        {loading ? (
+          [1, 2, 3, 4]?.map(() => (
+            <div className="card h-[100px] bg-[#001229] p-2 rounded-[24px] w-[214px]">
+              {" "}
             </div>
+          ))
+        ) : (
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {cardData?.map((card, index) => (
+              <div
+                key={index}
+                className="card bg-[#001229] p-2 rounded-[24px] w-[214px]"
+              >
+                
+                <div className="flex gap-3 items-center">
+                  <div className="bg-[#1A293D] p-5 rounded-[18px]">
+                    <img
+                      src={card.icon}
+                      className="w-[41px] h-[41px]"
+                      alt={`${card.label} icon`}
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-[18px] font-[700]">{card.number}</h3>
+                    <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
+                      {card.label}
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-3">
         <div className="card bg-[#001229] p-5 rounded-[24px] lg:col-span-2 w-full h-auto">

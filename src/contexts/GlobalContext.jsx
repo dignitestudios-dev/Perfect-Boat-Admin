@@ -59,9 +59,9 @@ export const GlobalContextProvider = ({ children }) => {
       }
     }
   };
-  useEffect(() => {
-    getEmployees();
-  }, [updateEmployee]);
+  // useEffect(() => {
+  //   getEmployees();
+  // }, [updateEmployee]);
 
   const [boats, setBoats] = useState([]);
   const [loadingBoats, setLoadingBoats] = useState(false);
@@ -86,9 +86,9 @@ export const GlobalContextProvider = ({ children }) => {
       }
     }
   };
-  useEffect(() => {
-    getBoats();
-  }, [updateBoat]);
+  // useEffect(() => {
+  //   getBoats();
+  // }, [updateBoat]);
 
   const [dropDown, setDropDown] = useState([]);
   const [boatDropDown, setBoatDropDown] = useState([]);
@@ -123,9 +123,9 @@ export const GlobalContextProvider = ({ children }) => {
       }
     }
   };
-  useEffect(() => {
-    getDropDown();
-  }, [updateDropDown]);
+  // useEffect(() => {
+  //   getDropDown();
+  // }, [updateDropDown]);
 
   const test = "";
 
@@ -150,9 +150,9 @@ export const GlobalContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    getTasks();
-  }, []);
+  // useEffect(() => {
+  //   getTasks();
+  // }, []);
 
   // for notifications
   const [show, setShow] = useState(false);
