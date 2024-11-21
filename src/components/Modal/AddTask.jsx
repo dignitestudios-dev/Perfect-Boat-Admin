@@ -3,9 +3,16 @@ import { CancelIcon, Dustbinicon } from "../../assets/export";
 import TextFields from "../onboarding/TextFields";
 import CustomBtn from "../onboarding/CustomBtn";
 import { GoPlus } from "react-icons/go";
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../Toaster/Toaster";
 
-const AddTask = ({ isOpen, onClose }) => {
+const AddTask = ({ isOpen, onClose, getTasks }) => {
+  const [taskType, setTaskType] = useState("");
+
   const [tasks, setTasks] = useState([{ id: 1, text: "" }]);
+  console.log("🚀 ~ AddTask ~ tasks:", tasks);
+  // console.log("🚀 ~ AddTask ~ tasks:", tasks);
+  const [submitLoading, setSubmitLoading] = useState("");
 
   const handleAddTask = () => {
     const newTask = {
@@ -16,15 +23,38 @@ const AddTask = ({ isOpen, onClose }) => {
   };
 
   const handleRemoveTask = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    setTasks((prevTasks) => prevTasks.filter((task, index) => index !== id));
   };
 
-  const handleTaskChange = (id, value) => {
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, text: value } : task
-      )
-    );
+  const handleTaskChange = (value, id) => {
+    const updatedTasks = [...tasks];
+    updatedTasks[id] = value;
+    setTasks(updatedTasks);
+  };
+
+  const handleSave = async () => {
+    try {
+      setSubmitLoading(true);
+      let obj = {
+        taskType: taskType,
+        task: tasks,
+      };
+      const response = await axios.post(`/admin/management/task`, obj);
+      if (response.status === 200) {
+        SuccessToast("Updated Successfully");
+        getTasks();
+        setSubmitLoading(false);
+        setTaskType("");
+        setTasks([{ id: 1, text: "" }]);
+        onClose();
+      }
+    } catch (err) {
+      console.log("🚀 ~ handleSave ~ err:", err);
+      ErrorToast(err.response.data.message);
+      setSubmitLoading(false);
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -53,25 +83,27 @@ const AddTask = ({ isOpen, onClose }) => {
         </div>
         <div className="mt-4">
           <TextFields
-            text={`Task Type`}
+            text={`Task Type `}
             className="w-full"
             placeholder="Enter task details"
+            state={taskType}
+            setState={setTaskType}
           />
-          <div className="mt-4">
+          <div className="mt-4 overflow-y-auto max-h-[260px]">
             {tasks?.map((task, index) => (
-              <div key={task?.id} className="flex flex-col gap-2 mb-3">
+              <div key={index} className="flex flex-col gap-2 mb-3">
                 <TextFields
-                  text={`Task`}
+                  text={`Task ${index + 1}`}
                   className="w-full"
                   placeholder="Enter task"
-                  value={task.text}
-                  onChange={(e) => handleTaskChange(task?.id, e.target.value)}
+                  state={task.text}
+                  setState={(e) => handleTaskChange(e, index)}
                 />
                 <div className="flex items-center justify-end gap-4">
                   {tasks?.length > 1 && (
                     <div
                       className="text-[#F44237] flex items-center gap-2 cursor-pointer"
-                      onClick={() => handleRemoveTask(task?.id)}
+                      onClick={() => handleRemoveTask(index)}
                     >
                       <img
                         src={Dustbinicon}
@@ -87,7 +119,7 @@ const AddTask = ({ isOpen, onClose }) => {
                       className="text-[#199BD1] flex items-center gap-1 cursor-pointer"
                       onClick={handleAddTask}
                     >
-                    <GoPlus />  Add more task
+                      <GoPlus /> Add more task
                     </div>
                   )}
                 </div>
@@ -95,7 +127,11 @@ const AddTask = ({ isOpen, onClose }) => {
             ))}
           </div>
           <div className="mt-5">
-            <CustomBtn text="Add" />
+            <CustomBtn
+              text="Add"
+              handleClick={handleSave}
+              loading={submitLoading}
+            />
           </div>
         </div>
       </div>

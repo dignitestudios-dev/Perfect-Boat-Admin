@@ -60,13 +60,14 @@ import White9 from "./sidebaricons/whiteicon9.png";
 import Bellblue from "./bellblue.png";
 import BlueLock from "./blueLock.png";
 import Whitepro from "./whitepro.png";
-
+import SuccessVector from "./success_vector.png";
 
 export {
   AuthMockup,
   SplashLogo,
   SideBarLogo,
   UserIcon,
+  SuccessVector,
   CoinIcon,
   Profile,
   HomeIcon,

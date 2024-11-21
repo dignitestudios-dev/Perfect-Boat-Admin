@@ -2,34 +2,38 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import PublishModal from "../TidesTalesAndGuide/PublishModal";
+import { BlogContext } from "../../contexts/BlogContext";
+import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
+import { FiLoader } from "react-icons/fi";
+import axios from "../../axios";
 const Publish = () => {
   const [selectedOption, setSelectedOption] = useState("everyone");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  // const {
-  //   setViewers,
-  //   viewers,
-  //   title,
-  //   setTitle,
-  //   subTitle,
-  //   setSubTitle,
-  //   story,
-  //   setStory,
-  //   imageText,
-  //   setImageText,
-  //   coverFile,
-  //   setCoverFile,
-  //   coverUrl,
-  //   setCoverUrl,
-  //   setDueDate,
-  //   dueDate,
-  // } = useContext(BlogContext);
+  const {
+    setViewers,
+    viewers,
+    title,
+    setTitle,
+    subTitle,
+    setSubTitle,
+    story,
+    setStory,
+    imageText,
+    setImageText,
+    coverFile,
+    setCoverFile,
+    coverUrl,
+    setCoverUrl,
+    setDueDate,
+    dueDate,
+  } = useContext(BlogContext);
 
   const [loading, setLoading] = useState(false);
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
-    // setViewers(event.target.value);
+    setViewers(event.target.value);
   };
 
   function createHtmlTemplate(content, title, subtitle) {
@@ -50,48 +54,48 @@ const Publish = () => {
   }
 
   const handlePublish = async () => {
-    // try {
-    //   setLoading(true);
-    //   const formdata = new FormData();
-    //   formdata.append("title", title);
-    //   formdata.append("cover", coverFile);
-    //   formdata.append("subTitle", subTitle);
-    //   if (imageText) {
-    //     formdata.append("imageTitle", imageText);
-    //   }
-    //   if (dueDate) {
-    //     formdata.append("scheduleDate", dueDate?.unix);
-    //   }
-    //   formdata.append("story", createHtmlTemplate(story, title, subTitle));
-    //   formdata.append("viewer", viewers);
-    //   const response = await axios.post(`/owner/blog/`, formdata);
-    //   if (response.status === 200) {
-    //     // Update the blogsData to remove the deleted blog
-    //     SuccessToast("Blog created successfully");
-    //     setIsModalOpen(true);
-    //     setCoverFile(null);
-    //     setCoverUrl(null);
-    //     setTitle("");
-    //     setStory("");
-    //     setSubTitle("");
-    //     setImageText("");
-    //     setViewers("");
-    //     setLoading(false);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    //   ErrorToast(error?.response?.data?.message);
-    //   setLoading(false);
-    // }
+    try {
+      setLoading(true);
+      const formdata = new FormData();
+      formdata.append("title", title);
+      formdata.append("cover", coverFile);
+      formdata.append("subTitle", subTitle);
+      if (imageText) {
+        formdata.append("imageTitle", imageText);
+      }
+      if (dueDate) {
+        formdata.append("scheduleDate", dueDate?.unix);
+      }
+      formdata.append("story", createHtmlTemplate(story, title, subTitle));
+      formdata.append("viewer", viewers);
+      const response = await axios.post(`/admin/blog`, formdata);
+      if (response.status === 200) {
+        // Update the blogsData to remove the deleted blog
+        SuccessToast("Blog created successfully");
+        setIsModalOpen(true);
+        setCoverFile(null);
+        setCoverUrl(null);
+        setTitle("");
+        setStory("");
+        setSubTitle("");
+        setImageText("");
+        setViewers("");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+      ErrorToast(error?.response?.data?.message);
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
     navigate("/blog/createnewblog"); // Redirect to the desired path
   };
 
-  // useEffect(() => {
-  //   setViewers("everyone");
-  // }, []);
+  useEffect(() => {
+    setViewers("everyone");
+  }, []);
   return (
     <div className="h-full w-full p-6 flex flex-col gap-4 bg-[#0D1B2A]">
       {/* Top Right Button */}
@@ -104,10 +108,10 @@ const Publish = () => {
         </button>
         <button
           className="text-white bg-[#199BD1] ml-2 px-3 flex justify-center items-center gap-1 py-2 rounded-lg hover:bg-[#147BA1]"
-          onClick={() => setIsModalOpen(true)}
+          onClick={handlePublish}
         >
           Update Now
-          {/* {loading && <FiLoader className="animate-spin text-lg ml-1" />} */}
+          {loading && <FiLoader className="animate-spin text-lg ml-1" />}
         </button>
       </div>
 

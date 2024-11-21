@@ -2,18 +2,34 @@ import React, { useEffect, useState } from "react";
 import { CancelIcon, Dustbinicon } from "../../assets/export";
 import TextFields from "../onboarding/TextFields";
 import CustomBtn from "../onboarding/CustomBtn";
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 
-const EditBoat = ({ isOpen, onClose, boat }) => {
+const EditBoat = ({ isOpen, onClose, boat, getTasks }) => {
   if (!isOpen) return null;
   const [boatName, setBoatName] = useState("");
-  console.log(boatName, "boatName");
+
   useEffect(() => {
-    if (boat) setBoatName(boat);
+    if (boat) setBoatName(boat?.boatType);
   }, [boat]);
 
-  const handleSave = () => {
-    console.log("Updated Boat Name:", boatName);
-    onClose();
+  const handleSave = async () => {
+    try {
+      let obj = {
+        boatType: boatName,
+      };
+      const response = await axios.put(
+        `/admin/management/boat/${boat?._id}`,
+        obj
+      );
+      if (response.status === 200) {
+        SuccessToast("Updated Successfully");
+        getTasks();
+        onClose();
+      }
+    } catch (err) {
+      ErrorToast(err.response.data.message);
+    }
   };
 
   return (
@@ -46,12 +62,12 @@ const EditBoat = ({ isOpen, onClose, boat }) => {
                 className="w-full"
                 placeholder="Enter boat name"
                 state={boatName}
-                onChange={(e) => setBoatName(e.target.value)}
+                setState={setBoatName}
               />
             </div>
           </div>
           <div className="mt-5">
-            <CustomBtn text="Save" />
+            <CustomBtn text="Save" handleClick={() => handleSave()} />
           </div>
         </div>
       </div>

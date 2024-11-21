@@ -9,9 +9,8 @@ const Blogs = () => {
   const getBlogs = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get("/owner/blog");
+      const { data } = await axios.get("/admin/blog?isAdmin=true");
       setblogsData(data?.data);
-      console.log(blogsData,"Hannan")
     } catch (error) {
       console.error("Error:", error);
     } finally {

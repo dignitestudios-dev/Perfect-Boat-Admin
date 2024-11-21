@@ -12,28 +12,29 @@ import { MdFormatListBulleted } from "react-icons/md";
 import { BiLink, BiUndo, BiRedo, BiChevronDown } from "react-icons/bi";
 import { Blogsimg } from "../../assets/export";
 import { useNavigate } from "react-router-dom";
+import { BlogContext } from "../../contexts/BlogContext";
 
 const CreateNewBlog = () => {
-  const navigate  = useNavigate();
-  // const {
-  //   title,
-  //   setTitle,
-  //   subTitle,
-  //   setSubTitle,
-  //   story,
-  //   setStory,
-  //   imageText,
-  //   setImageText,
-  //   coverFile,
-  //   setCoverFile,
-  //   coverUrl,
-  //   setCoverUrl,
-  //   setDueDate,
-  //   dueDate,
-  // } = useContext(BlogContext);
+  const navigate = useNavigate();
+  const {
+    title,
+    setTitle,
+    subTitle,
+    setSubTitle,
+    story,
+    setStory,
+    imageText,
+    setImageText,
+    coverFile,
+    setCoverFile,
+    coverUrl,
+    setCoverUrl,
+    setDueDate,
+    dueDate,
+  } = useContext(BlogContext);
   const editorRef = useRef(null);
 
-  const [htmlContent, setHtmlContent] = useState( "");
+  const [htmlContent, setHtmlContent] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(16); // Default font size
 
@@ -79,12 +80,12 @@ const CreateNewBlog = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (editorRef.current && story) {
-  //     editorRef.current.innerHTML = story;
-  //     setHtmlContent(story);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (editorRef.current && story) {
+      editorRef.current.innerHTML = story;
+      setHtmlContent(story);
+    }
+  }, []);
 
   return (
     <div className="h-full overflow-y-auto w-full p-6 flex flex-col gap-4 bg-[#0D1B2A]">
@@ -100,7 +101,7 @@ const CreateNewBlog = () => {
             >
               Preview
             </button> */}
-          <button
+            <button
               className="bg-[#199BD1] w-[107px] text-white px-4 py-2 rounded-lg"
               onClick={() => navigate(`/preview`)}
             >
@@ -244,9 +245,9 @@ const CreateNewBlog = () => {
           }}
           className="w-full flex flex-col items-center justify-center h-[300px] bg-[#1A293D] rounded-[18px]"
         >
-          {Blogsimg ? (
+          {coverUrl ? (
             <img
-              src={Blogsimg }
+              src={coverUrl}
               className="w-full h-full object-contain"
               alt=""
             />
@@ -263,8 +264,8 @@ const CreateNewBlog = () => {
         <div className="w-full flex items-center justify-center">
           <input
             type="text"
-            // value={imageText}
-            // onChange={(e) => setImageText(e.target.value)}
+            value={imageText}
+            onChange={(e) => setImageText(e.target.value)}
             placeholder="Add caption for image (optional)"
             className="w-60 text-[10px] placeholder:text-[10px] text-center placeholder:font-bold text-gray-300 bg-transparent border-none focus:outline-none my-2"
           />
@@ -274,15 +275,15 @@ const CreateNewBlog = () => {
         <div className="mt-4 w-full">
           <input
             type="text"
-            // value={title}
-            // onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             className="w-full text-[28px] placeholder:text-[28px] placeholder:font-bold text-white bg-transparent border-none focus:outline-none mb-2"
           />
           <input
             type="text"
-            // value={subTitle}
-            // onChange={(e) => setSubTitle(e.target.value)}
+            value={subTitle}
+            onChange={(e) => setSubTitle(e.target.value)}
             placeholder="Enter Subtitle"
             className="w-full text-lg placeholder:text-[16px] text-white bg-transparent border-none focus:outline-none mb-4"
           />

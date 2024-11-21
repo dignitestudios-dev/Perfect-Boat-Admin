@@ -20,17 +20,12 @@ import Profile from "../pages/Settings/Profile";
 import TaskManagement from "../pages/taskmanagement/TaskManagement";
 import BlogDetails from "../pages/TidesTalesAndGuide/BlogDetails";
 import Blogs from "../pages/TidesTalesAndGuide/Blogs";
-import UpdateBlog from '../pages/TidesTalesAndGuide/UpdateBlog'
-import Preview from '../pages/TidesTalesAndGuide/Preview'
+import UpdateBlog from "../pages/TidesTalesAndGuide/UpdateBlog";
+import Preview from "../pages/TidesTalesAndGuide/Preview";
 import Publish from "../pages/TidesTalesAndGuide/Publish";
 import CreateNewBlog from "../pages/TidesTalesAndGuide/CreateNewBlog";
 import EditProfile from "../pages/Settings/EditProfile";
 export const routes = [
-  {
-    title: "Login",
-    url: "/login",
-    page: <Login />,
-  },
   {
     title: "Home",
     url: "/home",
@@ -127,34 +122,33 @@ export const routes = [
     page: <AppLayout page={<Blogs />} />,
   },
   {
-    title: "Blog Details" ,
+    title: "Blog Details",
     url: "/blogs/:id",
     page: <AppLayout page={<BlogDetails />} />,
   },
   {
-    title: "Blog update" ,
+    title: "Blog update",
     url: "/updateblog/:id",
     page: <AppLayout page={<UpdateBlog />} />,
   },
   {
-    title: "preview" ,
+    title: "preview",
     url: "/preview",
     page: <AppLayout page={<Preview />} />,
   },
   {
-    title: "Publish" ,
+    title: "Publish",
     url: "/publish",
     page: <AppLayout page={<Publish />} />,
   },
   {
-    title: "Create Blog" ,
+    title: "Create Blog",
     url: "/blog/createnewblog",
     page: <AppLayout page={<CreateNewBlog />} />,
   },
   {
-    title: "EditProfile" ,
+    title: "EditProfile",
     url: "/editprofile",
     page: <AppLayout page={<EditProfile />} />,
   },
-  
 ];

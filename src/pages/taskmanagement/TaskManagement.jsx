@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Arrowdown, Dustbinicon, EditIcon, Uparrow } from "../../assets/export";
 import EditTask from "../../components/Modal/EditTask";
 import { GoPlus } from "react-icons/go";
@@ -7,41 +7,50 @@ import DeleteBoat from "../../components/Modal/DeleteBoat";
 import AddBoat from "../../components/Modal/AddBoat";
 import EditBoat from "../../components/Modal/EditBoat";
 import AddTask from "../../components/Modal/AddTask";
+import axios from "../../axios";
+import TaskAndTypes from "../../components/TaskManagement/TaskAndTypes";
+import BoatsAndTypes from "../../components/TaskManagement/BoatsAndTypes";
 const TaskManagement = ({ isOpen }) => {
   const [openAccordion, setOpenAccordion] = useState(null);
-  const [isModalOpen, setModalOpen] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
   const [AddBoatOpen, setAddBoatOpen] = useState(false);
-  const [EditOpen, setEditBoatOpen] = useState(false);
   const [addTask, setAddTaskOpen] = useState(false);
-  const [selectedBoat, setSelectedBoat] = useState(null);
-  const [selectedTask, setSelectedTask] = useState(null);
-console.log(selectedTask,"selectedTaskselectedTask")
 
-  const [tab, setTabs] = useState("1");
+  const [tab, setTabs] = useState("tasks");
   const toggleAccordion = (index) => {
     setOpenAccordion((prevIndex) => (prevIndex === index ? null : index));
   };
 
-  const BoatData = [
-    "Cabin Cruiser",
-    "Yacht",
-    "Yacht",
-    "Center Console",
-    "Cabin Cruiser",
-    "Yacht",
-    "Cabin Cruiser",
-    "Yacht",
-    "Sailboat",
-  ];
-  const handleEditClick = (boat) => {
-    setSelectedBoat(boat);
-    setEditBoatOpen(true);
+  const [taskData, setTaskData] = useState([]);
+  const [boatData, setBoatData] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+
+  const getTasks = async () => {
+    try {
+      setLoading(true);
+      if (tab == "tasks") {
+        console.log("if call");
+        const { data } = await axios.get("/admin/management/task");
+        if (data.success === true) {
+          setTaskData(data?.data);
+        }
+      } else {
+        console.log("else call");
+        const { data } = await axios.get(`/admin/management/boat`);
+        if (data.success === true) {
+          setBoatData(data?.data);
+        }
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
-  const handleEditTask = (taskedit) => {
-    setSelectedTask(taskedit);
-    setModalOpen(true);
-  };
+
+  useEffect(() => {
+    getTasks();
+  }, [tab]);
 
   return (
     <div className="bg-[#0E1B31] rounded-[10px] p-4">
@@ -53,7 +62,7 @@ console.log(selectedTask,"selectedTaskselectedTask")
             and manage your daily responsibilities effortlessly.
           </p>
         </div>
-        {tab === "1" ? (
+        {tab === "tasks" ? (
           <button
             className="flex gap-2 w-[108px] h-[39px] text-center rounded-[8px] justify-center font-[700]  items-center bg-[#199BD1]"
             onClick={() => setAddTaskOpen(true)}
@@ -72,9 +81,9 @@ console.log(selectedTask,"selectedTaskselectedTask")
 
       <div className="flex gap-x-2 mt-3">
         <button
-          onClick={() => setTabs("1")}
+          onClick={() => setTabs("tasks")}
           className={`w-[76px] h-[35px] rounded-full text-[11px] font-semibold ${
-            tab === "1"
+            tab === "tasks"
               ? "bg-[#199BD1] text-white"
               : "bg-[#042742] text-[#199BD1]"
           }`}
@@ -82,9 +91,9 @@ console.log(selectedTask,"selectedTaskselectedTask")
           Tasks
         </button>
         <button
-          onClick={() => setTabs("2")}
+          onClick={() => setTabs("boats")}
           className={`w-[76px] h-[35px] rounded-full text-[11px] font-semibold ${
-            tab === "2"
+            tab === "boats"
               ? "bg-[#199BD1] text-white"
               : "bg-[#042742] text-[#199BD1]"
           }`}
@@ -92,91 +101,72 @@ console.log(selectedTask,"selectedTaskselectedTask")
           Boats
         </button>
       </div>
-      {tab === "1" &&
-        accordionData?.map((item, index) => (
-          <div key={item.id} className=" border-slate-200">
-            <button
-              onClick={() => toggleAccordion(item.id)}
-              className="w-full  flex bg-[#1A293D] rounded-[10px] p-4 mb-3 mt-3 justify-between items-center py-5 text-white"
-            >
-              <span className="text-[14px] font-[500]">
-                {index + 1} . {item?.title}
-              </span>
+      {tab === "tasks" && (
+        <>
+          {loading ? (
+            <>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between p-3 bg-[#1A293D] mt-3 h-[60px] rounded-[4px] items-center animate-pulse"
+                >
+                  {/* Left Content Placeholder */}
+                  <div className="w-1/3 h-[14px] bg-gray-700 rounded"></div>
 
-              {openAccordion === item?.id ? (
-                <div className="flex gap-3 items-center">
-                  <div onClick={()=>handleEditTask(item)}>
-                    <img src={EditIcon} className="w-[24px] h-[24px]" alt="" />
+                  {/* Right Icons Placeholder */}
+                  <div className="flex items-center gap-4">
+                    <div className="w-[22px] h-[22px] bg-gray-700 rounded"></div>
+                    <div className="w-[18px] h-[18px] bg-gray-700 rounded"></div>
                   </div>
-                  <img
-                    src={Arrowdown}
-                    className="w-[18.5px] h-[18.5px]"
-                    alt=""
-                  />
                 </div>
-              ) : (
-                <>
-                  <img src={Uparrow} className="w-[18.5px] h-[18.5px]" alt="" />
-                </>
-              )}
-            </button>
-            <div
-              className={`transition-all  duration-300 ease-in-out overflow-hidden mx-8 ${
-                openAccordion === item?.id ? "max-h-[200px]" : "max-h-0"
-              }`}
-              style={{
-                maxHeight: openAccordion === item?.id ? "200px" : "0",
-              }}
-            >
-              {item?.content?.map((line, index) => (
-                <li key={index} className="mb-2 text-[13px] font-[400]">
-                  {line}
-                </li>
               ))}
-            </div>
-          </div>
-        ))}
-      {tab === "2" && (
-        <div>
-          {BoatData?.map((item, index) => (
-            <div className="flex justify-between p-3 bg-[#1A293D]  mt-3 h-[60px] rounded-[4px] items-center">
-              <div className="text-[14px] font-[500]">
-                {index + 1} . {item}
-              </div>
-              <div className="flex items-center gap-4">
-                <div
-                  onClick={() => setDeleteOpen(true)}
-                  className="cursor-pointer"
-                >
-                  <img src={Dustbinicon} className="w-[22px] h-[22px]" alt="" />
-                </div>
-                <div
-                  onClick={() => handleEditClick(item)}
-                  className="cursor-pointer"
-                >
-                  <img
-                    src={EditIcon}
-                    className="w-[18.33px] h-[18.33px]"
-                    alt=""
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            </>
+          ) : (
+            <TaskAndTypes
+              taskData={taskData}
+              openAccordion={openAccordion}
+              setOpenAccordion={setOpenAccordion}
+              toggleAccordion={toggleAccordion}
+              getTasks={getTasks}
+            />
+          )}
+        </>
       )}
-      <EditTask isOpen={isModalOpen} onClose={() => setModalOpen(false)}    taskedit={selectedTask} />
+      {tab === "boats" && (
+        <>
+          {loading ? (
+            <>
+              {Array.from({ length: 5 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="flex justify-between p-3 bg-[#1A293D] mt-3 h-[60px] rounded-[4px] items-center animate-pulse"
+                >
+                  {/* Left Content Placeholder */}
+                  <div className="w-1/3 h-[14px] bg-gray-700 rounded"></div>
+
+                  {/* Right Icons Placeholder */}
+                  <div className="flex items-center gap-4">
+                    <div className="w-[22px] h-[22px] bg-gray-700 rounded"></div>
+                    <div className="w-[18px] h-[18px] bg-gray-700 rounded"></div>
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <BoatsAndTypes boatData={boatData} getTasks={getTasks} />
+          )}
+        </>
+      )}
       <DeleteBoat isOpen={isDeleteOpen} onClose={() => setDeleteOpen(false)} />
-      <AddBoat isOpen={AddBoatOpen} onClose={() => setAddBoatOpen(false)} />
-      <EditBoat
-        isOpen={EditOpen}
-        onClose={() => setEditBoatOpen(false)}
-        boat={selectedBoat}
+      <AddBoat
+        isOpen={AddBoatOpen}
+        onClose={() => setAddBoatOpen(false)}
+        getTasks={getTasks}
       />
       <AddTask
         isOpen={addTask}
         onClose={() => setAddTaskOpen(false)}
-     
+        getTasks={getTasks}
       />
     </div>
   );

@@ -2,35 +2,35 @@ import React, { useContext, useEffect, useState } from "react";
 import { FiLoader, FiX } from "react-icons/fi";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
-// import { BlogContext } from "../../contexts/BlogContext";
-// import axios from "../../axios";
-// import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 import moment from "moment";
 import Cookies from "js-cookie";
 import DateModal from "../../components/global/DateModal";
 import { Blogsimg, CoinIcon } from "../../assets/export";
+import { BlogContext } from "../../contexts/BlogContext";
 
 const Preview = () => {
   const [isScheduling, setIsScheduling] = useState(false); // State to toggle between publish and schedule view
   const [isDateModalOpen, setIsDateModalOpen] = useState(false); // State to control date modal visibility
-  // const {
-  //   setViewers,
-  //   viewers,
-  //   title,
-  //   setTitle,
-  //   subTitle,
-  //   setSubTitle,
-  //   story,
-  //   setStory,
-  //   imageText,
-  //   setImageText,
-  //   coverFile,
-  //   setCoverFile,
-  //   coverUrl,
-  //   setCoverUrl,
-  //   setDueDate,
-  //   dueDate,
-  // } = useContext(BlogContext);
+  const {
+    setViewers,
+    viewers,
+    title,
+    setTitle,
+    subTitle,
+    setSubTitle,
+    story,
+    setStory,
+    imageText,
+    setImageText,
+    coverFile,
+    setCoverFile,
+    coverUrl,
+    setCoverUrl,
+    setDueDate,
+    dueDate,
+  } = useContext(BlogContext);
 
   const navigate = useNavigate(); // Initialize the navigate function
 
@@ -110,11 +110,11 @@ const Preview = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (coverFile == null) {
-  //     navigate("/blog/createnewblog");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (coverFile == null) {
+      navigate("/blog/createnewblog");
+    }
+  }, []);
 
   return (
     <div className="h-full w-full p-6 flex flex-col gap-4 bg-[#0D1B2A] text-white overflow-y-auto">
@@ -135,7 +135,7 @@ const Preview = () => {
           <div
             className="relative h-[300px] w-full rounded-[18px] bg-cover bg-center"
             style={{
-              backgroundImage: `url(${Blogsimg} )`,
+              backgroundImage: `url(${coverUrl} )`,
             }}
           ></div>
         </div>
@@ -166,7 +166,7 @@ const Preview = () => {
           ) : (
             <div>
               <p className="text-[16px] text-left mb-8">
-                Publisher: Alex Deli{" "}
+                Publisher:
                 <span className="font-bold">{Cookies.get("name")}</span>
               </p>
               <div className="text-left mb-4 font-bold text-[12px]">
@@ -180,7 +180,7 @@ const Preview = () => {
                   </span>
                 </p>
                 <p className="text-[12px] font-normal mt-2">
-                  {/* {moment.unix(dueDate?.unix).format("DD/MM/YY hh:mmA")}/ */}
+                  {moment.unix(dueDate?.unix)?.format("DD/MM/YY hh:mmA")}/
                 </p>
               </div>
               <button
@@ -201,23 +201,19 @@ const Preview = () => {
       </div>
       {/* Title and Description */}
       <div className="w-full mt-4">
-        <h2 className="text-white text-[28px] font-bold">
-          {"Sailing Serenity: A Windward Voyage Into Maritime bliss"}
-        </h2>
-        <p className="text-white text-[16px]">
-          {"Discove The Tranquil Tales That Unfold Beyond The Horizon  "}
-        </p>
+        <h2 className="text-white text-[28px] font-bold">{title}</h2>
+        <p className="text-white text-[16px]">{subTitle}</p>
       </div>
       {/* Story Input */}
       <div className="text-[10px] text-gray-200">
-        <div dangerouslySetInnerHTML={{ __html: "Tell your Story ...." }} />
+        <div dangerouslySetInnerHTML={{ __html: story }} />
       </div>
       {/* Date Modal */}
       <DateModal
         isOpen={isDateModalOpen}
         setIsOpen={setIsDateModalOpen}
-        // setDueDate={setDueDate}
-        // setInputError={setInputError}
+        setDueDate={setDueDate}
+        setInputError={setInputError}
       />
     </div>
   );

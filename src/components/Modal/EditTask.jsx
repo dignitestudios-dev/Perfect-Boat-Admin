@@ -3,19 +3,22 @@ import { CancelIcon } from "../../assets/export";
 import { GoPlus } from "react-icons/go";
 import TextFields from "../onboarding/TextFields";
 import CustomBtn from "../onboarding/CustomBtn";
+import { ErrorToast, SuccessToast } from "../Toaster/Toaster";
+import axios from "../../axios";
 
-const EditTask = ({ isOpen, onClose, taskedit }) => {
+const EditTask = ({ isOpen, onClose, taskEdit, getTasks }) => {
   if (!isOpen) return null;
 
   const [taskName, setTaskName] = useState([]);
   const [taskType, setTaskType] = useState("");
+  const [submitLoading, setSubmitLoading] = useState("");
 
   useEffect(() => {
-    if (taskedit) {
-      setTaskName(taskedit?.content || []);
-      setTaskType(taskedit?.title || "");
+    if (taskEdit) {
+      setTaskName(taskEdit?.task || []);
+      setTaskType(taskEdit?.taskType || "");
     }
-  }, [taskedit]);
+  }, [taskEdit]);
 
   const handleTaskTypeChange = (value) => {
     setTaskType(value);
@@ -36,15 +39,35 @@ const EditTask = ({ isOpen, onClose, taskedit }) => {
     setTaskName(updatedTasks);
   };
 
-  const handleSave = () => {
-    console.log("Updated Task Type:", taskType);
-    console.log("Updated Tasks:", taskName);
-    onClose();
+  const handleSave = async () => {
+    try {
+      setSubmitLoading(true);
+      let obj = {
+        taskType: taskType,
+        task: taskName,
+      };
+      const response = await axios.put(
+        `/admin/management/task/${taskEdit?._id}`,
+        obj
+      );
+      if (response.status === 200) {
+        SuccessToast("Updated Successfully");
+        getTasks();
+        setSubmitLoading(false);
+        onClose();
+      }
+    } catch (err) {
+      console.log("🚀 ~ handleSave ~ err:", err);
+      ErrorToast(err.response.data.message);
+      setSubmitLoading(false);
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   return (
-    <div className="fixed top-0 right-0 w-screen h-screen z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#001229] rounded-lg w-[587px] p-6 shadow-lg">
+    <div className="fixed top-0 right-0 w-screen h-screen z-50 flex items-center justify-center bg-black bg-opacity-50 ">
+      <div className="bg-[#001229] rounded-lg w-[587px] max-h-[500px] p-6 shadow-lg">
         <div className="flex justify-between">
           <div>
             <h2 className="text-[18px] font-bold text-white text-start">
@@ -71,11 +94,11 @@ const EditTask = ({ isOpen, onClose, taskedit }) => {
             className="w-full"
             placeholder="Routine Inspection"
             state={taskType}
-            setState={handleTaskTypeChange}
+            setState={setTaskType}
           />
 
           <div className="text-[13px] mt-4">Tasks</div>
-          <div className="mt-2 mb-3">
+          <div className="mt-2 mb-3 overflow-y-auto max-h-[200px]">
             {taskName.map((item, index) => (
               <div key={index} className="flex items-center gap-2 mb-2">
                 <TextFields
@@ -85,7 +108,7 @@ const EditTask = ({ isOpen, onClose, taskedit }) => {
                   setState={(e) => handleTaskChange(e, index)}
                 />
 
-                <button  onClick={() => handleRemoveTask(index)}>
+                <button onClick={() => handleRemoveTask(index)}>
                   <img src={CancelIcon} className="w-[20px]" alt="" />
                 </button>
               </div>
@@ -101,7 +124,11 @@ const EditTask = ({ isOpen, onClose, taskedit }) => {
           </div>
 
           <div className="mt-5">
-            <CustomBtn text="Save" handleClick={handleSave} />
+            <CustomBtn
+              text="Save"
+              handleClick={handleSave}
+              loading={submitLoading}
+            />
           </div>
         </div>
       </div>

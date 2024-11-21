@@ -25,7 +25,6 @@ const Home = () => {
   };
 
   const [dashboardData, setDashboardData] = useState([]);
-  console.log("🚀 ~ Home ~ dashboardData:", dashboardData);
   const [loading, setLoading] = useState(false);
 
   const getDashboardData = async () => {

@@ -33,10 +33,8 @@ const BlogsCard = ({ blog }) => {
   };
 
   return (
-   [Array.from({length:13}).map(()=>(
-
     <div
-      onClick={() => navigate(`/blogs/1`, { state: blog })}
+      onClick={() => navigate(`/blogs/${blog._id}`, { state: blog })}
       className="w-full h-[334px] flex flex-col justify-start items-start rounded-[16px] shadow-md bg-[#1A293D] relative"
     >
       <div className="relative w-full h-[220px] rounded-t-[16px] overflow-hidden">
@@ -77,12 +75,13 @@ const BlogsCard = ({ blog }) => {
 
       <div className="w-full h-[calc(100%-220px)] flex flex-col gap-2 justify-start items-start p-4">
         <span className="text-[10px] font-medium text-[#199BD1]">
-          {blog?.isAdmin ? "Admin" : "Owner"} |{" Author name | December 20th, 2023"}
-          {/* {new Date(blog.createdAt)?.toLocaleDateString("en-US", {
+          {blog?.isAdmin ? "Admin" : "Owner"} |
+          {" Author name | December 20th, 2023"}
+          {new Date(blog?.createdAt)?.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",
-          })} */}
+          })}
         </span>
 
         <div className="relative w-full flex flex-col justify-start items-start gap-2">
@@ -90,18 +89,13 @@ const BlogsCard = ({ blog }) => {
             <h1 className="text-[16px] font-bold leading-[21.6px] text-white">
               {blog?.title || "Blog Heading Here"}
             </h1>
-            {/* {parseHTML(blog?.story)?.length > 150
-                ? parseHTML(blog?.story)?.slice(0, 150)
-                : parseHTML(blog?.story)} */}
-            <p className="text-[12px] font-normal leading-[16.2px] text-white/50">
-            Lorem ipsum dolor sit amet consectetur. Varius rutrum mauris at tortor nulla faucibus...
-            </p>
+            {parseHTML(blog?.story)?.length > 140
+              ? parseHTML(blog?.story)?.slice(0, 140) + "..."
+              : parseHTML(blog?.story)}
           </div>
         </div>
       </div>
     </div>
-   ))]
- 
   );
 };
 
