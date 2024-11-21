@@ -70,6 +70,7 @@ const Notifications = () => {
               className={`w-full grid grid-cols-1 md:grid-cols-5 notification border-b-[1px] border-white/10 gap-x-4 ${
                 notification.read ? "read" : "unread"
               }`}
+              style={{textDecoration:"none"}}
             >
               <div className="col-span-3 flex gap-2 justify-start items-start py-2 lg:py-4">
                 <img
