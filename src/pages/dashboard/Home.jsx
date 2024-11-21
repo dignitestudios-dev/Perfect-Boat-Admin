@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BoatIcon, BookIcon, User_icon2, UserIcon } from "../../assets/export";
 import LineChartDash from "../../components/dasboard/LineChartDash";
 import MultiBarChart from "../../components/dasboard/MultiBarChart";
@@ -6,6 +6,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import OwnerTable from "../../components/dasboard/OwnerTable";
 import SingleUserTable from "../../components/dasboard/SingleUserTable";
 import Dropdown from "../../components/dropdown/Dropdown";
+import axios from "../../axios";
 
 const Home = () => {
   const cardData = [
@@ -22,6 +23,26 @@ const Home = () => {
       [id]: !prevState[id],
     }));
   };
+
+  const [dashboardData, setDashboardData] = useState([]);
+  console.log("🚀 ~ Home ~ dashboardData:", dashboardData);
+  const [loading, setLoading] = useState(false);
+
+  const getDashboardData = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.get("/admin/dashboard");
+      setDashboardData(data?.data);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getDashboardData();
+  }, []);
 
   return (
     <>
