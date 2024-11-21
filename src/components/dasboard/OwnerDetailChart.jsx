@@ -89,7 +89,7 @@ const OwnerDetailLineChart = () => {
         <h1 className="text-[14px] font-bold">Sales Overview</h1>
         <Dropdown
           label="Yearly"
-          items={["Weekly", "Monthly", "Yearly", "Custom"]}
+          items={["Weekly", "Monthly", "Yearly"]}
         />
       </div>
       <div className="flex gap-3 mb-4">
