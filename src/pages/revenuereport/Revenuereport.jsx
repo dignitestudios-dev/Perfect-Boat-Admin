@@ -1,36 +1,46 @@
-import React, { useState } from "react";
-import {
-  Arrowicon,
-  BoatIcon,
-  BookIcon,
-  CoinIcon,
-  Toolicon,
-  User_icon2,
-  UserIcon,
-} from "../../assets/export";
-import LineChartDash from "../../components/dasboard/LineChartDash";
-import MultiBarChart from "../../components/dasboard/MultiBarChart";
-import { IoMdArrowDropdown } from "react-icons/io";
-import OwnerTable from "../../components/dasboard/OwnerTable";
-import SingleUserTable from "../../components/dasboard/SingleUserTable";
+import React, { useEffect, useState } from "react";
+import { Arrowicon, CoinIcon, Toolicon } from "../../assets/export";
 import Dropdown from "../../components/dropdown/Dropdown";
 import RevenueAnalysis from "../../components/revenuereport/revenueanalysis";
-
+import axios from "../../axios";
 const RevenueReport = () => {
+  const [activeTimePeriod, setActiveTimePeriod] = useState("Weekly");
+  const [activeSubscription, setActiveSubscription] = useState(0);
+  console.log(activeSubscription, "Aaa");
   const cardData = [
-    { icon: Toolicon, number: 25, label: "Active Subscription" },
+    {
+      icon: Toolicon,
+      number: activeSubscription?.monthly,
+      label: "Active Subscription",
+    },
     { icon: Arrowicon, number: 25, label: "Total Renewals" },
     { icon: CoinIcon, number: 25, label: "Total Revenue" },
   ];
-  const [dropdownStates, setDropdownStates] = useState({});
 
-  const toggleDropdown = (id) => {
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+  const [loading, setLoading] = useState(false);
+
+  const handleTimePeriod = (value) => {
+    console.log("Selected Time Period:", value);
+    setActiveTimePeriod(value);
+    // getactiveSubscription(value);
   };
 
+  const getactiveSubscription = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(`/admin/revenue/subscription/active`);
+      setActiveSubscription(data?.data);
+      // console.log("Active Subscription Data:", activeSubscription);
+    } catch (error) {
+      console.error("Error fetching Active Subscription data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getactiveSubscription();
+  }, []);
   return (
     <>
       <div className="flex flex-wrap gap-3">
@@ -59,17 +69,18 @@ const RevenueReport = () => {
               </div>
               <div>
                 <Dropdown
-                  label="Weekly"
+                  label={activeTimePeriod}
                   items={["Weekly", "Monthly", "Yearly", "Custom"]}
+                  handleTimePeriod={handleTimePeriod}
                 />
               </div>
             </div>
           </div>
         ))}
       </div>
-     
+
       <div className="mt-5">
-       <RevenueAnalysis />
+        <RevenueAnalysis />
       </div>
     </>
   );

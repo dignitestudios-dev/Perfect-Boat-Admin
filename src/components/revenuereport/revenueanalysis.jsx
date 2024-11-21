@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SearchInput from "../inputs/SearchInput";
 import { Calender, OwnerProfile } from "../../assets/export";
 import OwnerList from "../dasboard/OwnerList";
 import DateModal from "../global/DateModal";
-
+import axios from "../../axios";
 const RevenueAnalysis = () => {
   const [tab, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
   const [date, setDate] = useState(new Date());
+
+  const [loading, setLoading] = useState(false);
+  const [revenueTableData, setRevenueTableData] = useState([]);
+
+  const getRevenueTableData = async () => {
+    try {
+      setLoading(true);
+
+      let url = "/admin/revenue/subscription/details";
+      if (tab === "2") {
+        url = "/admin/revenue/subscription/details?isSingleUser=false";
+      } else if (tab === "3") {
+        url = "/admin/revenue/subscription/details?isSingleUser=true";
+      }
+
+      const { data } = await axios.get(url);
+      console.log(data?.data, "Fetched Revenue Data");
+      setRevenueTableData(data?.data || []);
+    } catch (error) {
+      console.error("Error fetching revenue data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getRevenueTableData();
+  }, [tab]);
+
   return (
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[820px] overflow-y-auto  scrollbar-thin ">
@@ -88,37 +117,42 @@ const RevenueAnalysis = () => {
               <div>Total Revenue</div>
             </div>
 
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => {
-              const isSpecialRow = index === 3;
-              return (
-                <Link
-                  to={isSpecialRow ? "/detailuser" : "/detailowner"}
-                  key={index}
-                  className={`no-underline hover:no-underline ${
-                    isSpecialRow ? "pointer-events " : ""
-                  }`}
-                >
-                  <div
-                    className={`grid grid-cols-8 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white ${
-                      isSpecialRow ? "" : ""
-                    }`}
-                  >
-                    <div>12/12/2024</div>
-                    <div>{isSpecialRow ? "Single User" : "Owner ABC"}</div>
-                    <div>{isSpecialRow ? "N/A" : "400"}</div>
-                    <div>
-                      {isSpecialRow
-                        ? "Subscription Plan A"
-                        : "Subscription Plan A"}
+            <div>
+              {loading ? (
+                <div class="animate-pulse">
+                  <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
+                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                </div>
+              ) : revenueTableData?.length === 0 ? (
+                <p>No data available.</p>
+              ) : (
+                revenueTableData.map((item, index) => (
+                  <Link key={index} to="#" style={{ textDecoration: "none" }}>
+                    <div
+                      className={`grid grid-cols-8 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
+                    >
+                      <div>
+                        {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "2-digit",
+                          day: "2-digit",
+                        })}
+                      </div>
+                      <div>{item?.name || "N/A"}</div>
+                      <div>{item?.totalUser || "N/A"}</div>
+                      <div>{item?.subscriptionPlan?.name || "N/A"}</div>
+                      <div>{item?.subscriptionPrice || "N/A"}</div>
+                      <div>{item?.perUserPrice || "N/A"}</div>
+                      <div>{item?.perUserPrice || "N/A"}</div>
+                      <div>{item?.totallRevenue || "N/A"}</div>
                     </div>
-                    <div>USD $100</div>
-                    <div>USD $10</div>
-                    <div>{isSpecialRow ? "N/A" : "USD $1200"}</div>
-                    <div>USD $110</div>
-                  </div>
-                </Link>
-              );
-            })}
+                  </Link>
+                ))
+              )}
+            </div>
           </div>
         )}
         {tab === "2" && (
@@ -132,20 +166,39 @@ const RevenueAnalysis = () => {
               <div>Per User Cost</div>
               <div>Total Revenue</div>
             </div>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-7 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-              >
-                <div className="font-medium">12/12/2024</div>
-                <div className="">Owner ABC</div>
-                <div className="">400</div>
-                <div className="">Subscription Plan A</div>
-                <div className="">USD $100</div>
-                <div className="">USD $10</div>
-                <div className="">USD $110</div>
+            {loading ? (
+              <div class="animate-pulse">
+                <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
               </div>
-            ))}
+            ) : revenueTableData?.length === 0 ? (
+              <p>No data available.</p>
+            ) : (
+              revenueTableData.map((item, index) => (
+                <Link key={index} to="#" style={{ textDecoration: "none" }}>
+                  <div
+                    className={`grid grid-cols-7 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
+                  >
+                    <div>
+                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </div>
+                    <div>{item?.name || "N/A"}</div>
+                    <div>{item?.totalUser || "N/A"}</div>
+                    <div>{item?.subscriptionPlan?.name || "N/A"}</div>
+                    <div>{item?.subscriptionPrice || "N/A"}</div>
+                    <div>{item?.perUserPrice || "N/A"}</div>
+                    <div>{item?.totallRevenue || "N/A"}</div>
+                  </div>
+                </Link>
+              ))
+            )}
           </div>
         )}
         {tab === "3" && (
@@ -157,18 +210,37 @@ const RevenueAnalysis = () => {
               <div>Subscription Fee</div>
               <div>Revenue</div>
             </div>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-5 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-              >
-                <div className="font-medium">12/12/2024</div>
-                <div className="">Owner ABC</div>
-                <div className="">Subscription Plan A</div>
-                <div className="">USD $100</div>
-                <div className="">USD $110</div>
+            {loading ? (
+              <div class="animate-pulse">
+                <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
               </div>
-            ))}
+            ) : revenueTableData?.length === 0 ? (
+              <p>No data available.</p>
+            ) : (
+              revenueTableData.map((item, index) => (
+                <Link key={index} to="#" style={{ textDecoration: "none" }}>
+                  <div
+                    className={`grid grid-cols-5 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
+                  >
+                    <div>
+                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </div>
+                    <div>{item?.name || "N/A"}</div>
+                    <div>{item?.subscriptionPlan?.name || "N/A"}</div>
+                    <div>{item?.subscriptionPrice || "N/A"}</div>
+                    <div>{item?.totallRevenue || "N/A"}</div>
+                  </div>
+                </Link>
+              ))
+            )}
           </div>
         )}
       </div>

@@ -24,7 +24,7 @@ const SignleUserCard = () => {
             </div>
             
           
-            
+
             <div className="flex w-full flex-wrap md:w-1/2 justify-between items-center p-3 rounded-md">
               <dt className="text-sm font-medium text-gray-500">Email</dt>
               <dd className="text-sm text-white">ethanliam@gmail.com</dd>

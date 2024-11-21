@@ -4,6 +4,7 @@ import AuthInput from "../onboarding/AuthInput";
 import { Link } from "react-router-dom";
 
 const DeleteSingleUser = () => {
+ 
   return (
     <div>
       <div className="card bg-[#001229] p-10 rounded-[16px] mt-4  ">

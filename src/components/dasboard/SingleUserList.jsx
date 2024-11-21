@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link } from "react-router-dom";
 import OwnerCard from "./OwnerCard";
 import SignleUserCard from "./SignleUserCard";
 import { FiSearch } from "react-icons/fi";
-
+import axios from "../../axios";
+import Skeleton from "../global/Skeleton";
 const SingleUserList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
 
@@ -14,6 +15,32 @@ const SingleUserList = () => {
       [id]: !prevState[id],
     }));
   };
+
+  const [loading, setLoading] = useState(false);
+  const [singleUserData, setSingleUserData] = useState([]);
+
+  const getSingleUserTableData = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        "/admin/customer?isSingleUser=true&page=1&pageSize=12"
+      );
+
+      setSingleUserData(data?.data?.data);
+      console.log(
+        singleUserData,
+        "singleUserDatasingleUserDatasingleUserDatasingleUserData"
+      );
+    } catch (error) {
+      console.error("Error fetching owner data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getSingleUserTableData();
+  }, []);
 
   return (
     <>
@@ -57,35 +84,51 @@ const SingleUserList = () => {
               <div className="text-right">Actions</div>
             </div>
 
-            {/* Data Rows */}
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white bg-[#001229]"
-              >
-                <div className="text-left font-medium">Owner ABC</div>
-                <div className="text-left">ethanliam@gmail.com</div>
-                <div className="text-center">+1 000 000 0000</div>
-                <div className="text-center">12/12/2024</div>
-                <div className="text-center">
-                  <button className="bg-[#199BD1] w-[51px] h-[23px] rounded-full text-white text-xs">
-                    Active
-                  </button>
-                </div>
-                <div className="text-right">
-                  <Link
-                    to={"/detailuser"}
-                    className="underline text-white hover:text-white"
-                  >
-                    View Details
-                  </Link>
-                </div>
+            {loading ? (
+              <div>
+                <Skeleton />
               </div>
-            ))}
+            ) : (
+              singleUserData?.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white bg-[#001229]"
+                >
+                  <div className="text-left font-medium">{item?.name}</div>
+                  <div className="text-left">{item?.email}</div>
+                  <div className="text-center">{item?.phoneNumber}</div>
+                  <div className="text-center">
+                    {" "}
+                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
+                  <div className="text-center">
+                    {item?.isSubscribed === true && (
+                      <button className="bg-[#199BD1] w-[51px] h-[23px] rounded-full text-white text-xs">
+                        Active
+                      </button>
+                    )}
+                    {item?.isSubscribed === false && (
+                      <button className="bg-[#9A9A9A] w-[59px] h-[23px] rounded-full text-white text-[11px]">
+                        inactive
+                      </button>
+                    )}
+                  </div>
+                  <div className="text-right">
+                    <Link
+                      to={"/detailuser"}
+                      className="underline text-white hover:text-white"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        </div>
-        <div className="mobile_screen">
-          <SignleUserCard />
         </div>
       </div>
       <Link to={"/home"} className="no-underline hover:no-underline">
