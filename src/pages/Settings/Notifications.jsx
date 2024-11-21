@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-
 import { AuthMockup } from "../../assets/export";
 import { Link } from "react-router-dom";
 import { sampleNotifications } from "../../constant/notification";
