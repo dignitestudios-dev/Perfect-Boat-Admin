@@ -51,24 +51,23 @@ export const BlogsContainer = ({ data, loading, onDeleteBlog }) => {
         </div>
 
         {/* Show loading message while loading */}
-        {/* {loading && <div>Loading...</div>} */}
+        {loading && <div>Loading...</div>}
 
         {/* Show message if no blogs available */}
-        {/* {data?.length === 0 && !loading && (
+        {data?.length === 0 && !loading && (
           <div className="text-gray-500">No blogs available.</div>
-        )} */}
+        )}
 
         <div className="w-full h-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          <BlogsCard />
+          {/* <BlogsCard /> */}
           {/* Map through the data array and pass individual blog objects to BlogsCard */}
-          {/* {data?.map((blog,index) => (
-              <BlogsCard 
-                key={index} 
-                blog={blog} 
-                setDeleteModalOpen={() => openDeleteModal(blog._id)} // Pass function to open modal with blog ID
-              />
-            )
-          )} */}
+          {data?.map((blog, index) => (
+            <BlogsCard
+              key={index}
+              blog={blog}
+              setDeleteModalOpen={() => openDeleteModal(blog._id)} // Pass function to open modal with blog ID
+            />
+          ))}
         </div>
 
         {/* Render DeleteBlog modal with onConfirm to handle deletion */}

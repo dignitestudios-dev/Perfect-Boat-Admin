@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { HiOutlineNewspaper } from "react-icons/hi2";
 
 const PublishModal = ({ isOpen, setIsOpen }) => {
-  // const { navigate } = useContext(GlobalContext);
+  const { navigate } = useContext(GlobalContext);
   const modalRef = useRef();
 
   const closeModal = () => {
@@ -46,7 +46,8 @@ const PublishModal = ({ isOpen, setIsOpen }) => {
         <div className="w-auto flex flex-col justify-center items-center gap-3">
           <div className="w-full h-auto flex flex-col justify-center items-center gap-1">
             <span className="text-[16px] leading-[21.6px] text-white font-normal text-center">
-            Smooth sailing! Your changes have been successfully updated. Your refreshed blog is now ready to continue its voyage. Happy Writing.
+              Smooth sailing! Your changes have been successfully updated. Your
+              refreshed blog is now ready to continue its voyage. Happy Writing.
             </span>
           </div>
         </div>

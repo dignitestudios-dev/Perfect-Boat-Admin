@@ -28,6 +28,12 @@ const Home = () => {
     }));
   };
 
+<<<<<<< HEAD
+  const [dashboardData, setDashboardData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+=======
+>>>>>>> 0759a3cbab3fa14837a137014db5bef13ba18b2d
   const getDashboardData = async () => {
     try {
       setLoading(true);

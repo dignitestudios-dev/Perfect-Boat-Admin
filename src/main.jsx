@@ -6,14 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { GlobalContextProvider } from "./contexts/GlobalContext.jsx";
 import { Toaster } from "react-hot-toast";
+import { BlogContextProvider } from "./contexts/BlogContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <GlobalContextProvider>
         <AuthProvider>
-          <Toaster />
-          <App />
+          <BlogContextProvider>
+            <Toaster />
+            <App />
+          </BlogContextProvider>
         </AuthProvider>
       </GlobalContextProvider>
     </BrowserRouter>
