@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SearchInput from "../inputs/SearchInput";
 
 const OwnerUserlist = () => {
+  const location = useLocation();
+  const ownerDetail = location?.state || {};
+
   const [tab, setTabs] = useState("1");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[944px] overflow-y-auto  scrollbar-thin ">
@@ -38,7 +41,6 @@ const OwnerUserlist = () => {
         </div>
         {tab === "1" && (
           <div className="grid gap-4">
-          
             <div className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-4 text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
               <div>Name</div>
               <div>Job Title</div>
@@ -47,24 +49,33 @@ const OwnerUserlist = () => {
               <div>Phone Number</div>
               <div>Onboarding Date</div>
             </div>
-
-          
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(
-              (item, index, array) => (
+            {ownerDetail?.user?.manager?.length === 0 ? (
+              <div className="text-center font-bold h-screen items-center flex justify-center text-[20px]">
+                Data Not Found
+              </div>
+            ) : (
+              ownerDetail?.user?.manager?.map((item, index, array) => (
                 <div
                   key={index}
                   className={`grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white ${
                     index === array.length - 1 ? "rounded-b-lg" : ""
                   }`}
                 >
-                  <div className="font-medium">Employee ABC</div>
-                  <div>Dock manager</div>
-                  <div>East California Dock</div>
-                  <div>ethanliam@gmail.com</div>
-                  <div>+1 000 000 0000</div>
-                  <div>12/12/2024</div>
+                  <div className="font-medium">{item?.name}</div>
+                  <div>{item?.jobtitle}</div>
+                  <div>{item?.location}</div>
+                  <div>{item?.email}</div>
+                  <div>{item?.phoneNumber || "Not Found"}</div>
+                  <div>
+                    {" "}
+                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
                 </div>
-              )
+              ))
             )}
           </div>
         )}
@@ -78,29 +89,41 @@ const OwnerUserlist = () => {
               <div>Phone Number</div>
               <div>Onboarding Date</div>
             </div>
-            {[1, 2, 3, 4, 5, 6].map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-              >
-                <div className="font-medium">Employee ABC</div>
-                <div className="">Dock manager</div>
-                <div className="">East California Dock</div>
-                <div className="">ethanliam@gmail.com</div>
-                <div className="">+1 000 000 0000</div>
-                <div className="">12/12/2024</div>
+            {ownerDetail?.user?.employee?.length === 0 ? (
+              <div className="text-center font-bold h-screen items-center flex justify-center text-[20px]">
+                Data Not Found
               </div>
-            ))}
+            ) : (
+              ownerDetail?.user?.employee?.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                >
+                  <div className="font-medium">{item?.name}</div>
+                  <div className="">{item?.jobtitle}</div>
+                  <div className="">{item?.location}</div>
+                  <div className="">{item?.email}</div>
+                  <div className="">{item?.phoneNumber}</div>
+                  <div className="">
+                    {" "}
+                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
-   
-        <div className="flex justify-end mt-4" onClick={()=>navigate(-1)}>
-          <button className="bg-[#199BD1] w-[235px] h-[54px] rounded-[8px] text-white">
-            Back
-          </button>
-        </div>
-   
+
+      <div className="flex justify-end mt-4" onClick={() => navigate(-1)}>
+        <button className="bg-[#199BD1] w-[235px] h-[54px] rounded-[8px] text-white">
+          Back
+        </button>
+      </div>
     </div>
   );
 };

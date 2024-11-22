@@ -47,7 +47,7 @@ const OwnerTable = () => {
             <div className="text-end">Actions</div>
           </div>
           {loading ? (
-            <div >
+            <div>
               <Skeleton />
             </div>
           ) : ownerData?.length === 0 ? (
@@ -68,8 +68,8 @@ const OwnerTable = () => {
                   })}
                 </div>
                 <Link
-                  to={`/detailowner`}
-                  className="underline text-end text-white hover:text-white"
+                  to={`/detailowner/${item?._id}`}
+                  className="underline text-white hover:text-white text-end"
                 >
                   View Details
                 </Link>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import DateModal from "../global/DateModal";
 import { Calender } from "../../assets/export";
 
@@ -7,7 +7,23 @@ const SubscriptionList = () => {
   const [tab, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
   const [date, setDate] = useState(new Date());
-  const navigate  =useNavigate()
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const ownerDetail = location?.state || {};
+  const totalPriceowner = ownerDetail?.subscription?.owner?.reduce(
+    (sum, user) => {
+      return sum + (user?.price || 0);
+    },
+    0
+  );
+  const totalPriceuser = ownerDetail?.subscription?.user?.reduce(
+    (sum, user) => {
+      return sum + (user?.price || 0);
+    },
+    0
+  );
+
   return (
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[944px] overflow-y-auto  scrollbar-thin ">
@@ -17,7 +33,12 @@ const SubscriptionList = () => {
             <h5 className="text-[13px] text-[#199BD1] font-[500] content-end">
               Total Revenue
             </h5>
-            <h3 className="text-[24px] font-[500]">$1,225.66</h3>
+            {tab === "1" && (
+              <h3 className="text-[24px] font-[500]">{totalPriceowner}</h3>
+            )}
+            {tab === "2" && (
+              <h3 className="text-[24px] font-[500]">{totalPriceuser}</h3>
+            )}
           </div>
         </div>
 
@@ -46,9 +67,14 @@ const SubscriptionList = () => {
           </div>
           {tab === "2" && (
             <div>
-              <button className="flex items-center justify-center rounded-[100px] gap-2 bg-[#199BD126] h-[27px] w-[99px] " onClick={() => setCalenderOpen(true)}>
-                <img className="w-[12px] h-[13.33px]" src={Calender} alt="" /> 
-                <span className="text-[12px] font-[500] text-[#199BD1] ">Select</span>
+              <button
+                className="flex items-center justify-center rounded-[100px] gap-2 bg-[#199BD126] h-[27px] w-[99px] "
+                onClick={() => setCalenderOpen(true)}
+              >
+                <img className="w-[12px] h-[13.33px]" src={Calender} alt="" />
+                <span className="text-[12px] font-[500] text-[#199BD1] ">
+                  Select
+                </span>
               </button>
               <DateModal
                 isOpen={calendarOpen}
@@ -65,16 +91,33 @@ const SubscriptionList = () => {
               <div className="text-center">License Fee</div>
               <div className="text-end">Renewal Date</div>
             </div>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-3 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-              >
-                <div className="font-medium">Jan 1, 2023</div>
-                <div className="text-center">$300</div>
-                <div className="text-end">Jan 1, 2025</div>
-              </div>
-            ))}
+            {ownerDetail?.subscription?.owner?.length === 0 ? (
+              <div className="text-center h-10 font-bold">Data Not Found</div>
+            ) : (
+              ownerDetail?.subscription?.owner?.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-3 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                >
+                  <div className="font-medium">
+                    {" "}
+                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
+                  <div className="text-center">{item?.price}</div>
+                  <div className="text-end">
+                    {new Date(item?.updatedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
         {tab === "2" && (
@@ -85,27 +128,39 @@ const SubscriptionList = () => {
               <div className="text-center">Per User Cost</div>
               <div className="text-end">Total Cost of Users</div>
             </div>
-            {[1, 2, 3, 4, 5, 6].map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-4 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-              >
-                <div className="font-medium">Sep 3, 2024</div>
-                <div className="">122</div>
-                <div className="text-center">$10</div>
-                <div className="text-end">$1,220</div>
-              </div>
-            ))}
+            {ownerDetail?.subscription?.user?.length === 0 ? (
+              <div className="text-center h-10 font-bold">Data Not Found</div>
+            ) : (
+              ownerDetail?.subscription?.user?.map((item, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-4 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                >
+                  <div className="font-medium">
+                    {" "}
+                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })}
+                  </div>
+                  <div className="">{item?.totalluser || "Not Found"}</div>
+                  <div className="text-center">
+                    {item?.perUserCost || "Not Found"}
+                  </div>
+                  <div className="text-end">{item?.price || "Not Found"}</div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
-    
-        <div className="flex justify-end mt-4" onClick={()=>navigate(-1)}>
-          <button className="bg-[#199BD1] w-[235px] h-[54px] rounded-[8px] text-white">
-            Back
-          </button>
-        </div>
-      
+
+      <div className="flex justify-end mt-4" onClick={() => navigate(-1)}>
+        <button className="bg-[#199BD1] w-[235px] h-[54px] rounded-[8px] text-white">
+          Back
+        </button>
+      </div>
     </div>
   );
 };

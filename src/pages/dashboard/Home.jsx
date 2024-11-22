@@ -10,7 +10,6 @@ import axios from "../../axios";
 
 const Home = () => {
   const [cardData, setCardData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const cardDataTemplate = [
     { icon: UserIcon, key: "owner", label: "Managers" },
@@ -28,12 +27,9 @@ const Home = () => {
     }));
   };
 
-<<<<<<< HEAD
   const [dashboardData, setDashboardData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-=======
->>>>>>> 0759a3cbab3fa14837a137014db5bef13ba18b2d
   const getDashboardData = async () => {
     try {
       setLoading(true);
@@ -56,6 +52,18 @@ const Home = () => {
   useEffect(() => {
     getDashboardData();
   }, []);
+  const [timerange, setTimerange] = useState("Yearly");
+  const [customertimerange, setCustomertimerange] = useState("Yearly");
+
+ 
+  const handleSaleTimePeriodChange = (value) => {
+    setTimerange(value);
+    console.log("Selected Time Range:", value);
+  };
+  const handleCustomerTimePeriodChange = (value) => {
+    setCustomertimerange(value);
+    console.log("Selected Time customertimerange:", value);
+  };
 
   return (
     <>
@@ -99,7 +107,12 @@ const Home = () => {
             <h4 className="text-[14px] text-white font-[700] leading-[18.9px]">
               Sales Overview
             </h4>
-            <Dropdown label="Yearly" items={["Weekly", "Monthly", "Yearly"]} />
+            <Dropdown
+              label="Yearly"
+              items={["Weekly", "Monthly", "Yearly"]}
+              handleTimePeriod={(value) => handleSaleTimePeriodChange(value)}
+              selectedValue={timerange}
+            />
           </div>
           <div className="flex gap-3">
             <div className="h-[15px] w-[15px] bg-[#FB7B2C] rounded"></div>
@@ -107,7 +120,7 @@ const Home = () => {
             <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
             <span className="text-[12px]">Single Users</span>
           </div>
-          <LineChartDash />
+          <LineChartDash timerange={timerange}/>
         </div>
         <div className="card bg-[#001229] p-5 rounded-[24px] col-span-2 w-full h-auto">
           <div className="flex items-center pb-5 justify-between">
@@ -118,6 +131,8 @@ const Home = () => {
               <Dropdown
                 label="Yearly"
                 items={["Weekly", "Monthly", "Yearly"]}
+                handleTimePeriod={(value) => handleCustomerTimePeriodChange(value)}
+                selectedValue={customertimerange}
               />
             </div>
           </div>
@@ -127,7 +142,7 @@ const Home = () => {
             <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
             <span className="text-[12px]">Single Users</span>
           </div>
-          <MultiBarChart />
+          <MultiBarChart customertimerange={customertimerange} />
         </div>
       </div>
       <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-3">

@@ -34,7 +34,7 @@ const SingleUserTable = () => {
       <div className="card bg-[#001229] p-5 col-span-3 rounded-[20px]">
         <div className="flex justify-between">
           <h3 className="text-[14px]">
-            Single Users <span className="text-[#FFFFFF80]">(120)</span>
+            Single Users <span className="text-[#FFFFFF80]">(20)</span>
           </h3>
 
           <Link
@@ -66,7 +66,6 @@ const SingleUserTable = () => {
                 <div className="font-medium">{item?.name}</div>
                 <div className="text-center">{item?.totalUser}</div>
                 <div className="text-center">
-                  {" "}
                   {new Date(item?.createdAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "2-digit",
@@ -74,9 +73,8 @@ const SingleUserTable = () => {
                   })}
                 </div>
                 <Link
-                  to={"/detailuser"}
-                  className="text-end underline  text-white hover:text-white "
-                  
+                  to={`/detailuser/${item?._id}`}
+                  className="underline text-white hover:text-white text-end"
                 >
                   View Details
                 </Link>

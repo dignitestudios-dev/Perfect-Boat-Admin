@@ -8,9 +8,10 @@ import {
   PointElement, // Import PointElement
   Tooltip,
 } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-
+import axios from "../../axios";
+import Skeleton from "../global/Skeleton";
 Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip); // Register PointElement
 
 const options = {
@@ -20,6 +21,7 @@ const options = {
       position: "top",
       display: false,
     },
+   
     tooltip: {
       callbacks: {
         label: function (context) {
@@ -44,46 +46,76 @@ const options = {
       border: {
         display: false,
       },
-      
     },
   },
 };
 
-const monthsArray = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "June",
-  "July",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
 
-const LineChartDash = () => {
-  const data = {
-    labels: monthsArray,
+const LineChartDash = ({ timerange }) => {
+  const [loading, setLoading] = useState(false);
+  const [chartData, setChartData] = useState({
+    labels: [],
     datasets: [
       {
         label: "Owners",
-        data: [38, 35, 56,45,6,7,8,9,10,100],
+        data: [],
         borderColor: "#FD8D49",
+        tension: 0.3,
       },
       {
         label: "Single Users",
-        data: [3, 25, 46,35,65,75,85,95,90,10],
+        data: [],
         borderColor: "#199BD1",
+        tension: 0.3,
       },
     ],
+  });
+
+  const getOwnerTableData = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.get("/admin/dashboard/graph/sales");
+
+      let graphData = [];
+      let labels = [];
+      console.log("graphData", graphData);
+      if (timerange === "Yearly") {
+        graphData = data?.data?.yearly || [];
+        labels = graphData.map((item) => item?.month || "Unknown Month");
+      } else if (timerange === "Monthly") {
+        graphData = data?.data?.monthly || [];
+        labels = graphData.map((item) => item?.day || "Unknown day");
+      } else if (timerange === "Weekly") {
+        graphData = data?.data?.weekly || [];
+        labels = graphData.map((item) => item?.dayOfWeek || "Unknown Day");
+      }
+
+      const ownerData = graphData.map((item) => item?.owner?.count || 0);
+      const singleUserData = graphData.map((item) => item?.user?.count || 0);
+      setChartData((prevState) => ({
+        ...prevState,
+        labels: labels,
+        datasets: [
+          { ...prevState.datasets[0], data: ownerData },
+          { ...prevState.datasets[1], data: singleUserData },
+        ],
+      }));
+    } catch (error) {
+      console.error("Error fetching owner data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    getOwnerTableData();
+  }, [timerange]);
+
 
   return (
     <div className="mt-12 w-full">
-      <Line data={data} options={options} maintainAspectRatio={false}  />
+      {loading ? <Skeleton /> : <Line data={chartData} options={options} />}
     </div>
   );
 };

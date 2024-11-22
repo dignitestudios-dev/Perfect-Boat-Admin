@@ -1,16 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
 import TextFields from "../../components/onboarding/TextFields";
 import Checkbox from "../../components/onboarding/Checkbox";
 import DateTime from "../../components/global/DateTime";
 import SendNotification from "../../components/Modal/SendNotification";
-import { useNavigate } from "react-router-dom";
+import axios from '../../axios'
 
 const PushNotification = () => {
   const [tabs, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
   const [date, setDate] = useState(new Date());
   const [isModalOpen, setModalOpen] = useState(false);
+  const [notificationData, setNotificationData] = useState([]);
+
+
+
+  const getNotificationData = async () => {
+    try {
+      setLoading(true);
+      const  data  = await axios.get("/admin/notification");
+    
+
+
+      setNotificationData(data?.data);
+      console.log(notificationData,"notificationDatanotificationData")
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getNotificationData();
+  }, []);
+
+
   return (
     <>
       {tabs === "1" && (

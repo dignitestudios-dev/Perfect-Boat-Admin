@@ -6,9 +6,10 @@ import {
   LinearScale,
   Tooltip,
 } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-
+import axios from "../../axios";
+import Skeleton from "../global/Skeleton";
 Chart.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const options = {
@@ -52,37 +53,87 @@ const options = {
   },
 };
 
-const daysArray = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const MultiBarChart = ({ customertimerange }) => {
+  const [loading, setLoading] = useState(false);
 
-const MultiBarChart = () => {
-  const data = {
-    labels: daysArray,
+  const [chartData, setChartData] = useState({
+    labels: [],
     datasets: [
       {
-        label: "",
-        data: [38, 35, 32, 40, 25, 30, 50],
+        label: "Owners",
+        data: [],
         backgroundColor: "#199BD1",
         borderRadius: { topLeft: 10, topRight: 10 },
         borderSkipped: "bottom",
       },
       {
-        label: "",
-        data: [50, 55, 60, 20, 18, 25, 20],
+        label: "Single Users",
+        data: [],
         backgroundColor: "#FD8D49",
         borderRadius: { topLeft: 10, topRight: 10 },
         borderSkipped: "bottom",
       },
     ],
+  });
+  const getGraphData = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get("/admin/dashboard/graph/customer");
+
+      let graphData = [];
+      let labels = [];
+
+      console.log("Full API Response: ", data);
+
+      if (customertimerange === "Yearly") {
+        graphData = data?.data?.yearly || [];
+        labels = graphData?.map((item) => item?.month || "Unknown Month");
+      } else if (customertimerange === "Monthly") {
+        graphData = data?.data?.monthly || [];
+        labels = graphData?.map((item) => item?.day || "Unknown day");
+      } else if (customertimerange === "Weekly") {
+        graphData = data?.data?.weekly || [];
+        labels = graphData?.map((item) => item?.dayOfWeek || "Unknown Day");
+      }
+
+      console.log("Graph Data: ", graphData);
+
+      const ownerData = graphData.map((item) => item?.owner?.count || 0);
+      const singleUserData = graphData.map(
+        (item) => item?.singleUser?.count || 0
+      );
+
+      console.log("Owner Data: ", ownerData);
+      console.log("Single User Data: ", singleUserData);
+
+      setChartData((prevState) => ({
+        ...prevState,
+        labels: labels,
+        datasets: [
+          { ...prevState.datasets[0], data: ownerData },
+          { ...prevState.datasets[1], data: singleUserData },
+        ],
+      }));
+    } catch (error) {
+      console.error("Error fetching customer data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  useEffect(() => {
+    getGraphData();
+  }, [customertimerange]);
 
   return (
     <div className="mt-12">
-      <Bar
-        data={data}
-        options={options}
-        maintainAspectRatio={false}
-        style={{width: "100%" }}
-      />
+      {loading ? (
+        <div>
+          <Skeleton />
+        </div>
+      ) : (
+        <Bar data={chartData} options={options} style={{ width: "100%" }} />
+      )}
     </div>
   );
 };
