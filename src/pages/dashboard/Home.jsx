@@ -67,19 +67,18 @@ const Home = () => {
                 key={index}
                 className="card bg-[#001229] p-2 rounded-[24px] w-[214px]"
               >
-                
                 <div className="flex gap-3 items-center">
                   <div className="bg-[#1A293D] p-5 rounded-[18px]">
                     <img
-                      src={card.icon}
+                      src={card?.icon}
                       className="w-[41px] h-[41px]"
                       alt={`${card.label} icon`}
                     />
                   </div>
                   <div>
-                    <h3 className="text-[18px] font-[700]">{card.number}</h3>
+                    <h3 className="text-[18px] font-[700]">{card?.number}</h3>
                     <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
-                      {card.label}
+                      {card?.label}
                     </h3>
                   </div>
                 </div>
@@ -94,10 +93,7 @@ const Home = () => {
             <h4 className="text-[14px] text-white font-[700] leading-[18.9px]">
               Sales Overview
             </h4>
-            <Dropdown
-              label="Yearly"
-              items={["Weekly", "Monthly", "Yearly", "Custom"]}
-            />
+            <Dropdown label="Yearly" items={["Weekly", "Monthly", "Yearly"]} />
           </div>
           <div className="flex gap-3">
             <div className="h-[15px] w-[15px] bg-[#FB7B2C] rounded"></div>
@@ -113,21 +109,10 @@ const Home = () => {
               Customer Overview
             </h4>
             <div className="relative bg-[#042742] w-[70px] h-[27px] rounded-[20px] flex items-center justify-center">
-              <button
-                onClick={() => toggleDropdown("dropdown2")}
-                className="flex items-center gap-1 text-[#199BD1] text-[11px] font-[500]"
-              >
-                Weekly <IoMdArrowDropdown />
-              </button>
-
-              {dropdownStates["dropdown2"] && (
-                <div className="absolute left-0 top-5 mt-2 w-[70px] rounded-md shadow-lg p-2 z-10 bg-[#1A293D]">
-                  <p className="text-white text-[11px] mt-2">Weekly</p>
-                  <p className="text-white text-[11px] mt-2">Monthly</p>
-                  <p className="text-white text-[11px] mt-2">Yearly</p>
-                  <p className="text-white text-[11px] mt-2">Custom</p>
-                </div>
-              )}
+              <Dropdown
+                label="Yearly"
+                items={["Weekly", "Monthly", "Yearly"]}
+              />
             </div>
           </div>
           <div className="flex gap-3">

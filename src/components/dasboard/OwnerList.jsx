@@ -26,6 +26,7 @@ const OwnerList = () => {
       );
 
       setOwnerData(data?.data?.data);
+      console.log(ownerData,"Ownerrr")
     } catch (error) {
       console.error("Error fetching owner data:", error);
     } finally {
@@ -81,7 +82,7 @@ const OwnerList = () => {
               <div className="text-end">Actions</div>
             </div>
             {loading ? (
-              <div >
+              <div>
                 <Skeleton />
               </div>
             ) : (
@@ -90,6 +91,7 @@ const OwnerList = () => {
                   key={index}
                   className="grid grid-cols-[1fr_1fr_2fr_1.5fr_1.5fr_1fr_0.5fr]  gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white"
                 >
+                  {console.log(item?.id,"Itemidd")}
                   <div className="font-medium">{item?.name}</div>
                   <div>{item?.totalUser}</div>
                   <div>{item?.email}</div>
@@ -113,7 +115,7 @@ const OwnerList = () => {
                     </button>
                   )}
                   <Link
-                    to={"/detailowner"}
+                    to={`/detailowner/${item?.id}`}
                     className="underline text-white hover:text-white text-end"
                   >
                     View Details
