@@ -4,6 +4,7 @@ import TextFields from "../../components/onboarding/TextFields";
 import Checkbox from "../../components/onboarding/Checkbox";
 import DateTime from "../../components/global/DateTime";
 import SendNotification from "../../components/Modal/SendNotification";
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import moment from "moment";
@@ -26,15 +27,46 @@ const PushNotification = () => {
       }
     } catch (error) {
       console.log("🚀 ~ getTasks ~ error:", error);
+=======
+import axios from '../../axios'
+
+const PushNotification = () => {
+  const [tabs, setTabs] = useState("1");
+  const [calendarOpen, setCalenderOpen] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [notificationData, setNotificationData] = useState([]);
+
+
+
+  const getNotificationData = async () => {
+    try {
+      setLoading(true);
+      const  data  = await axios.get("/admin/notification");
+    
+
+
+      setNotificationData(data?.data);
+      console.log(notificationData,"notificationDatanotificationData")
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+>>>>>>> 616e50ce280b4c5612562454fd1a2ca6363d639a
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+<<<<<<< HEAD
     getPushNotifications();
   }, []);
 
+=======
+    getNotificationData();
+  }, []);
+
+
+>>>>>>> 616e50ce280b4c5612562454fd1a2ca6363d639a
   return (
     <div className="bg-[#001229] rounded-[18px] p-4 h-[964px] overflow-y-auto  scrollbar-thin">
       <div className="flex justify-between">

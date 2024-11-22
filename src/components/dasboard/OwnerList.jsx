@@ -5,9 +5,17 @@ import OwnerCard from "./OwnerCard";
 import { FiSearch } from "react-icons/fi";
 import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
-
+import Pagination from "../../components/paginations/Pagination";
 const OwnerList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [loading, setLoading] = useState(false);
+  const [ownerData, setOwnerData] = useState([]);
+  const [pageDetails, setPageDetails] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  console.log(pageDetails, "pageDetails");
   const navigate = useNavigate();
   const toggleDropdown = (id) => {
     setDropdownStates((prevState) => ({
@@ -15,17 +23,22 @@ const OwnerList = () => {
       [id]: !prevState[id],
     }));
   };
-  const [loading, setLoading] = useState(false);
-  const [ownerData, setOwnerData] = useState([]);
+  const filteredUsers = ownerData?.filter((user) => {
+    if (filterStatus === "active") return user.isSubscribed === true;
+    if (filterStatus === "inactive") return user.isSubscribed === false;
+    return true;
+  });
 
   const getOwnerTableData = async () => {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        "/admin/customer?isSingleUser=false&page=1&pageSize=12"
+        `/admin/customer?isSingleUser=false&page=${currentPage}&pageSize=12`
       );
 
       setOwnerData(data?.data?.data);
+      setPageDetails(data?.data?.paginationDetails || []);
+      setTotalPages(data?.data?.paginationDetails?.totalPages);
     } catch (error) {
       console.error("Error fetching owner data:", error);
     } finally {
@@ -35,7 +48,7 @@ const OwnerList = () => {
 
   useEffect(() => {
     getOwnerTableData();
-  }, []);
+  }, [currentPage]);
   return (
     <>
       <div className="p-5 bg-[#001229] rounded-[20px] h-[944px] overflow-y-auto  scrollbar-thin">
@@ -55,7 +68,6 @@ const OwnerList = () => {
               </div>
             </div>
           </div>
-
           <div className="grid gap-4">
             <div className="grid grid-cols-[1fr_1fr_2fr_1.5fr_1.5fr_1fr_0.5fr]  gap-4 p-4 text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
               <div>Owner Name</div>
@@ -63,17 +75,33 @@ const OwnerList = () => {
               <div>Email</div>
               <div>Phone Number</div>
               <div>Onboarding Date</div>
-              <div>
+              <div className="text-center  relative">
                 <button
                   onClick={() => toggleDropdown("dropdown1")}
-                  className="flex items-center gap-1 text-[#FFFFFF80] text-[11px] font-[500]"
+                  className="flex items-center justify-center gap-1 text-[#FFFFFF80] text-[11px] font-[500]"
                 >
                   Subscription <IoMdArrowDropdown size={20} color="#FFFFFF80" />
                 </button>
                 {dropdownStates["dropdown1"] && (
-                  <div className="absolute w-[75px] mt-2 rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]">
-                    <p className="text-white text-[11px] mt-2">Active</p>
-                    <p className="text-white text-[11px] mt-2">Inactive</p>
+                  <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-[75px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]">
+                    <p
+                      onClick={() => setFilterStatus("all")}
+                      className="text-white text-[11px] mt-2 cursor-pointer "
+                    >
+                      All
+                    </p>
+                    <p
+                      onClick={() => setFilterStatus("active")}
+                      className="text-white text-[11px] mt-2 cursor-pointer "
+                    >
+                      Active
+                    </p>
+                    <p
+                      onClick={() => setFilterStatus("inactive")}
+                      className="text-white text-[11px] mt-2 cursor-pointer "
+                    >
+                      Inactive
+                    </p>
                   </div>
                 )}
               </div>
@@ -81,15 +109,16 @@ const OwnerList = () => {
               <div className="text-end">Actions</div>
             </div>
             {loading ? (
-              <div >
+              <div>
                 <Skeleton />
               </div>
             ) : (
-              ownerData?.map((item, index) => (
+              filteredUsers?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[1fr_1fr_2fr_1.5fr_1.5fr_1fr_0.5fr]  gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white"
                 >
+                  {console.log(item?.id, "Itemidd")}
                   <div className="font-medium">{item?.name}</div>
                   <div>{item?.totalUser}</div>
                   <div>{item?.email}</div>
@@ -113,7 +142,7 @@ const OwnerList = () => {
                     </button>
                   )}
                   <Link
-                    to={"/detailowner"}
+                    to={`/detailowner/${item?._id}`}
                     className="underline text-white hover:text-white text-end"
                   >
                     View Details
@@ -124,6 +153,12 @@ const OwnerList = () => {
           </div>
         </div>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+        setTotalPages={setTotalPages}
+      />
 
       <div className="flex justify-end mt-4" onClick={() => navigate(-1)}>
         <button className="bg-[#199BD1] w-[235px] h-[54px] rounded-[8px] text-white">

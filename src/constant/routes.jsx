@@ -59,7 +59,7 @@ export const routes = [
   },
   {
     title: "DetailOwner",
-    url: "/detailowner",
+    url: "/detailowner/:id",
     page: <AppLayout page={<DetailOwner />} />,
   },
   {
@@ -74,7 +74,7 @@ export const routes = [
   },
   {
     title: "DetailUser",
-    url: "/detailuser",
+    url: "/detailuser/:id",
     page: <AppLayout page={<DetailUser />} />,
   },
   {
@@ -104,7 +104,7 @@ export const routes = [
   },
   {
     title: "DeleteOwnerDetail",
-    url: "/deleteownerdetail",
+    url: "/deleteownerdetail/:id",
     page: <AppLayout page={<DeleteOwnerDetail />} />,
   },
   {

@@ -8,16 +8,20 @@ import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
 const SingleUserList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
-
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [loading, setLoading] = useState(false);
+  const [singleUserData, setSingleUserData] = useState([]);
   const toggleDropdown = (id) => {
     setDropdownStates((prevState) => ({
       ...prevState,
       [id]: !prevState[id],
     }));
   };
-
-  const [loading, setLoading] = useState(false);
-  const [singleUserData, setSingleUserData] = useState([]);
+  const filteredUsers = singleUserData?.filter((user) => {
+    if (filterStatus === "active") return user.isSubscribed === true;
+    if (filterStatus === "inactive") return user.isSubscribed === false;
+    return true;
+  });
 
   const getSingleUserTableData = async () => {
     try {
@@ -76,8 +80,24 @@ const SingleUserList = () => {
                 </button>
                 {dropdownStates["dropdown1"] && (
                   <div className="absolute top-8 left-1/2 transform -translate-x-1/2 w-[75px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]">
-                    <p className="text-white text-[11px] mt-2">Active</p>
-                    <p className="text-white text-[11px] mt-2">Inactive</p>
+                    <p
+                      onClick={() => setFilterStatus("all")}
+                      className="text-white text-[11px] mt-2 cursor-pointer "
+                    >
+                      All
+                    </p>
+                    <p
+                      onClick={() => setFilterStatus("active")}
+                      className="text-white text-[11px] mt-2 cursor-pointer "
+                    >
+                      Active
+                    </p>
+                    <p
+                      onClick={() => setFilterStatus("inactive")}
+                      className="text-white text-[11px] mt-2 cursor-pointer "
+                    >
+                      Inactive
+                    </p>
                   </div>
                 )}
               </div>
@@ -89,7 +109,7 @@ const SingleUserList = () => {
                 <Skeleton />
               </div>
             ) : (
-              singleUserData?.map((item, index) => (
+              filteredUsers?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white bg-[#001229]"
@@ -98,7 +118,6 @@ const SingleUserList = () => {
                   <div className="text-left">{item?.email}</div>
                   <div className="text-center">{item?.phoneNumber}</div>
                   <div className="text-center">
-                    {" "}
                     {new Date(item?.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "2-digit",
@@ -113,14 +132,14 @@ const SingleUserList = () => {
                     )}
                     {item?.isSubscribed === false && (
                       <button className="bg-[#9A9A9A] w-[59px] h-[23px] rounded-full text-white text-[11px]">
-                        inactive
+                        Inactive
                       </button>
                     )}
                   </div>
                   <div className="text-right">
                     <Link
-                      to={"/detailuser"}
-                      className="underline text-white hover:text-white"
+                      to={`/detailuser/${item?._id}`}
+                      className="underline text-white hover:text-white text-end"
                     >
                       View Details
                     </Link>

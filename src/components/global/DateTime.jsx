@@ -118,7 +118,7 @@ const DateTime = ({
               </div>
               <div className="flex gap-1 w-[50px] overflow-auto">
                 <div className="flex flex-col gap-2  h-[400px]">
-                  {minutes.map((minute) => (
+                  {minutes?.map((minute) => (
                     <div
                       key={minute}
                       className={`flex justify-center w-10 h-10 rounded border ${

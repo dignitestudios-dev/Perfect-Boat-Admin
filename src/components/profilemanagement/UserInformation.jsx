@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import axios from "../../axios";
 import RemoveSingleUser from "../Modal/RemoveSingleUser";
 import RemoveOwner from "../Modal/RemoveOwner";
+import Skeleton from "../global/Skeleton";
 
 const UserInformation = () => {
   const [tabs, setTabs] = useState("1");
@@ -14,6 +15,8 @@ const UserInformation = () => {
   const [ownerOpen, setOwnerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [settingOwnerdata, setSettingOwnerdata] = useState([]);
+  const [filterStatus, setFilterStatus] = useState("");
+
   const toggleDropdown = (id) => {
     setDropdownStates((prevState) => ({
       ...prevState,
@@ -21,6 +24,13 @@ const UserInformation = () => {
     }));
   };
 
+  const filteredUsers = settingOwnerdata?.filter((user) => {
+    if (filterStatus === "active") return user.subscriptionStatus === "paid";
+    if (filterStatus === "inactive") return user.subscriptionStatus === null;
+    if (filterStatus === "pending")
+      return user.subscriptionStatus === "pending";
+    return true; 
+  });
 
   const getsettingsData = async () => {
     try {
@@ -114,11 +124,19 @@ const UserInformation = () => {
                         </button>
                         {dropdownStates["headerDropdown"] && (
                           <div className="absolute top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
-                            {["Active", "Inactive", "Pending"].map(
+                            {["Active", "Inactive", "Pending", "All"].map(
                               (status, idx) => (
                                 <p
                                   key={idx}
-                                  className="text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md"
+                                  onClick={() => {
+                                    setFilterStatus(status.toLowerCase());
+                                    toggleDropdown("headerDropdown"); // Close dropdown after selection
+                                  }}
+                                  className={`text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md ${
+                                    filterStatus === status.toLowerCase()
+                                      ? "bg-[#199BD1]"
+                                      : ""
+                                  }`}
                                 >
                                   {status}
                                 </p>
@@ -141,10 +159,10 @@ const UserInformation = () => {
                   <div class="h-4 bg-gray-500 mb-6 rounded"></div>
                   <div class="h-4 bg-gray-500 mb-6 rounded"></div>
                 </div>
-              ) : settingOwnerdata?.length === 0 ? (
+              ) : filteredUsers?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
-                settingOwnerdata?.map((item, index) => (
+                filteredUsers?.map((item, index) => (
                   <div
                     key={index}
                     className="grid grid-cols-[1.5fr_1.5fr_1.5fr_1.5fr_1.5fr_1fr_0.5fr] gap-4 p-4 text-white text-[12px] border-b border-[#FFFFFF24] items-center"
@@ -170,19 +188,23 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {item?.isSubscribed === true ? (
+                      {item?.subscriptionStatus === "paid" ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
                           Active
                         </button>
-                      ) : (
+                      ) : item?.subscriptionStatus === null ? (
                         <button className="bg-[#9A9A9A] px-3 py-1 rounded-full text-white text-[11px]">
                           Inactive
                         </button>
-                      )}
+                      ) : item?.subscriptionStatus === "pending" ? (
+                        <button className="bg-[#044C54] px-3 py-1 rounded-full text-white text-[11px]">
+                          Pending
+                        </button>
+                      ) : null}
                     </div>
 
                     <div className="flex items-center justify-center">
-                      <button onClick={()=>setOwnerOpen(true)}>
+                      <button onClick={() => setOwnerOpen(true)}>
                         <img
                           src={Delteicon}
                           className="w-[16px] h-[16px]"
@@ -210,26 +232,32 @@ const UserInformation = () => {
                   <div key={index} className="text-[11px] font-[500]">
                     {item === "Subscription" ? (
                       <div className="relative">
-                        <button
-                          onClick={() => toggleDropdown("headerDropdown")}
-                          className="flex items-center gap-1 text-[11px] font-medium text-[#FFFFFF80]"
-                        >
-                          Subscription <IoMdArrowDropdown size={18} />
-                        </button>
-                        {dropdownStates["headerDropdown"] && (
-                          <div className="absolute top-2 left-0 w-[105px] mt-2 rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
-                            <p className="text-white text-[11px] py-1 cursor-pointer hover:bg-[#199BD1] rounded-md">
-                              Active
+                      <button
+                        onClick={() => toggleDropdown("headerDropdown")}
+                        className="flex items-center gap-1 text-[11px] font-medium text-[#FFFFFF80]"
+                      >
+                        Subscription <IoMdArrowDropdown size={18} />
+                      </button>
+                      {dropdownStates["headerDropdown"] && (
+                        <div className="absolute top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
+                          {["Active", "Inactive", "Pending", "All"].map((status, idx) => (
+                            <p
+                              key={idx}
+                              onClick={() => {
+                                setFilterStatus(status.toLowerCase());
+                                toggleDropdown("headerDropdown"); // Close dropdown after selection
+                              }}
+                              className={`text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md ${
+                                filterStatus === status.toLowerCase() ? "bg-[#199BD1]" : ""
+                              }`}
+                            >
+                              {status}
                             </p>
-                            <p className="text-white text-[11px] py-1 cursor-pointer hover:bg-[#199BD1] rounded-md">
-                              Inactive
-                            </p>
-                            <p className="text-white text-[11px] py-1 cursor-pointer hover:bg-[#199BD1] rounded-md">
-                              Pending
-                            </p>
-                          </div>
-                        )}
-                      </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    
                     ) : (
                       item
                     )}
@@ -237,13 +265,7 @@ const UserInformation = () => {
                 ))}
               </div>
               {loading ? (
-                <div class="animate-pulse">
-                  <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                </div>
+               <Skeleton />
               ) : settingOwnerdata?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
@@ -274,20 +296,24 @@ const UserInformation = () => {
 
                     {/* Subscription Status */}
                     <div className="text-center">
-                      {item?.isSubscribed === true ? (
+                      {item?.subscriptionStatus === "paid" ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
                           Active
                         </button>
-                      ) : (
+                      ) : item?.subscriptionStatus === null ? (
                         <button className="bg-[#9A9A9A] px-3 py-1 rounded-full text-white text-[11px]">
                           Inactive
                         </button>
-                      )}
+                      ) : item?.subscriptionStatus === "pending" ? (
+                        <button className="bg-[#044C54] px-3 py-1 rounded-full text-white text-[11px]">
+                          Pending
+                        </button>
+                      ) : null}
                     </div>
 
                     {/* Actions */}
                     <div className="flex items-center justify-center">
-                      <button onClick={()=>setUserOpen(true)}>
+                      <button onClick={() => setUserOpen(true)}>
                         <img
                           src={Delteicon}
                           className="w-[16px] h-[16px]"
@@ -302,16 +328,9 @@ const UserInformation = () => {
           )}
         </div>
       </div>
-      <RemoveSingleUser
-      isOpen={userOpen}
-      onClose={() => setUserOpen(false)}
-      />
-      
-      <RemoveOwner
-      isOpen={ownerOpen}
-      onClose={() => setOwnerOpen(false)}
-      />
+      <RemoveSingleUser isOpen={userOpen} onClose={() => setUserOpen(false)} />
 
+      <RemoveOwner isOpen={ownerOpen} onClose={() => setOwnerOpen(false)} />
     </div>
   );
 };

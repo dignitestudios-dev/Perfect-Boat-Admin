@@ -10,7 +10,6 @@ import axios from "../../axios";
 
 const Home = () => {
   const [cardData, setCardData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const cardDataTemplate = [
     { icon: UserIcon, key: "owner", label: "Managers" },
@@ -28,6 +27,12 @@ const Home = () => {
     }));
   };
 
+<<<<<<< HEAD
+=======
+  const [dashboardData, setDashboardData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+>>>>>>> 616e50ce280b4c5612562454fd1a2ca6363d639a
   const getDashboardData = async () => {
     try {
       setLoading(true);
@@ -50,6 +55,18 @@ const Home = () => {
   useEffect(() => {
     getDashboardData();
   }, []);
+  const [timerange, setTimerange] = useState("Yearly");
+  const [customertimerange, setCustomertimerange] = useState("Yearly");
+
+ 
+  const handleSaleTimePeriodChange = (value) => {
+    setTimerange(value);
+    console.log("Selected Time Range:", value);
+  };
+  const handleCustomerTimePeriodChange = (value) => {
+    setCustomertimerange(value);
+    console.log("Selected Time customertimerange:", value);
+  };
 
   return (
     <>
@@ -70,15 +87,15 @@ const Home = () => {
                 <div className="flex gap-3 items-center">
                   <div className="bg-[#1A293D] p-5 rounded-[18px]">
                     <img
-                      src={card.icon}
+                      src={card?.icon}
                       className="w-[41px] h-[41px]"
                       alt={`${card.label} icon`}
                     />
                   </div>
                   <div>
-                    <h3 className="text-[18px] font-[700]">{card.number}</h3>
+                    <h3 className="text-[18px] font-[700]">{card?.number}</h3>
                     <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
-                      {card.label}
+                      {card?.label}
                     </h3>
                   </div>
                 </div>
@@ -95,7 +112,9 @@ const Home = () => {
             </h4>
             <Dropdown
               label="Yearly"
-              items={["Weekly", "Monthly", "Yearly", "Custom"]}
+              items={["Weekly", "Monthly", "Yearly"]}
+              handleTimePeriod={(value) => handleSaleTimePeriodChange(value)}
+              selectedValue={timerange}
             />
           </div>
           <div className="flex gap-3">
@@ -104,7 +123,7 @@ const Home = () => {
             <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
             <span className="text-[12px]">Single Users</span>
           </div>
-          <LineChartDash />
+          <LineChartDash timerange={timerange}/>
         </div>
         <div className="card bg-[#001229] p-5 rounded-[24px] col-span-2 w-full h-auto">
           <div className="flex items-center pb-5 justify-between">
@@ -112,21 +131,12 @@ const Home = () => {
               Customer Overview
             </h4>
             <div className="relative bg-[#042742] w-[70px] h-[27px] rounded-[20px] flex items-center justify-center">
-              <button
-                onClick={() => toggleDropdown("dropdown2")}
-                className="flex items-center gap-1 text-[#199BD1] text-[11px] font-[500]"
-              >
-                Weekly <IoMdArrowDropdown />
-              </button>
-
-              {dropdownStates["dropdown2"] && (
-                <div className="absolute left-0 top-5 mt-2 w-[70px] rounded-md shadow-lg p-2 z-10 bg-[#1A293D]">
-                  <p className="text-white text-[11px] mt-2">Weekly</p>
-                  <p className="text-white text-[11px] mt-2">Monthly</p>
-                  <p className="text-white text-[11px] mt-2">Yearly</p>
-                  <p className="text-white text-[11px] mt-2">Custom</p>
-                </div>
-              )}
+              <Dropdown
+                label="Yearly"
+                items={["Weekly", "Monthly", "Yearly"]}
+                handleTimePeriod={(value) => handleCustomerTimePeriodChange(value)}
+                selectedValue={customertimerange}
+              />
             </div>
           </div>
           <div className="flex gap-3">
@@ -135,7 +145,7 @@ const Home = () => {
             <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
             <span className="text-[12px]">Single Users</span>
           </div>
-          <MultiBarChart />
+          <MultiBarChart customertimerange={customertimerange} />
         </div>
       </div>
       <div className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-3">

@@ -91,7 +91,7 @@ const OwnerDelete = () => {
 
             <div>
               <Link
-                to="/deletesingleuser"
+              to={`/deleteownerdetail/${item._id}`}
                 className="underline text-white hover:text-[#FF5733] text-[11px] font-[500]"
               >
                 View Details
