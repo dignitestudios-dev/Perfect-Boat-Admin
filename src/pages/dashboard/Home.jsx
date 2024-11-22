@@ -28,12 +28,6 @@ const Home = () => {
     }));
   };
 
-<<<<<<< HEAD
-  const [dashboardData, setDashboardData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-=======
->>>>>>> 0759a3cbab3fa14837a137014db5bef13ba18b2d
   const getDashboardData = async () => {
     try {
       setLoading(true);
@@ -73,7 +67,6 @@ const Home = () => {
                 key={index}
                 className="card bg-[#001229] p-2 rounded-[24px] w-[214px]"
               >
-                
                 <div className="flex gap-3 items-center">
                   <div className="bg-[#1A293D] p-5 rounded-[18px]">
                     <img

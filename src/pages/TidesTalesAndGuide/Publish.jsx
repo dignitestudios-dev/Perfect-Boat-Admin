@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import PublishModal from "../TidesTalesAndGuide/PublishModal";
 import { BlogContext } from "../../contexts/BlogContext";
@@ -28,6 +28,7 @@ const Publish = () => {
     setDueDate,
     dueDate,
   } = useContext(BlogContext);
+  const { state } = useLocation();
 
   const [loading, setLoading] = useState(false);
 
@@ -63,24 +64,41 @@ const Publish = () => {
       if (imageText) {
         formdata.append("imageTitle", imageText);
       }
-      if (dueDate) {
+      if (dueDate?.unix) {
         formdata.append("scheduleDate", dueDate?.unix);
       }
       formdata.append("story", createHtmlTemplate(story, title, subTitle));
       formdata.append("viewer", viewers);
-      const response = await axios.post(`/admin/blog`, formdata);
-      if (response.status === 200) {
-        // Update the blogsData to remove the deleted blog
-        SuccessToast("Blog created successfully");
-        setIsModalOpen(true);
-        setCoverFile(null);
-        setCoverUrl(null);
-        setTitle("");
-        setStory("");
-        setSubTitle("");
-        setImageText("");
-        setViewers("");
-        setLoading(false);
+      if (state?.id) {
+        const response = await axios.put(`/admin/blog/${state?.id}`, formdata);
+        if (response.status === 200) {
+          // Update the blogsData to remove the deleted blog
+          SuccessToast("Blog created successfully");
+          setIsModalOpen(true);
+          setCoverFile(null);
+          setCoverUrl(null);
+          setTitle("");
+          setStory("");
+          setSubTitle("");
+          setImageText("");
+          setViewers("");
+          setLoading(false);
+        }
+      } else {
+        const response = await axios.post(`/admin/blog`, formdata);
+        if (response.status === 200) {
+          // Update the blogsData to remove the deleted blog
+          SuccessToast("Blog created successfully");
+          setIsModalOpen(true);
+          setCoverFile(null);
+          setCoverUrl(null);
+          setTitle("");
+          setStory("");
+          setSubTitle("");
+          setImageText("");
+          setViewers("");
+          setLoading(false);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -168,7 +186,6 @@ const Publish = () => {
       {/* Publish Modal */}
       {isModalOpen && (
         <>
-          {console.log("Modal is rendering")}
           <PublishModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
         </>
       )}

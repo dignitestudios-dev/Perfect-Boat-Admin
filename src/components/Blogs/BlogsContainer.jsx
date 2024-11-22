@@ -4,7 +4,7 @@ import { FaRegEdit } from "react-icons/fa";
 import DeleteBlog from "../../pages/TidesTalesAndGuide/DeleteBlog";
 import { useNavigate } from "react-router-dom";
 
-export const BlogsContainer = ({ data, loading, onDeleteBlog }) => {
+export const BlogsContainer = ({ data, loading }) => {
   const navigate = useNavigate();
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedBlogId, setSelectedBlogId] = useState(null);
@@ -12,7 +12,8 @@ export const BlogsContainer = ({ data, loading, onDeleteBlog }) => {
     navigate("/blog/createnewblog");
   };
 
-  const openDeleteModal = (id) => {
+  const openDeleteModal = (e, id) => {
+    e.stopPropagation();
     setSelectedBlogId(id);
     setDeleteModalOpen(true);
   };
@@ -22,12 +23,12 @@ export const BlogsContainer = ({ data, loading, onDeleteBlog }) => {
     setSelectedBlogId(null);
   };
 
-  const handleDeleteBlog = () => {
-    if (selectedBlogId) {
-      onDeleteBlog(selectedBlogId); // Call the delete function with the selected blog ID
-      closeDeleteModal();
-    }
-  };
+  // const handleDeleteBlog = () => {
+  //   if (selectedBlogId) {
+  //     onDeleteBlog(selectedBlogId); // Call the delete function with the selected blog ID
+  //     closeDeleteModal();
+  //   }
+  // };
 
   return (
     <div className="h-auto w-full flex flex-col justify-start items-center">
@@ -65,7 +66,7 @@ export const BlogsContainer = ({ data, loading, onDeleteBlog }) => {
             <BlogsCard
               key={index}
               blog={blog}
-              setDeleteModalOpen={() => openDeleteModal(blog._id)} // Pass function to open modal with blog ID
+              setDeleteModalOpen={(e) => openDeleteModal(e, blog._id)} // Pass function to open modal with blog ID
             />
           ))}
         </div>
@@ -74,7 +75,7 @@ export const BlogsContainer = ({ data, loading, onDeleteBlog }) => {
         <DeleteBlog
           isOpen={isDeleteModalOpen}
           onClose={closeDeleteModal}
-          onConfirm={handleDeleteBlog}
+          id={selectedBlogId}
         />
       </div>
     </div>

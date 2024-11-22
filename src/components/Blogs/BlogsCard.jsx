@@ -34,7 +34,10 @@ const BlogsCard = ({ blog }) => {
 
   return (
     <div
-      onClick={() => navigate(`/blogs/${blog._id}`, { state: blog })}
+      onClick={(e) => {
+        e.stopPropagation();
+        navigate(`/blogs/${blog._id}`, { state: blog });
+      }}
       className="w-full h-[334px] flex flex-col justify-start items-start rounded-[16px] shadow-md bg-[#1A293D] relative"
     >
       <div className="relative w-full h-[220px] rounded-t-[16px] overflow-hidden">

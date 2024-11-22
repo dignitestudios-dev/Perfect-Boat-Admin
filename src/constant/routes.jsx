@@ -25,6 +25,7 @@ import Preview from "../pages/TidesTalesAndGuide/Preview";
 import Publish from "../pages/TidesTalesAndGuide/Publish";
 import CreateNewBlog from "../pages/TidesTalesAndGuide/CreateNewBlog";
 import EditProfile from "../pages/Settings/EditProfile";
+import CreatePushNotification from "../pages/pushnotification/CreatePushNotification";
 export const routes = [
   {
     title: "Home",
@@ -90,6 +91,11 @@ export const routes = [
     title: "PushNotification",
     url: "/pushnotification",
     page: <AppLayout page={<PushNotification />} />,
+  },
+  {
+    title: "CreatePushNotification",
+    url: "/create-push-notification",
+    page: <AppLayout page={<CreatePushNotification />} />,
   },
   {
     title: "DeleteUser",

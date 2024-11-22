@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 
 import { HiOutlineNewspaper } from "react-icons/hi2";
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const PublishModal = ({ isOpen, setIsOpen }) => {
   const { navigate } = useContext(GlobalContext);
@@ -18,7 +19,7 @@ const PublishModal = ({ isOpen, setIsOpen }) => {
   useEffect(() => {
     setTimeout(() => {
       navigate("/blogs", "Blogs");
-    }, 2000);
+    }, 3000);
   }, []);
 
   return (

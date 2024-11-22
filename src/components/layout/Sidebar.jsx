@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import {
   CoinIcon,
@@ -24,10 +24,12 @@ import {
 } from "../../assets/export";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import LogoutModal from "../Modal/LogoutModal";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [activeDropdown, setActiveDropdown] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
+  const { logout } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -36,6 +38,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const handleLogout = () => {
     console.log("User logged out");
     setModalOpen(false);
+    logout();
   };
 
   const handleToggleDropdown = (label) => {
@@ -91,7 +94,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       whiteicons: White7,
     },
     { to: "/settings", label: "Settings", grayicon: Gray8, whiteicons: White8 },
-
   ];
 
   return (
@@ -109,7 +111,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         } transition-transform duration-300 md:relative md:translate-x-0 z-30`}
       >
         <div className="p-6">
-          <div className="text-2xl font-bold cursor-pointer " onClick={()=> navigate('/home')}>
+          <div
+            className="text-2xl font-bold cursor-pointer "
+            onClick={() => navigate("/home")}
+          >
             <img
               src={SideBarLogo}
               className="w-[190.36px] h-[117.18px] top-18px left-24px"
@@ -123,7 +128,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
               return (
                 <li key={index}>
-                  
                   {item.subLinks ? (
                     <>
                       <button
@@ -194,17 +198,20 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 </li>
               );
             })}
-              <li>
+            <li>
               <button
                 className="flex items-center gap-3 p-2 text-[13px] w-full text-left text-[#FFFFFF80] hover:text-white hover:bg-[#199BD1] rounded-[10px]"
                 onClick={() => setModalOpen(true)}
               >
-                <img src={Gray9} className="w-[24px] h-[24px]" alt="Logout Icon" />
+                <img
+                  src={Gray9}
+                  className="w-[24px] h-[24px]"
+                  alt="Logout Icon"
+                />
                 <span>Logout</span>
               </button>
             </li>
           </ul>
-          
         </div>
       </div>
       <LogoutModal

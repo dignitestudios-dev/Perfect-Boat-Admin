@@ -8,13 +8,14 @@ import {
 } from "react-icons/gr";
 
 import { BiLink, BiUndo, BiRedo, BiChevronDown } from "react-icons/bi";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Blogsimg, CoinIcon } from "../../assets/export";
-// import { BlogContext } from "../../contexts/BlogContext";
+import { BlogContext } from "../../contexts/BlogContext";
 const UpdateBlog = () => {
   const navigate = useNavigate();
   const editorRef = useRef(null);
   const { state } = useLocation();
+  const { id } = useParams();
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(16); // Default font size
   const [htmlContent, setHtmlContent] = useState(state?.story || "");
@@ -44,20 +45,20 @@ const UpdateBlog = () => {
     setShowDropdown(false);
   };
 
-  // const {
-  //   title,
-  //   setTitle,
-  //   subTitle,
-  //   setSubTitle,
-  //   story,
-  //   setStory,
-  //   imageText,
-  //   setImageText,
-  //   coverFile,
-  //   setCoverFile,
-  //   coverUrl,
-  //   setCoverUrl,
-  // } = useContext(BlogContext);
+  const {
+    title,
+    setTitle,
+    subTitle,
+    setSubTitle,
+    story,
+    setStory,
+    imageText,
+    setImageText,
+    coverFile,
+    setCoverFile,
+    coverUrl,
+    setCoverUrl,
+  } = useContext(BlogContext);
 
   const handleInput = () => {
     setHtmlContent(editorRef.current.innerHTML);
@@ -76,21 +77,21 @@ const UpdateBlog = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setTitle(state?.title);
-  //   setSubTitle(state?.subTitle);
-  //   setStory(state?.story);
-  //   setCoverFile(state?.cover);
-  //   setCoverUrl(state?.cover);
-  //   setImageText(state?.imageTitle);
-  // }, []);
+  useEffect(() => {
+    setTitle(state?.title);
+    setSubTitle(state?.subTitle);
+    setStory(state?.story);
+    setCoverFile(state?.cover);
+    setCoverUrl(state?.cover);
+    setImageText(state?.imageTitle);
+  }, []);
 
-  // useEffect(() => {
-  //   if (editorRef.current && state?.story) {
-  //     editorRef.current.innerHTML = state?.story;
-  //     setHtmlContent(state?.story);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (editorRef.current && state?.story) {
+      editorRef.current.innerHTML = state?.story;
+      setHtmlContent(state?.story);
+    }
+  }, []);
 
   return (
     <div className="h-full overflow-y-auto w-full p-6 flex flex-col gap-4 bg-[#0D1B2A]">
@@ -107,7 +108,7 @@ const UpdateBlog = () => {
             </button> */}
             <button
               className="bg-[#199BD1] w-[107px] text-white px-4 py-2 rounded-lg"
-              onClick={() => navigate(`/publish`)}
+              onClick={() => navigate(`/publish`, { state: { id: id } })}
             >
               Next
             </button>
@@ -235,9 +236,9 @@ const UpdateBlog = () => {
           }}
           className="relative w-full flex flex-col items-center justify-center h-[300px] bg-[#1A293D] rounded-[18px]"
         >
-          {Blogsimg ? (
+          {coverUrl ? (
             <img
-              src={Blogsimg}
+              src={coverUrl}
               alt="Blog Boat"
               className="w-full h-full object-cover rounded-[18px]"
             />
@@ -263,8 +264,8 @@ const UpdateBlog = () => {
         <div className="w-full flex items-center justify-center">
           <input
             type="text"
-            // value={imageText || 'a'}
-            // onChange={(e) => setImageText(e.target.value)}
+            value={imageText || "a"}
+            onChange={(e) => setImageText(e.target.value)}
             placeholder="Add caption for image (optional)"
             className="w-60 text-[10px] placeholder:text-[10px] text-center placeholder:font-bold text-gray-300 bg-transparent border-none focus:outline-none my-2"
           />
@@ -275,15 +276,15 @@ const UpdateBlog = () => {
           <input
             type="text"
             placeholder="Title"
-            // value={title}
-            // onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             className="w-full text-[28px] placeholder:text-[28px] placeholder:font-bold text-white bg-transparent border-none focus:outline-none mb-2"
           />
           <input
             type="text"
             placeholder="Enter Subtitle"
-            // value={subTitle}
-            // onChange={(e) => setSubTitle(e.target.value)}
+            value={subTitle}
+            onChange={(e) => setSubTitle(e.target.value)}
             className="w-full text-lg placeholder:text-[16px] text-white bg-transparent border-none focus:outline-none mb-4"
           />
 
@@ -296,7 +297,9 @@ const UpdateBlog = () => {
             // dangerouslySetInnerHTML={{ __html: story }}
           >
             {htmlContent == "" && (
-              <span className="absolute top-0 left-0 text-gray-500 pointer-events-none">Tell your Story</span>
+              <span className="absolute top-0 left-0 text-gray-500 pointer-events-none">
+                Tell your Story
+              </span>
             )}
           </div>
 
