@@ -11,7 +11,7 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
   };
   return (
     <div className="">
-      <div className="card bg-[#001229] overflow-y-auto h-[447px] p-5 rounded-[20px] ">
+      <div className="card bg-[#001229] overflow-y-auto h-[477px] p-5 rounded-[20px] ">
         <div className="flex justify-between mt-2">
           <h3 className="text-[18px] font-[700]">Subscription History </h3>
           <button
@@ -56,7 +56,7 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
             ) : ownerDetail?.subscription?.owner?.length === 0 ? (
               <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
-              ownerDetail?.subscription?.owner?.map((item, index) => (
+              ownerDetail?.subscription?.owner?.slice(0, 4)?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[2fr_2fr_1fr]  gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
@@ -94,7 +94,7 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
             ) : ownerDetail?.subscription?.user?.length === 0 ? (
               <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
-              ownerDetail?.subscription?.user?.map((item, index) => (
+              ownerDetail?.subscription?.user?.slice(0, 4)?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "

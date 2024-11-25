@@ -6,13 +6,40 @@ import Skeleton from "../global/Skeleton";
 const OwnerUserTables = ({ ownerDetail, loading }) => {
   const navigate = useNavigate();
   const [tab, setTabs] = useState("1");
+  const [searchValue, setSearchValue] = useState("");
+
 
   const handleViewAllClick = () => {
     navigate("/owneruserlist", { state: ownerDetail });
   };
+
+
+  const filteredManagers = ownerDetail?.user?.manager?.filter((manager) => {
+    if (!searchValue) return true;
+    const searchText = searchValue.toLowerCase();
+    return (
+      manager?.name?.toLowerCase()?.includes(searchText) ||
+      manager?.jobtitle?.toLowerCase()?.includes(searchText)
+    );
+  });
+
+  
+  const filteredEmployee = ownerDetail?.user?.employee?.filter((manager) => {
+    if (!searchValue) return true;
+    const searchText = searchValue.toLowerCase();
+    return (
+      manager?.name?.toLowerCase()?.includes(searchText) ||
+      manager?.jobtitle?.toLowerCase()?.includes(searchText)
+    );
+  });
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <div className="">
-      <div className="card bg-[#001229] overflow-y-auto  h-[447px] p-5 rounded-[20px] ">
+      <div className="card bg-[#001229] overflow-y-auto  h-[477px] p-5 rounded-[20px] ">
         <div className="flex justify-between mt-2">
           <h3 className="text-[18px] font-[700]">Users</h3>
           <button
@@ -23,7 +50,11 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
           </button>
         </div>
         <div>
-          <SearchInput />
+          <SearchInput
+            placeholder="Search by name or email"
+            value={searchValue}
+            onChange={handleSearchChange}
+          />
         </div>
         <div className="flex gap-x-2 mt-4">
           <button
@@ -56,10 +87,10 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
             </div>
             {loading ? (
               <Skeleton />
-            ) : ownerDetail?.user?.manager?.length === 0 ? (
+            ) : filteredManagers?.length === 0 ? (
               <div>Data not Found</div>
             ) : (
-              ownerDetail?.user?.manager?.map((item, index) => (
+              filteredManagers?.slice(0, 4)?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white"
@@ -89,10 +120,10 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
             </div>
             {loading ? (
               <Skeleton />
-            ) : ownerDetail?.user?.employee?.length === 0 ? (
+            ) : filteredEmployee?.length === 0 ? (
               <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
-              ownerDetail?.user?.employee?.map((item, index) => (
+              filteredEmployee?.slice(0, 4)?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "

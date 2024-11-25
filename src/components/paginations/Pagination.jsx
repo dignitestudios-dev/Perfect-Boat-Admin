@@ -19,7 +19,7 @@ const Pagination = ({
   };
 
   return (
-    <div className="flex justify-end items-center mt-4 w-full">
+    <div className="flex  items-center mt-4 w-full">
       <button
         onClick={handlePreviousPage}
         disabled={currentPage === 1}

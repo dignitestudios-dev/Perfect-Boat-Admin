@@ -5,28 +5,39 @@ import { Calender, OwnerProfile } from "../../assets/export";
 import OwnerList from "../dasboard/OwnerList";
 import DateModal from "../global/DateModal";
 import axios from "../../axios";
+import Pagination from "../paginations/Pagination";
+import Skeleton from "../global/Skeleton";
 const RevenueAnalysis = () => {
   const [tab, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-
+  const [dueDate, setDueDate] = useState(new Date());
+  const [inputError, setInputError] = useState("");
+  console.log(dueDate, "setDueDate");
   const [loading, setLoading] = useState(false);
   const [revenueTableData, setRevenueTableData] = useState([]);
+  const [pageDetails, setPageDetails] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
 
   const getRevenueTableData = async () => {
     try {
       setLoading(true);
 
-      let url = "/admin/revenue/subscription/details";
+      let url = `/admin/revenue/subscription/details?page=${currentPage}&pageSize=12`;
       if (tab === "2") {
-        url = "/admin/revenue/subscription/details?isSingleUser=false";
+        url = `/admin/revenue/subscription/details?isSingleUser=false&page=${currentPage}&pageSize=12`;
       } else if (tab === "3") {
-        url = "/admin/revenue/subscription/details?isSingleUser=true";
+        url = `/admin/revenue/subscription/details?isSingleUser=true&page=${currentPage}&pageSize=12`;
       }
-
+      if (searchValue) {
+        url += `&search=${encodeURIComponent(searchValue)}`;
+      }
       const { data } = await axios.get(url);
-      console.log(data?.data, "Fetched Revenue Data");
-      setRevenueTableData(data?.data || []);
+
+      setRevenueTableData(data?.data?.data || []);
+      setPageDetails(data?.data?.paginationDetails || []);
+      setTotalPages(data?.data?.paginationDetails?.totalPages);
     } catch (error) {
       console.error("Error fetching revenue data:", error);
     } finally {
@@ -34,10 +45,24 @@ const RevenueAnalysis = () => {
     }
   };
 
+  const filteredRevenueData = revenueTableData.filter((item) => {
+    if (!searchValue) return true;
+    const searchText = searchValue.toLowerCase();
+    return (
+      item?.name?.toLowerCase().includes(searchText) ||
+      item?.email?.toLowerCase().includes(searchText) ||
+      item?.subscriptionId?.toLowerCase().includes(searchText)
+    );
+  });
+
   useEffect(() => {
     getRevenueTableData();
-  }, [tab]);
+  }, [tab, currentPage]);
 
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+    console.log("Search Value:", e.target.value);
+  };
   return (
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[820px] overflow-y-auto  scrollbar-thin ">
@@ -45,7 +70,13 @@ const RevenueAnalysis = () => {
           <h3 className="text-[18px] font-[700]">Revenue Analysis</h3>
         </div>
         <div>
-          <SearchInput />
+          <div>
+            <SearchInput
+              placeholder="Search by Customer"
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+          </div>
         </div>
         <div className="flex gap-x-2 mt-4 items-center justify-between">
           <div className="flex gap-3">
@@ -94,7 +125,8 @@ const RevenueAnalysis = () => {
               <DateModal
                 isOpen={calendarOpen}
                 setIsOpen={setCalenderOpen}
-                setDueDate={setDate}
+                setDueDate={setDueDate}
+                setInputError={setInputError}
               />
               <div>
                 <button className="bg-[#199BD1] w-[95px] h-[32px] rounded-[100px] text-[12px]">
@@ -119,17 +151,11 @@ const RevenueAnalysis = () => {
 
             <div>
               {loading ? (
-                <div class="animate-pulse">
-                  <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                </div>
-              ) : revenueTableData?.length === 0 ? (
+                <Skeleton />
+              ) : filteredRevenueData?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
-                revenueTableData.map((item, index) => (
+                filteredRevenueData?.map((item, index) => (
                   <Link key={index} to="#" style={{ textDecoration: "none" }}>
                     <div
                       className={`grid grid-cols-8 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
@@ -167,17 +193,11 @@ const RevenueAnalysis = () => {
               <div>Total Revenue</div>
             </div>
             {loading ? (
-              <div class="animate-pulse">
-                <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-              </div>
-            ) : revenueTableData?.length === 0 ? (
+              <Skeleton />
+            ) : filteredRevenueData?.length === 0 ? (
               <p>No data available.</p>
             ) : (
-              revenueTableData.map((item, index) => (
+              filteredRevenueData?.map((item, index) => (
                 <Link key={index} to="#" style={{ textDecoration: "none" }}>
                   <div
                     className={`grid grid-cols-7 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
@@ -218,10 +238,10 @@ const RevenueAnalysis = () => {
                 <div class="h-4 bg-gray-500 mb-6 rounded"></div>
                 <div class="h-4 bg-gray-500 mb-6 rounded"></div>
               </div>
-            ) : revenueTableData?.length === 0 ? (
+            ) : filteredRevenueData?.length === 0 ? (
               <p>No data available.</p>
             ) : (
-              revenueTableData.map((item, index) => (
+              filteredRevenueData?.map((item, index) => (
                 <Link key={index} to="#" style={{ textDecoration: "none" }}>
                   <div
                     className={`grid grid-cols-5 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
@@ -244,6 +264,12 @@ const RevenueAnalysis = () => {
           </div>
         )}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+        setTotalPages={setTotalPages}
+      />
     </div>
   );
 };
