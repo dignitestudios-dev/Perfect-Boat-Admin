@@ -25,11 +25,11 @@ const UserInformation = () => {
   };
 
   const filteredUsers = settingOwnerdata?.filter((user) => {
-    if (filterStatus === "active") return user.subscriptionStatus === "paid";
-    if (filterStatus === "inactive") return user.subscriptionStatus === null;
+    if (filterStatus === "active") return user?.subscriptionStatus === "paid";
+    if (filterStatus === "inactive") return user?.subscriptionStatus === null;
     if (filterStatus === "pending")
-      return user.subscriptionStatus === "pending";
-    return true; 
+      return user?.subscriptionStatus === "pending";
+    return true;
   });
 
   const getsettingsData = async () => {
@@ -130,7 +130,7 @@ const UserInformation = () => {
                                   key={idx}
                                   onClick={() => {
                                     setFilterStatus(status.toLowerCase());
-                                    toggleDropdown("headerDropdown"); // Close dropdown after selection
+                                    toggleDropdown("headerDropdown");
                                   }}
                                   className={`text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md ${
                                     filterStatus === status.toLowerCase()
@@ -228,36 +228,39 @@ const UserInformation = () => {
                   "Onboarding Date",
                   "Subscription",
                   "Actions",
-                ].map((item, index) => (
+                ]?.map((item, index) => (
                   <div key={index} className="text-[11px] font-[500]">
                     {item === "Subscription" ? (
                       <div className="relative">
-                      <button
-                        onClick={() => toggleDropdown("headerDropdown")}
-                        className="flex items-center gap-1 text-[11px] font-medium text-[#FFFFFF80]"
-                      >
-                        Subscription <IoMdArrowDropdown size={18} />
-                      </button>
-                      {dropdownStates["headerDropdown"] && (
-                        <div className="absolute top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
-                          {["Active", "Inactive", "Pending", "All"].map((status, idx) => (
-                            <p
-                              key={idx}
-                              onClick={() => {
-                                setFilterStatus(status.toLowerCase());
-                                toggleDropdown("headerDropdown"); // Close dropdown after selection
-                              }}
-                              className={`text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md ${
-                                filterStatus === status.toLowerCase() ? "bg-[#199BD1]" : ""
-                              }`}
-                            >
-                              {status}
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    
+                        <button
+                          onClick={() => toggleDropdown("headerDropdown")}
+                          className="flex items-center gap-1 text-[11px] font-medium text-[#FFFFFF80]"
+                        >
+                          Subscription <IoMdArrowDropdown size={18} />
+                        </button>
+                        {dropdownStates["headerDropdown"] && (
+                          <div className="absolute  top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
+                            {["Active", "Inactive", "Pending", "All"].map(
+                              (status, idx) => (
+                                <p
+                                  key={idx}
+                                  onClick={() => {
+                                    setFilterStatus(status?.toLowerCase());
+                                    toggleDropdown("headerDropdown");
+                                  }}
+                                  className={`text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md ${
+                                    filterStatus === status?.toLowerCase()
+                                      ? "bg-[#199BD1]"
+                                      : ""
+                                  }`}
+                                >
+                                  {status}
+                                </p>
+                              )
+                            )}
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       item
                     )}
@@ -265,11 +268,11 @@ const UserInformation = () => {
                 ))}
               </div>
               {loading ? (
-               <Skeleton />
-              ) : settingOwnerdata?.length === 0 ? (
+                <Skeleton />
+              ) : filteredUsers?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
-                settingOwnerdata?.map((item, index) => (
+                filteredUsers?.map((item, index) => (
                   <div
                     key={index}
                     className="grid grid-cols-[1.5fr_1.5fr_1.5fr_1.5fr_1.5fr_1fr_0.5fr] gap-4 p-4 text-white text-[12px] border-b border-[#FFFFFF24] items-center"
@@ -294,7 +297,6 @@ const UserInformation = () => {
                       })}
                     </div>
 
-                    {/* Subscription Status */}
                     <div className="text-center">
                       {item?.subscriptionStatus === "paid" ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
@@ -310,8 +312,6 @@ const UserInformation = () => {
                         </button>
                       ) : null}
                     </div>
-
-                    {/* Actions */}
                     <div className="flex items-center justify-center">
                       <button onClick={() => setUserOpen(true)}>
                         <img
