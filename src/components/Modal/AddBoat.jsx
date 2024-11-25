@@ -2,44 +2,39 @@ import React, { useState } from "react";
 import { CancelIcon, Dustbinicon } from "../../assets/export";
 import TextFields from "../onboarding/TextFields";
 import CustomBtn from "../onboarding/CustomBtn";
+import axios from "../../axios";
+import { SuccessToast } from "../Toaster/Toaster";
 
-const AddBoat = ({ isOpen, onClose }) => {
-  const [tasks, setTasks] = useState([{ id: 1, text: "" }]);
-  console.log("🚀 ~ AddBoat ~ tasks:", tasks);
+const AddBoat = ({ isOpen, onClose, getTasks }) => {
+  const [boats, setBoats] = useState([{ boatType: "" }]);
   const [submitLoading, setSubmitLoading] = useState("");
 
-  const handleAddTask = () => {
-    const newTask = {
-      id: tasks.length > 0 ? tasks[tasks.length - 1].id + 1 : 1,
-      text: "",
-    };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+  const handleAddBoat = () => {
+    setBoats((prevBoats) => [...prevBoats, { boatType: "" }]);
   };
 
-  const handleRemoveTask = (id) => {
-    setTasks((prevTasks) => prevTasks.filter((task, index) => index !== id));
+  const handleRemoveBoat = (index) => {
+    setBoats((prevBoats) => prevBoats.filter((_, i) => i !== index));
   };
-
-  const handleTaskChange = (value, id) => {
-    const updatedTasks = [...tasks];
-    updatedTasks[id] = value;
-    setTasks(updatedTasks);
+  const handleBoatChange = (value, index) => {
+    setBoats((prevBoats) =>
+      prevBoats.map((boat, i) =>
+        i === index ? { ...boat, boatType: value } : boat
+      )
+    );
   };
-
   const handleSave = async () => {
     try {
       setSubmitLoading(true);
-      let obj = {
-        taskType: taskType,
-        task: tasks,
-      };
-      const response = await axios.post(`/admin/management/task`, obj);
-      if (response.status === 200) {
-        SuccessToast("Updated Successfully");
+      // const response = await axios.post(`/admin/management/boat`, obj);
+      const promises = boats.map((boat) =>
+        axios.post("/admin/management/boat", { boatType: boat.boatType })
+      );
+      const responses = await Promise.all(promises);
+      if (responses[0].status === 200) {
+        SuccessToast("Boats Added Success");
+        setBoats([{ boatType: "" }]);
         getTasks();
-        setSubmitLoading(false);
-        setTaskType("");
-        setTasks([{ id: 1, text: "" }]);
         onClose();
       }
     } catch (err) {
@@ -77,36 +72,37 @@ const AddBoat = ({ isOpen, onClose }) => {
         </div>
         <div className="mt-4">
           <div className="mt-4">
-            {tasks?.map((task, index) => (
+            {boats?.map((boat, index) => (
               <div key={index} className="flex flex-col gap-2 mb-3">
                 <TextFields
                   text={`Boat Type ${index + 1}`}
                   className="w-full"
-                  placeholder="Enter task details"
-                  state={task.text}
-                  setState={(e) => handleTaskChange(e, index)}
+                  placeholder="Enter boat type"
+                  state={boat.boatType}
+                  setState={(e) => handleBoatChange(e, index)}
                 />
                 <div className="flex items-center justify-end gap-4">
-                  {tasks?.length > 1 && (
+                  {/* Show "Delete" button only if more than one boat exists */}
+                  {boats.length > 1 && (
                     <div
                       className="text-[#F44237] flex items-center gap-2 cursor-pointer"
-                      onClick={() => handleRemoveTask(index)}
+                      onClick={() => handleRemoveBoat(index)}
                     >
                       <img
                         src={Dustbinicon}
                         className="w-[9px] h-[10px]"
-                        alt=""
+                        alt="Delete icon"
                       />
                       Delete
                     </div>
                   )}
-
-                  {index === tasks?.length - 1 && (
+                  {/* Show "Add more" button only for the last item */}
+                  {index === boats.length - 1 && (
                     <div
                       className="text-[#199BD1] cursor-pointer"
-                      onClick={handleAddTask}
+                      onClick={handleAddBoat}
                     >
-                      Add more task
+                      Add more boats
                     </div>
                   )}
                 </div>

@@ -8,6 +8,7 @@ import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 const EditBoat = ({ isOpen, onClose, boat, getTasks }) => {
   if (!isOpen) return null;
   const [boatName, setBoatName] = useState("");
+  const [editLoading, setEditLoading] = useState(false);
 
   useEffect(() => {
     if (boat) setBoatName(boat?.boatType);
@@ -15,6 +16,7 @@ const EditBoat = ({ isOpen, onClose, boat, getTasks }) => {
 
   const handleSave = async () => {
     try {
+      setEditLoading(true);
       let obj = {
         boatType: boatName,
       };
@@ -29,6 +31,8 @@ const EditBoat = ({ isOpen, onClose, boat, getTasks }) => {
       }
     } catch (err) {
       ErrorToast(err.response.data.message);
+    } finally {
+      setEditLoading(false);
     }
   };
 
@@ -67,7 +71,11 @@ const EditBoat = ({ isOpen, onClose, boat, getTasks }) => {
             </div>
           </div>
           <div className="mt-5">
-            <CustomBtn text="Save" handleClick={() => handleSave()} />
+            <CustomBtn
+              text="Save"
+              handleClick={() => handleSave()}
+              loading={editLoading}
+            />
           </div>
         </div>
       </div>

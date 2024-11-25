@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../Toaster/Toaster";
 
-const DeleteBoat = ({ isOpen, onClose, id, getTasks }) => {
-  console.log("🚀 ~ DeleteBoat ~ id:", id);
+const DeleteTask = ({ isOpen, onClose, id, getTasks }) => {
   if (!isOpen) return null;
   const [deleteLoading, setDeleteLoading] = useState(false);
 
   const handleDelete = async () => {
     try {
       setDeleteLoading(true);
-      const response = await axios.delete(`/admin/management/boat/${id}`);
+      const response = await axios.delete(`/admin/management/task/${id}`);
       if (response.status === 200) {
         SuccessToast("Deleted Successfully");
         getTasks();
@@ -28,10 +27,10 @@ const DeleteBoat = ({ isOpen, onClose, id, getTasks }) => {
     <div className="fixed top-0 right-0 w-screen h-screen  z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-[#02203A] rounded-lg w-[90%] max-w-md p-6 shadow-lg">
         <h2 className="text-[22px] font-[700] text-white text-start">
-          Remove Boat
+          Remove Task
         </h2>
         <p className="text-[16px] font-[400] mt-4 text-white text-start">
-          Are you sure you want to remove this boat?
+          Are you sure you want to remove this task?
         </p>
         <div className="flex justify-end gap-1 mt-6">
           <button
@@ -53,4 +52,4 @@ const DeleteBoat = ({ isOpen, onClose, id, getTasks }) => {
   );
 };
 
-export default DeleteBoat;
+export default DeleteTask;

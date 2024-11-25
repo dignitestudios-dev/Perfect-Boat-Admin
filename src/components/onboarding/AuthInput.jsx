@@ -10,6 +10,7 @@ const AuthInput = ({
   value,
   isDisabled = false,
   isAuth = true,
+  maxLength,
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
@@ -32,6 +33,7 @@ const AuthInput = ({
             value={value}
             type={isPassVisible ? "text" : type}
             disabled={isDisabled}
+            maxLength={maxLength}
             placeholder={placeholder}
             className={`w-full outline-none rounded-[12px] placeholder:text-[13px] placeholder:font-normal
              placeholder:text-[#6B737E] text-white ${

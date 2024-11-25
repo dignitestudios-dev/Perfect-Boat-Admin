@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Arrowdown, Dustbinicon, EditIcon, Uparrow } from "../../assets/export";
 import EditBoat from "../Modal/EditBoat";
+import DeleteBoat from "../Modal/DeleteBoat";
 
 const BoatsAndTypes = ({ boatData, getTasks }) => {
+  const [isDeleteOpen, setDeleteOpen] = useState(false);
   const [EditOpen, setEditBoatOpen] = useState(false);
   const [selectedBoat, setSelectedBoat] = useState(null);
+  const [deleteId, setDeleteId] = useState("");
 
   const handleEditClick = (boat) => {
     setSelectedBoat(boat);
@@ -19,7 +22,13 @@ const BoatsAndTypes = ({ boatData, getTasks }) => {
             {index + 1} . {item?.boatType}
           </div>
           <div className="flex items-center gap-4">
-            <div onClick={() => setDeleteOpen(true)} className="cursor-pointer">
+            <div
+              onClick={() => {
+                setDeleteOpen(true);
+                setDeleteId(item?._id);
+              }}
+              className="cursor-pointer"
+            >
               <img src={Dustbinicon} className="w-[22px] h-[22px]" alt="" />
             </div>
             <div
@@ -36,6 +45,12 @@ const BoatsAndTypes = ({ boatData, getTasks }) => {
         onClose={() => setEditBoatOpen(false)}
         boat={selectedBoat}
         getTasks={getTasks}
+      />
+      <DeleteBoat
+        isOpen={isDeleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        getTasks={getTasks}
+        id={deleteId}
       />
     </div>
   );

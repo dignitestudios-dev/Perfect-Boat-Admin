@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Arrowdown, Dustbinicon, EditIcon, Uparrow } from "../../assets/export";
 import EditTask from "../Modal/EditTask";
+import DeleteBoat from "../Modal/DeleteBoat";
+import DeleteTask from "../Modal/DeleteTask";
 
 const TaskAndTypes = ({
   taskData,
@@ -10,6 +12,8 @@ const TaskAndTypes = ({
 }) => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
+  const [isDeleteOpen, setDeleteOpen] = useState(false);
 
   const handleEditTask = (taskedit) => {
     setSelectedTask(taskedit);
@@ -30,6 +34,15 @@ const TaskAndTypes = ({
 
             {openAccordion === item?._id ? (
               <div className="flex gap-3 items-center">
+                <div
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setDeleteOpen(true);
+                    setDeleteId(item?._id);
+                  }}
+                >
+                  <img src={Dustbinicon} className="w-[22px] h-[22px]" alt="" />
+                </div>
                 <div onClick={() => handleEditTask(item)}>
                   <img src={EditIcon} className="w-[24px] h-[24px]" alt="" />
                 </div>
@@ -57,6 +70,12 @@ const TaskAndTypes = ({
           </div>
         </div>
       ))}
+      <DeleteTask
+        isOpen={isDeleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        getTasks={getTasks}
+        id={deleteId}
+      />
       <EditTask
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
