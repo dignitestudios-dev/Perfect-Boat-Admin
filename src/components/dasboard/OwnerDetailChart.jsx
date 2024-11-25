@@ -8,10 +8,10 @@ import {
   PointElement,
   Tooltip,
 } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import Dropdown from "../dropdown/Dropdown";
-
+import axios from "../../axios";
+import Skeleton from "../global/Skeleton";
 Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip);
 
 const options = {
@@ -35,10 +35,6 @@ const options = {
       grid: {
         display: false,
       },
-      border: {
-        display: true,
-        color: "#FFFFFF3D",
-      },
     },
     y: {
       grid: {
@@ -48,60 +44,86 @@ const options = {
         display: true,
       },
       border: {
-        display: true,
-        color: "#FFFFFF3D",
+        display: false,
       },
     },
   },
 };
 
-const monthsArray = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "June",
-  "July",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const OwnerDetailLineChart = () => {
-  const data = {
-    labels: monthsArray,
+const OwnerDetailLineChart = ({ timerange, id }) => {
+  const [loading, setLoading] = useState(false);
+  const [chartData, setChartData] = useState({
+    labels: [],
     datasets: [
       {
-        label: "Owners",
-        data: [32, 25, 56, 45, 6, 7, 8, 9, 10, 100],
+        label: "Licensed Fee",
+        data: [],
+        borderColor: "#FD8D49",
+        tension: 0.3,
+      },
+      {
+        label: "Per Employee Fee ($10 PE)",
+        data: [],
         borderColor: "#199BD1",
-        pointRadius: 0,
+        tension: 0.3,
       },
     ],
+  });
+
+  const getOwnerTableData = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await axios.get(`/admin/customer/${id}`);
+      console.log(
+        data?.data?.graph?.monthly[0]?.subscription?.count,
+        "GraphDatasubscription"
+      );
+      console.log(data?.data?.graph?.monthly[0]?.user?.count, "GraphDatauser");
+      let graphData = [];
+      let labels = [];
+      console.log("graphData", graphData);
+      if (timerange === "Yearly") {
+        graphData = data?.data?.graph?.yearly || [];
+        labels = graphData.map((item) => item?.month || "Unknown Month");
+      } else if (timerange === "Monthly") {
+        graphData = data?.data?.graph?.monthly || [];
+        labels = graphData.map((item) => item?.day || "Unknown day");
+      } else if (timerange === "Weekly") {
+        graphData = data?.data?.graph?.weekly || [];
+        labels = graphData.map((item) => item?.dayOfWeek || "Unknown Day");
+      }
+
+      const subscription = graphData?.map(
+        (item) => item?.subscription?.count || 0
+      );
+      const user = graphData.map((item) => item?.user?.count || 0);
+      setChartData((prevState) => ({
+        ...prevState,
+        labels: labels,
+        datasets: [
+          { ...prevState.datasets[0], data: subscription },
+          { ...prevState.datasets[1], data: user },
+        ],
+      }));
+    } catch (error) {
+      console.error("Error fetching owner data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
-    <div className="p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-[14px] font-bold">Sales Overview</h1>
-        <Dropdown
-          label="Yearly"
-          items={["Weekly", "Monthly", "Yearly"]}
-        />
-      </div>
-      <div className="flex gap-3 mb-4">
-        <div className="h-[15px] w-[15px] bg-[#FB7B2C] rounded"></div>
-        <span className="text-[12px]">Licensed Fee</span>
-        <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
-        <span className="text-[12px]">Per Employee Fee ($10 PE)</span>
-      </div>
+  useEffect(() => {
+    getOwnerTableData();
+  }, [timerange]);
 
-      <div className="h-[100px] md:h-[400px] lg:h-[300px]">
-        <Line data={data} options={options} />
-      </div>
+  return (
+    <div className="mt-12 w-full h-[425px] overflow-hidden">
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <Line data={chartData} options={options} style={{ height: "425px" }} />
+      )}
     </div>
   );
 };

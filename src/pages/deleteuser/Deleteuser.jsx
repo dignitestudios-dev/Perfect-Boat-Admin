@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import OwnerDelete from "../../components/deleteusers/OwnerDelete";
 import SingleUserDelete from "../../components/deleteusers/SingleUserDelete";
+import Pagination from "../../components/paginations/Pagination";
+import SearchInput from "../../components/inputs/SearchInput";
 
 const Deleteuser = () => {
   const [tabs, setTabs] = useState("1");
+  const [pageDetails, setPageDetails] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchValue, setSearchValue] = useState("");
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [tabs]);
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+    console.log("Search Value:", e.target.value);
+  };
   return (
     <div>
       <div className="p-5 bg-[#001229] rounded-[20px] h-[944px] overflow-y-auto scrollbar-thin">
@@ -16,14 +30,11 @@ const Deleteuser = () => {
               <h3 className="text-[18px] font-[700] mb-3 text-white">
                 Deleted Users
               </h3>
-              <div className="flex w-1/2 lg:w-[295px] h-[32px] justify-start items-center rounded-[8px] bg-[#1A293D] relative">
-                <span className="w-[32px] h-full flex items-center justify-center">
-                  <FiSearch className="text-white/50 text-lg" />
-                </span>
-                <input
-                  type="text"
-                  placeholder="Search here"
-                  className="w-[calc(100%-35px)] outline-none text-sm bg-transparent text-white h-full px-2"
+              <div>
+                <SearchInput
+                  placeholder="Search by name or email"
+                  value={searchValue}
+                  onChange={handleSearchChange}
                 />
               </div>
               <div className="flex gap-3 items-center">
@@ -50,10 +61,30 @@ const Deleteuser = () => {
               </div>
             </div>
           </div>
-          {tabs === "1" && <OwnerDelete />}
-          {tabs === "2" && <SingleUserDelete />}
         </div>
+        {tabs === "1" && (
+          <OwnerDelete
+            currentPage={currentPage}
+            setTotalPages={setTotalPages}
+            setPageDetails={setPageDetails}
+            searchValue={searchValue}
+          />
+        )}
+        {tabs === "2" && (
+          <SingleUserDelete
+            currentPage={currentPage}
+            setTotalPages={setTotalPages}
+            setPageDetails={setPageDetails}
+            searchValue={searchValue}
+          />
+        )}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+        setTotalPages={setTotalPages}
+      />
     </div>
   );
 };

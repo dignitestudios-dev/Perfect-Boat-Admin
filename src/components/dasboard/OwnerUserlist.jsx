@@ -5,9 +5,30 @@ import SearchInput from "../inputs/SearchInput";
 const OwnerUserlist = () => {
   const location = useLocation();
   const ownerDetail = location?.state || {};
+  const [searchValue, setSearchValue] = useState("");
 
   const [tab, setTabs] = useState("1");
   const navigate = useNavigate();
+  const filteredManagers = ownerDetail?.user?.manager?.filter((manager) => {
+    if (!searchValue) return true;
+    const searchText = searchValue.toLowerCase();
+    return (
+      manager?.name?.toLowerCase()?.includes(searchText) ||
+      manager?.jobtitle?.toLowerCase()?.includes(searchText)
+    );
+  });
+  const filteredEmployee = ownerDetail?.user?.employee?.filter((manager) => {
+    if (!searchValue) return true;
+    const searchText = searchValue.toLowerCase();
+    return (
+      manager?.name?.toLowerCase()?.includes(searchText) ||
+      manager?.jobtitle?.toLowerCase()?.includes(searchText)
+    );
+  });
+
+  const handleSearchChange = (e) => {
+    setSearchValue(e.target.value);
+  };
   return (
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[944px] overflow-y-auto  scrollbar-thin ">
@@ -15,7 +36,11 @@ const OwnerUserlist = () => {
           <h3 className="text-[18px] font-[700]">Users</h3>
         </div>
         <div>
-          <SearchInput />
+          <SearchInput
+            placeholder="Search by name or email"
+            value={searchValue}
+            onChange={handleSearchChange}
+          />
         </div>
         <div className="flex gap-x-2 mt-4">
           <button
@@ -49,12 +74,12 @@ const OwnerUserlist = () => {
               <div>Phone Number</div>
               <div>Onboarding Date</div>
             </div>
-            {ownerDetail?.user?.manager?.length === 0 ? (
+            {filteredManagers?.length === 0 ? (
               <div className="text-center font-bold h-screen items-center flex justify-center text-[20px]">
                 Data Not Found
               </div>
             ) : (
-              ownerDetail?.user?.manager?.map((item, index, array) => (
+              filteredManagers?.map((item, index, array) => (
                 <div
                   key={index}
                   className={`grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white ${
@@ -89,12 +114,12 @@ const OwnerUserlist = () => {
               <div>Phone Number</div>
               <div>Onboarding Date</div>
             </div>
-            {ownerDetail?.user?.employee?.length === 0 ? (
+            {filteredEmployee?.length === 0 ? (
               <div className="text-center font-bold h-screen items-center flex justify-center text-[20px]">
                 Data Not Found
               </div>
             ) : (
-              ownerDetail?.user?.employee?.map((item, index) => (
+              filteredEmployee?.map((item, index) => (
                 <div
                   key={index}
                   className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
