@@ -12,32 +12,30 @@ const RevenueAnalysis = () => {
   const [calendarOpen, setCalenderOpen] = useState(false);
   const [dueDate, setDueDate] = useState(new Date());
   const [inputError, setInputError] = useState("");
-  console.log(dueDate, "setDueDate");
   const [loading, setLoading] = useState(false);
   const [revenueTableData, setRevenueTableData] = useState([]);
   const [pageDetails, setPageDetails] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
-
   const getRevenueTableData = async () => {
     try {
       setLoading(true);
-
       let url = `/admin/revenue/subscription/details?page=${currentPage}&pageSize=12`;
       if (tab === "2") {
         url = `/admin/revenue/subscription/details?isSingleUser=false&page=${currentPage}&pageSize=12`;
       } else if (tab === "3") {
         url = `/admin/revenue/subscription/details?isSingleUser=true&page=${currentPage}&pageSize=12`;
       }
+
       if (searchValue) {
         url += `&search=${encodeURIComponent(searchValue)}`;
       }
+
       const { data } = await axios.get(url);
 
       setRevenueTableData(data?.data?.data || []);
-      setPageDetails(data?.data?.paginationDetails || []);
-      setTotalPages(data?.data?.paginationDetails?.totalPages);
+      setTotalPages(data?.data?.paginationDetails?.totalPages || 1);
     } catch (error) {
       console.error("Error fetching revenue data:", error);
     } finally {
@@ -45,19 +43,17 @@ const RevenueAnalysis = () => {
     }
   };
 
-  const filteredRevenueData = revenueTableData.filter((item) => {
-    if (!searchValue) return true;
-    const searchText = searchValue.toLowerCase();
-    return (
-      item?.name?.toLowerCase().includes(searchText) ||
-      item?.email?.toLowerCase().includes(searchText) ||
-      item?.subscriptionId?.toLowerCase().includes(searchText)
-    );
-  });
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      getRevenueTableData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, tab, currentPage]);
 
   useEffect(() => {
-    getRevenueTableData();
-  }, [tab, currentPage]);
+    setCurrentPage(1);
+  }, [tab]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -72,7 +68,7 @@ const RevenueAnalysis = () => {
         <div>
           <div>
             <SearchInput
-              placeholder="Search by Customer"
+              placeholder="Search here...."
               value={searchValue}
               onChange={handleSearchChange}
             />
@@ -152,10 +148,10 @@ const RevenueAnalysis = () => {
             <div>
               {loading ? (
                 <Skeleton />
-              ) : filteredRevenueData?.length === 0 ? (
+              ) : revenueTableData?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
-                filteredRevenueData?.map((item, index) => (
+                revenueTableData?.map((item, index) => (
                   <Link key={index} to="#" style={{ textDecoration: "none" }}>
                     <div
                       className={`grid grid-cols-8 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
@@ -194,10 +190,10 @@ const RevenueAnalysis = () => {
             </div>
             {loading ? (
               <Skeleton />
-            ) : filteredRevenueData?.length === 0 ? (
+            ) : revenueTableData?.length === 0 ? (
               <p>No data available.</p>
             ) : (
-              filteredRevenueData?.map((item, index) => (
+              revenueTableData?.map((item, index) => (
                 <Link key={index} to="#" style={{ textDecoration: "none" }}>
                   <div
                     className={`grid grid-cols-7 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
@@ -238,10 +234,10 @@ const RevenueAnalysis = () => {
                 <div class="h-4 bg-gray-500 mb-6 rounded"></div>
                 <div class="h-4 bg-gray-500 mb-6 rounded"></div>
               </div>
-            ) : filteredRevenueData?.length === 0 ? (
+            ) : revenueTableData?.length === 0 ? (
               <p>No data available.</p>
             ) : (
-              filteredRevenueData?.map((item, index) => (
+              revenueTableData?.map((item, index) => (
                 <Link key={index} to="#" style={{ textDecoration: "none" }}>
                   <div
                     className={`grid grid-cols-5 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
