@@ -1,15 +1,16 @@
 import React from "react";
 import { MdAccessTime } from "react-icons/md";
 import axios from "../../axios";
-// import { ErrorToast, SuccessToast } from "../../components/global/Toaster";
+import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 import { useNavigate } from "react-router-dom";
 
 const DeleteBlog = ({ isOpen, onClose, id }) => {
   const navigate = useNavigate();
   const handleDeletion = async (e) => {
+    console.log("🚀 ~ handleDelete call ~ id:", id);
     e.stopPropagation();
     try {
-      const response = await axios.delete(`/owner/blog/${id}`);
+      const response = await axios.delete(`/admin/blog/${id}`);
       if (response.status === 200) {
         // Update the blogsData to remove the deleted blog
         SuccessToast("Blog deleted successfully");
@@ -17,6 +18,7 @@ const DeleteBlog = ({ isOpen, onClose, id }) => {
         onClose();
       }
     } catch (error) {
+      console.log("🚀 ~ handleDeletion ~ error:", error);
       ErrorToast(error?.response?.data?.message);
     }
   };
@@ -27,7 +29,11 @@ const DeleteBlog = ({ isOpen, onClose, id }) => {
       <div className="relative bg-[#1A293D] rounded-lg shadow-md w-[380px] h-[218px] flex flex-col p-4">
         {/* Close button */}
         <button
-          onClick={onClose}
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
           className="absolute top-3 right-3 text-xl font-bold text-[#199BD1] hover:text-gray-800"
           aria-label="Close modal"
         >
@@ -48,7 +54,10 @@ const DeleteBlog = ({ isOpen, onClose, id }) => {
         {/* Container for buttons aligned to the bottom right */}
         <div className="flex justify-end gap-2 mt-4">
           <button
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             type="button"
             className="text-[#199BD1] font-bold py-2 px-4 rounded-lg text-[16px]"
           >

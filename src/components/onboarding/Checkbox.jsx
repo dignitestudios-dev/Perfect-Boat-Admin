@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 
-const Checkbox = () => {
-    const [selectedOption,setselectedOption] =useState()
-    const handleOptionChange =(e)=>{
-        setselectedOption(e.target.value)
-    }
+const Checkbox = ({ selectedOption, setSelectedOption, setErrors }) => {
+  const handleOptionChange = (e) => {
+    setSelectedOption(e.target.value);
+    setErrors();
+  };
   return (
     <div>
       <div className=" w-[756px] h-[167px]  rounded-[12px] p-6 flex flex-col justify-center gap-4 border-[#FFFFFF52] border">
-        <span className="text-[16px] text-white">This notification is for...</span>
+        <span className="text-[16px] text-white">
+          This notification is for...
+        </span>
         <div className="flex flex-col">
           <label className="flex">
             <input

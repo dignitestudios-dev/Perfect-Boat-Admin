@@ -18,22 +18,22 @@ const Blogs = () => {
     }
   };
 
-  const deleteBlog = async (id) => {
-    try {
-      const response = await axios.delete(`/owner/blog/${id}`);
-      if (response.status === 200) {
-        // Update the blogsData to remove the deleted blog
-        setblogsData((prevBlogs) =>
-          prevBlogs.filter((blog) => blog._id !== id)
-        );
-        console.log("Blog deleted successfully");
-      } else {
-        console.error("Failed to delete blog");
-      }
-    } catch (error) {
-      console.error("Error deleting blog:", error);
-    }
-  };
+  // const deleteBlog = async (id) => {
+  //   try {
+  //     const response = await axios.delete(`/owner/blog/${id}`);
+  //     if (response.status === 200) {
+  //       // Update the blogsData to remove the deleted blog
+  //       setblogsData((prevBlogs) =>
+  //         prevBlogs.filter((blog) => blog._id !== id)
+  //       );
+  //       console.log("Blog deleted successfully");
+  //     } else {
+  //       console.error("Failed to delete blog");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting blog:", error);
+  //   }
+  // };
 
   useEffect(() => {
     getBlogs();
@@ -41,11 +41,7 @@ const Blogs = () => {
 
   return (
     <div className="h-full overflow-y-auto w-full p-2 lg:p-6 flex flex-col gap-6 justify-start items-start">
-      <BlogsContainer
-        data={blogsData}
-        loading={loading}
-        onDeleteBlog={deleteBlog}
-      />
+      <BlogsContainer data={blogsData} loading={loading} />
     </div>
   );
 };

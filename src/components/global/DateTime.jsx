@@ -30,16 +30,9 @@ const DateTime = ({
     }
   };
 
-  const handleDueDate = () => {
-    const formattedDate = date.toISOString().slice(0, 10);
-    setDueDate({ normal: formattedDate });
+  const [selectedHour, setSelectedHour] = useState(null);
+  const [selectedMinute, setSelectedMinute] = useState(null);
 
-    const unixTimestamp = Math.floor(date.getTime() / 1000);
-    setDueDate((prev) => ({ ...prev, unix: unixTimestamp }));
-    setInputError({});
-    setIsOpen(false);
-  };
-  const [selectedTime, setSelectedTime] = useState(null);
   const [selectedPeriod, setSelectedPeriod] = useState("AM");
 
   const hours = Array.from({ length: 12 }, (_, i) =>
@@ -49,6 +42,37 @@ const DateTime = ({
   const minutes = Array.from({ length: 60 }, (_, i) =>
     String(i + 1).padStart(2, "0")
   );
+
+  const convertTo24Hour = (hour, period) => {
+    const numericHour = parseInt(hour, 10);
+    return period === "PM" && numericHour !== 12
+      ? numericHour + 12
+      : period === "AM" && numericHour === 12
+      ? 0
+      : numericHour;
+  };
+
+  const handleDueDate = () => {
+    if (!selectedHour || !selectedMinute) {
+      alert("Please select both hour and minute.");
+      return;
+    }
+
+    const fullDate = moment(date)
+      .hour(convertTo24Hour(selectedHour, selectedPeriod))
+      .minute(selectedMinute)
+      .second(0);
+
+    const formattedDate = fullDate.format("YYYY-MM-DD HH:mm:ss");
+    const unixTimestamp = fullDate.unix();
+
+    setDueDate({
+      normal: formattedDate,
+      unix: unixTimestamp,
+    });
+    setInputError({});
+    setIsOpen(false);
+  };
 
   return (
     <div
@@ -74,36 +98,35 @@ const DateTime = ({
             <p className="text-[#D1D5DB] text-sm mb-5">
               Set the clock to your convenience by selecting a suitable time
             </p>
-            <div className="flex gap-4 w-full justify-between  h-[400px]">
-              
-              <div className="flex gap-12 w-[170px] overflow-hidden">
-                
+            <div className="flex gap-1 w-full justify-between  h-[400px]">
+              <div className="flex gap-1 w-[80px] overflow-auto">
                 <div className="flex flex-col gap-2 ">
                   {hours.map((hour) => (
                     <div
                       key={hour}
                       className={`flex justify-center w-10 h-10 rounded border ${
-                        selectedTime === hour
+                        selectedHour === hour
                           ? "border-blue-500 text-blue-500"
                           : "border-transparent text-white"
                       } hover:border-blue-400 text-[16px] items-center cursor-pointer`}
-                      onClick={() => setSelectedTime(hour)}
+                      onClick={() => setSelectedHour(hour)}
                     >
                       {hour}
                     </div>
                   ))}
                 </div>
-                
+              </div>
+              <div className="flex gap-1 w-[50px] overflow-auto">
                 <div className="flex flex-col gap-2  h-[400px]">
                   {minutes?.map((minute) => (
                     <div
                       key={minute}
                       className={`flex justify-center w-10 h-10 rounded border ${
-                        selectedTime === minute
+                        selectedMinute === minute
                           ? "border-blue-500 text-blue-500"
                           : "border-transparent text-white"
                       } hover:border-blue-400 text-[16px] items-center cursor-pointer`}
-                      onClick={() => setSelectedTime(minute)}
+                      onClick={() => setSelectedMinute(minute)}
                     >
                       {minute}
                     </div>
@@ -111,7 +134,6 @@ const DateTime = ({
                 </div>
               </div>
 
-            
               <div className="flex  gap-2">
                 <button
                   className={`w-[35px] h-[32px] py-2 rounded text-white ${

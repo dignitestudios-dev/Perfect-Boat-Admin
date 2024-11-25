@@ -34,7 +34,7 @@ const CreateNewBlog = () => {
   } = useContext(BlogContext);
   const editorRef = useRef(null);
 
-  const [htmlContent, setHtmlContent] = useState("");
+  const [htmlContent, setHtmlContent] = useState(story || "");
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(16); // Default font size
 

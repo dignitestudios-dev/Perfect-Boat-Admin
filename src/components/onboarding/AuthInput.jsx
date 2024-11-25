@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
-const AuthInput = ({ register, text, type, error, placeholder,value, isDisabled=false }) => {
+const AuthInput = ({
+  register,
+  text,
+  type,
+  error,
+  placeholder,
+  value,
+  isDisabled = false,
+  isAuth = true,
+}) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
   return (
@@ -20,11 +29,14 @@ const AuthInput = ({ register, text, type, error, placeholder,value, isDisabled=
           className={` w-full  h-full flex items-center justify-center    rounded-[12px] relative`}
         >
           <input
-          value={value}
+            value={value}
             type={isPassVisible ? "text" : type}
             disabled={isDisabled}
             placeholder={placeholder}
-            className="w-full outline-none  rounded-[12px] placeholder:text-[13px] placeholder:font-normal placeholder:text-[#6B737E] text-white bg-transparent h-full px-3 text-sm font-medium "
+            className={`w-full outline-none rounded-[12px] placeholder:text-[13px] placeholder:font-normal
+             placeholder:text-[#6B737E] text-white ${
+               isAuth ? "bg-transparent" : "bg-[#001229]"
+             }  h-full px-3 text-sm font-medium `}
             {...register}
           />
           <button

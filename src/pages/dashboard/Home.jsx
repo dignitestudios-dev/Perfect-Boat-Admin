@@ -27,7 +27,6 @@ const Home = () => {
     }));
   };
 
-  const [dashboardData, setDashboardData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const getDashboardData = async () => {
@@ -55,7 +54,6 @@ const Home = () => {
   const [timerange, setTimerange] = useState("Yearly");
   const [customertimerange, setCustomertimerange] = useState("Yearly");
 
- 
   const handleSaleTimePeriodChange = (value) => {
     setTimerange(value);
     console.log("Selected Time Range:", value);
@@ -120,7 +118,7 @@ const Home = () => {
             <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
             <span className="text-[12px]">Single Users</span>
           </div>
-          <LineChartDash timerange={timerange}/>
+          <LineChartDash timerange={timerange} />
         </div>
         <div className="card bg-[#001229] p-5 rounded-[24px] col-span-2 w-full h-auto">
           <div className="flex items-center pb-5 justify-between">
@@ -131,7 +129,9 @@ const Home = () => {
               <Dropdown
                 label="Yearly"
                 items={["Weekly", "Monthly", "Yearly"]}
-                handleTimePeriod={(value) => handleCustomerTimePeriodChange(value)}
+                handleTimePeriod={(value) =>
+                  handleCustomerTimePeriodChange(value)
+                }
                 selectedValue={customertimerange}
               />
             </div>

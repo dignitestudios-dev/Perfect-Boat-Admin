@@ -2,6 +2,7 @@ import React from "react";
 import { FaBars } from "react-icons/fa";
 import { HeaderProfile, NotificationIcon } from "../../assets/export";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const Header = ({ toggleSidebar }) => {
   return (
@@ -18,17 +19,21 @@ const Header = ({ toggleSidebar }) => {
             <img src={NotificationIcon} alt="" />
           </Link>
         </div>
-        <Link to={'/profile'}>
+        <Link to={"/profile"}>
           <img
-            src={HeaderProfile}
-            alt="User"
-            className="w-10 h-10 rounded-full"
+            src={`https://ui-avatars.com/api/?name=${Cookies.get("name")}`}
+            alt="Profile"
+            className="w-[28px] h-[28px] rounded-full cursor-pointer"
+            onClick={() => navigate("/profile", "Profile")}
           />
         </Link>
         <Link to={"/profile"} className="hover:no-underline no-underline">
           <div>
             <div className="text-[11px] text-[#FFFFFF80]  ">Welcome back,</div>
-            <div className="text-[11px] text-[#FFFFFF] "> Jhonas Smith</div>
+            <div className="text-[11px] text-[#FFFFFF] ">
+              {" "}
+              {Cookies.get("name")}
+            </div>
           </div>
         </Link>
       </div>

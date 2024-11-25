@@ -184,7 +184,7 @@ const Preview = () => {
                 </p>
               </div>
               <button
-                onClick={() => setIsDateModalOpen(true)}
+                onClick={() => navigate("/publish")}
                 className="bg-[#199BD1] text-white px-6 py-2 rounded-lg h-[32px] mb-4 mr-2"
               >
                 Schedule To Publish
