@@ -55,10 +55,14 @@ const RevenueAnalysis = () => {
     );
   });
 
-  useEffect(() => {
-    getRevenueTableData();
-  }, [tab, currentPage]);
 
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      getRevenueTableData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, filteredRevenueData,tab, currentPage]);
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
     console.log("Search Value:", e.target.value);
