@@ -14,7 +14,6 @@ import TaskLoader from "../../components/global/TaskLoader";
 
 const TaskManagement = ({ isOpen }) => {
   const [openAccordion, setOpenAccordion] = useState(null);
-  const [isDeleteOpen, setDeleteOpen] = useState(false);
   const [AddBoatOpen, setAddBoatOpen] = useState(false);
   const [addTask, setAddTaskOpen] = useState(false);
 
@@ -131,7 +130,6 @@ const TaskManagement = ({ isOpen }) => {
           )}
         </>
       )}
-      <DeleteBoat isOpen={isDeleteOpen} onClose={() => setDeleteOpen(false)} />
       <AddBoat
         isOpen={AddBoatOpen}
         onClose={() => setAddBoatOpen(false)}
