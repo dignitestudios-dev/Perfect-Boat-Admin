@@ -37,9 +37,7 @@ const UpdatePassword = () => {
         setIsUpdated(true);
         // navigate("/login")
         setLoading(false);
-        SuccessToast(response?.data?.message);
-      } else {
-        SuccessToast(response?.data?.message);
+        // SuccessToast(response?.data?.message);
       }
     } catch (err) {
       console.log("🚀 ~ createAccount ~ err:", err);

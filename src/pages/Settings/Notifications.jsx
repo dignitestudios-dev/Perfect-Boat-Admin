@@ -8,6 +8,7 @@ import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import { FiLoader } from "react-icons/fi";
 import NotificationRow from "../../components/notification/NotificationRow";
+import Skeleton from "../../components/global/Skeleton";
 
 const Notifications = () => {
   const [activeTab, setActiveTab] = useState("All");
@@ -63,7 +64,7 @@ const Notifications = () => {
     } catch (err) {
       ErrorToast(err?.response?.data?.message);
     } finally {
-      setUpdateLoading(true);
+      setUpdateLoading(false);
     }
   };
 
@@ -119,15 +120,21 @@ const Notifications = () => {
           </button>
         </div>
 
-        <div className="w-full">
-          {filteredNotifications?.map((notification) => (
-            <NotificationRow
-              notification={notification}
-              key={notification?._id}
-              setNotificationUpdate={setNotificationUpdate}
-            />
-          ))}
-        </div>
+        {notificationLoading ? (
+          <div className="w-full">
+            <Skeleton />
+          </div>
+        ) : (
+          <div className="w-full">
+            {filteredNotifications?.map((notification) => (
+              <NotificationRow
+                notification={notification}
+                key={notification?._id}
+                setNotificationUpdate={setNotificationUpdate}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
