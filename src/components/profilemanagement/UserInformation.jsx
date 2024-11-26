@@ -34,14 +34,24 @@ const UserInformation = () => {
   const getsettingsData = async () => {
     try {
       setLoading(true);
+
       let url = `/admin/revenue/setting/user?page=${currentPage}&pageSize=11`;
       if (tabs === "1") {
         url = `/admin/setting/user?isSingleUser=false&page=${currentPage}&pageSize=11`;
       } else if (tabs === "2") {
         url = `/admin/setting/user?isSingleUser=true&page=${currentPage}&pageSize=11`;
       }
+
+      if (searchValue) url += `&search=${encodeURIComponent(searchValue)}`;
+
+      if (filterStatus === "active") {
+        url += `&subscription=active`;
+      } else if (filterStatus === "inactive") {
+        url += `&subscription=inactive`;
+      }
+
       const { data } = await axios.get(url);
-      console.log(data?.data, "Fetched Revenue Data");
+
       setSettingOwnerdata(data?.data?.data || []);
       setPageDetails(data?.data?.paginationDetails || []);
       setTotalPages(data?.data?.paginationDetails?.totalPages);
@@ -51,37 +61,23 @@ const UserInformation = () => {
       setLoading(false);
     }
   };
-  const filteredUsers = settingOwnerdata?.filter((user) => {
-    if (!user) return false;
-    const searchText = searchValue.toLowerCase();
-
-    const matchesSearch =
-      user?.name?.toLowerCase().includes(searchText) ||
-      user?.email?.toLowerCase().includes(searchText);
-
-    let matchesStatus = true;
-    if (filterStatus === "active") {
-      matchesStatus = user?.subscriptionStatus === "paid";
-    } else if (filterStatus === "inactive") {
-      matchesStatus = user?.subscriptionStatus === null;
-    } else if (filterStatus === "pending") {
-      matchesStatus = user?.subscriptionStatus === "pending";
-    }
-
-    return matchesSearch && matchesStatus;
-  });
 
   useEffect(() => {
-    getsettingsData();
-  }, [tabs, currentPage]);
+    const delayDebounce = setTimeout(() => {
+      getsettingsData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, filterStatus, currentPage, tabs]);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [tabs]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
-    console.log("Search Value:", e.target.value);
   };
+
   const handleOwnerDeleteModal = (item) => {
     setDeleteId(item?._id);
     setTotalCount(item?.totalUser);
@@ -166,7 +162,7 @@ const UserInformation = () => {
                         </button>
                         {dropdownStates["headerDropdown"] && (
                           <div className="absolute top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
-                            {["Active", "Inactive", "Pending", "All"].map(
+                            {["All", "Active", "Inactive"]?.map(
                               (status, idx) => (
                                 <p
                                   key={idx}
@@ -194,17 +190,11 @@ const UserInformation = () => {
                 ))}
               </div>
               {loading ? (
-                <div class="animate-pulse">
-                  <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                  <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                </div>
-              ) : filteredUsers?.length === 0 ? (
+                <Skeleton />
+              ) : settingOwnerdata?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
-                filteredUsers?.map((item, index) => (
+                settingOwnerdata?.map((item, index) => (
                   <div
                     key={index}
                     className="grid grid-cols-[1.5fr_1.5fr_1.5fr_1.5fr_1.5fr_1fr_0.5fr] gap-4 p-4 text-white text-[12px] border-b border-[#FFFFFF24] items-center"
@@ -230,17 +220,13 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {item?.subscriptionStatus === "paid" ? (
+                      {item?.isPaid === true ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
                           Active
                         </button>
-                      ) : item?.subscriptionStatus === null ? (
+                      ) : item?.isPaid === false ? (
                         <button className="bg-[#9A9A9A] px-3 py-1 rounded-full text-white text-[11px]">
                           Inactive
-                        </button>
-                      ) : item?.subscriptionStatus === "pending" ? (
-                        <button className="bg-[#044C54] px-3 py-1 rounded-full text-white text-[11px]">
-                          Pending
                         </button>
                       ) : null}
                     </div>
@@ -281,13 +267,13 @@ const UserInformation = () => {
                           Subscription <IoMdArrowDropdown size={18} />
                         </button>
                         {dropdownStates["headerDropdown"] && (
-                          <div className="absolute  top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
-                            {["Active", "Inactive", "Pending", "All"].map(
+                          <div className="absolute top-full left-0 mt-2 w-[120px] rounded-md shadow-lg p-2 bg-[#1A293D] z-10">
+                            {["All", "Active", "Inactive"]?.map(
                               (status, idx) => (
                                 <p
                                   key={idx}
                                   onClick={() => {
-                                    setFilterStatus(status?.toLowerCase());
+                                    setFilterStatus(status?.toLowerCase()); // Set active/inactive filter
                                     toggleDropdown("headerDropdown");
                                   }}
                                   className={`text-white text-[11px] py-1 px-2 cursor-pointer hover:bg-[#199BD1] rounded-md ${
@@ -311,10 +297,10 @@ const UserInformation = () => {
               </div>
               {loading ? (
                 <Skeleton />
-              ) : filteredUsers?.length === 0 ? (
+              ) : settingOwnerdata?.length === 0 ? (
                 <p>No data available.</p>
               ) : (
-                filteredUsers?.map((item, index) => (
+                settingOwnerdata?.map((item, index) => (
                   <div
                     key={index}
                     className="grid grid-cols-[1.5fr_1.5fr_1.5fr_1.5fr_1.5fr_1fr_0.5fr] gap-4 p-4 text-white text-[12px] border-b border-[#FFFFFF24] items-center"
@@ -340,20 +326,17 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {item?.subscriptionStatus === "paid" ? (
+                      {item?.isPaid === true ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
                           Active
                         </button>
-                      ) : item?.subscriptionStatus === null ? (
+                      ) : item?.isPaid === false ? (
                         <button className="bg-[#9A9A9A] px-3 py-1 rounded-full text-white text-[11px]">
                           Inactive
                         </button>
-                      ) : item?.subscriptionStatus === "pending" ? (
-                        <button className="bg-[#044C54] px-3 py-1 rounded-full text-white text-[11px]">
-                          Pending
-                        </button>
                       ) : null}
                     </div>
+
                     <div className="flex items-center justify-center">
                       <button onClick={() => handleSingleUserDeleteModal(item)}>
                         <img
@@ -370,6 +353,7 @@ const UserInformation = () => {
           )}
         </div>
       </div>
+
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
@@ -379,7 +363,6 @@ const UserInformation = () => {
       <RemoveSingleUser
         isOpen={userOpen}
         onClose={() => setUserOpen(false)}
-        filteredUsers={filteredUsers}
         deleteId={deleteId}
         totalCount={totalCount}
         getsettingsData={getsettingsData}
