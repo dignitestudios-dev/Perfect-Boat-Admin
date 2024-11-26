@@ -16,9 +16,14 @@ const OwnerDelete = ({
   const deleteOwner = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        `/admin/user/deleted?isSingleUser=false&page=${currentPage}&pageSize=12`
-      );
+      let url = `/admin/user/deleted?isSingleUser=false&page=${currentPage}&pageSize=12`;
+
+      if (searchValue) {
+        url += `&search=${encodeURIComponent(searchValue)}`;
+      }
+
+      const { data } = await axios.get(url);
+
       setDeleteOwner(data?.data?.data);
       setPageDetails(data?.data?.paginationDetails || []);
       setTotalPages(data?.data?.paginationDetails?.totalPages);
@@ -29,21 +34,13 @@ const OwnerDelete = ({
     }
   };
 
-  const filteredDeleteOwnerlist = deleteOwnerlist?.filter((item) => {
-    if (!searchValue) return true;
-    const searchText = searchValue?.toLowerCase();
-    return (
-      item?.name?.toLowerCase().includes(searchText) ||
-      item?.email?.toLowerCase().includes(searchText)
-    );
-  });
-
-  
-  useEffect(() => {}, [deleteOwnerlist, searchValue]);
-
   useEffect(() => {
-    deleteOwner();
-  }, [currentPage]);
+    const delayDebounce = setTimeout(() => {
+      deleteOwner();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, currentPage]);
   return (
     <>
       <div className="w-full rounded-lg overflow-hidden ">
@@ -70,7 +67,7 @@ const OwnerDelete = ({
         ) : deleteOwnerlist?.length === 0 ? (
           <div className="p-4 text-center text-white">No data available</div>
         ) : (
-          filteredDeleteOwnerlist?.map((item, index) => (
+          deleteOwnerlist?.map((item, index) => (
             <div
               key={index}
               className="grid grid-cols-7 gap-4 p-4 text-[11px] border-b-2 border-[#FFFFFF24] text-white bg-[#001229] items-center"

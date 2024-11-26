@@ -13,7 +13,6 @@ import AuthInput from "../onboarding/AuthInput";
 import { Link, useParams } from "react-router-dom";
 import axios from "../../axios";
 import { ErrorToast } from "../Toaster/Toaster";
-import LineChartDash from "./LineChartDash";
 import Dropdown from "../dropdown/Dropdown";
 import OwnerDetailLineChart from "./OwnerDetailChart";
 const DetailOwner = () => {

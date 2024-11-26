@@ -19,7 +19,7 @@ const Deleteuser = () => {
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
-    console.log("Search Value:", e.target.value);
+ 
   };
   return (
     <div>
@@ -76,6 +76,7 @@ const Deleteuser = () => {
             setTotalPages={setTotalPages}
             setPageDetails={setPageDetails}
             searchValue={searchValue}
+            setSearchValue={setSearchValue}
           />
         )}
       </div>

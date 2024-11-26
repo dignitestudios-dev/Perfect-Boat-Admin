@@ -61,7 +61,7 @@ const DeleteOwnerDetail = () => {
     <div>
       <div className="flex flex-wrap justify-between  gap-3">
         <div className="flex  gap-3">
-          {cardData.map((card, index) => (
+          {cardData?.map((card, index) => (
             <div
               key={index}
               className="card bg-[#001229] p-2 rounded-[24px] w-full sm:w-[214px] lg:w-[214px]"
@@ -69,15 +69,15 @@ const DeleteOwnerDetail = () => {
               <div className="flex gap-3 items-center">
                 <div className="bg-[#1A293D] p-5 rounded-[18px]">
                   <img
-                    src={card.icon}
+                    src={card?.icon}
                     className="w-[41px] h-[41px]"
                     alt={`${card.label} icon`}
                   />
                 </div>
                 <div>
-                  <h3 className="text-[18px] font-[700]">{card.number}</h3>
+                  <h3 className="text-[18px] font-[700]">{card?.number}</h3>
                   <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
-                    {card.label}
+                    {card?.label}
                   </h3>
                 </div>
               </div>
@@ -108,7 +108,7 @@ const DeleteOwnerDetail = () => {
         <div className="grid gap-5 lg:grid-cols-2 sm:grid-cols-1 mt-5">
           {loading ? (
             <>
-              {[...Array(6)].map((_, index) => (
+              {[...Array(6)]?.map((_, index) => (
                 <div key={index} className="mt-4">
                   <div className="h-10 bg-gray-600 rounded"></div>
                 </div>

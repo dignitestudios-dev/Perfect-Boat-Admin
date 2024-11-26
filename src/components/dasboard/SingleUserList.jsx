@@ -101,7 +101,7 @@ const SingleUserList = () => {
           </div>
 
           <div className="grid gap-4">
-            {/* Header Row */}
+        
             <div className="grid grid-cols-[2fr_2fr_2fr_2fr_2fr_1fr] gap-4 p-4 text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold bg-[#001229]">
               <div className="text-left">Single User Name</div>
               <div className="text-left">Email</div>

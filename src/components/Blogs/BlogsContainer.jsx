@@ -52,7 +52,15 @@ export const BlogsContainer = ({ data, loading }) => {
         </div>
 
         {/* Show loading message while loading */}
-        {loading && <div>Loading...</div>}
+        {loading && (
+          <>
+              <div className="w-full h-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-pulse">
+            {[1, 2, 3]?.map(() => (
+                <div className="bg-gray-500 h-[334px] w-[334px] rounded-[20px] "></div>
+              ))}
+              </div>
+          </>
+        )}
 
         {/* Show message if no blogs available */}
         {data?.length === 0 && !loading && (

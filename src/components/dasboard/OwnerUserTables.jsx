@@ -8,11 +8,9 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
   const [tab, setTabs] = useState("1");
   const [searchValue, setSearchValue] = useState("");
 
-
   const handleViewAllClick = () => {
     navigate("/owneruserlist", { state: ownerDetail });
   };
-
 
   const filteredManagers = ownerDetail?.user?.manager?.filter((manager) => {
     if (!searchValue) return true;
@@ -23,7 +21,6 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
     );
   });
 
-  
   const filteredEmployee = ownerDetail?.user?.employee?.filter((manager) => {
     if (!searchValue) return true;
     const searchText = searchValue.toLowerCase();
@@ -88,7 +85,7 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
             {loading ? (
               <Skeleton />
             ) : filteredManagers?.length === 0 ? (
-              <div>Data not Found</div>
+              <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
               filteredManagers?.slice(0, 4)?.map((item, index) => (
                 <div
