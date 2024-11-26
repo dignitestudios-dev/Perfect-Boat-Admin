@@ -8,16 +8,24 @@ import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 import { useNavigate } from "react-router-dom";
 import AuthSubmitBtn from "../../components/onboarding/AuthSubmitBtn";
 import { AuthMockup } from "../../assets/export";
+import CountDown from "../../components/onboarding/CountDown";
 
 const VerifyOtp = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [resendLoading, setResendLoading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [seconds, setSeconds] = useState(30);
 
   const inputs = useRef([]);
   const { login } = useContext(AuthContext);
   const email = sessionStorage.getItem("email");
+
+  const handleRestart = () => {
+    setSeconds(30);
+    setIsActive(true);
+  };
 
   const {
     register,
@@ -144,14 +152,23 @@ const VerifyOtp = () => {
             <span className="text-[13px] font-medium text-[#C2C6CB]">
               Didn't recieve a code?
             </span>
-            <button
-              onClick={handleResendOtp}
-              type="button"
-              disabled={resendLoading}
-              className="outline-none text-[13px] border-none text-[#199BD1] font-bold"
-            >
-              {resendLoading ? "Resending..." : "Resend now"}
-            </button>
+            {isActive ? (
+              <CountDown
+                isActive={isActive}
+                setIsActive={setIsActive}
+                seconds={seconds}
+                setSeconds={setSeconds}
+              />
+            ) : (
+              <button
+                type="button"
+                disabled={resendLoading}
+                onClick={handleResendOtp}
+                className="outline-none text-[13px] border-none text-[#199BD1] font-bold"
+              >
+                {resendLoading ? "Resending..." : "Resend now"}
+              </button>
+            )}
           </div>
         </div>
       </form>

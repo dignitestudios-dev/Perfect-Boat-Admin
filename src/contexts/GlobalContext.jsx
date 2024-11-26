@@ -1,7 +1,7 @@
 import axios from "../axios";
 import React, { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { onMessageListener } from "../firebase/messages";
+import { onMessageListener } from "../firebase/messages";
 import Cookies from "js-cookie";
 export const GlobalContext = createContext();
 
@@ -22,20 +22,20 @@ export const GlobalContextProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
   const [notificationUpdate, setNotificationUpdate] = useState(false);
 
-  //   onMessageListener()
-  //     .then((payload) => {
-  //       setShow(true);
-  //       setNotification({
-  //         title: payload.notification.title,
-  //         body: payload.notification.body,
-  //       });
-  //       setNotificationUpdate((prev) => !prev);
-  //       setTimeout(() => {
-  //         setShow(false);
-  //         setNotification({ title: "", body: "" });
-  //       }, 3000);
-  //     })
-  //     .catch((err) => console.log("failed: ", err));
+  onMessageListener()
+    .then((payload) => {
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      setNotificationUpdate((prev) => !prev);
+      setTimeout(() => {
+        setShow(false);
+        setNotification({ title: "", body: "" });
+      }, 3000);
+    })
+    .catch((err) => console.log("failed: ", err));
 
   return (
     <GlobalContext.Provider

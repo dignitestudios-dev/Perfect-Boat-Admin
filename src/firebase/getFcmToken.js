@@ -1,5 +1,5 @@
 // getFCMToken.js
-import { ErrorToast } from "../components/global/Toaster";
+import { ErrorToast } from "../components/Toaster/Toaster";
 import { messaging } from "./firebase";
 import { getToken } from "firebase/messaging";
 

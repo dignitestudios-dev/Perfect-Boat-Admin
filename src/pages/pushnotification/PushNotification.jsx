@@ -20,7 +20,7 @@ const PushNotification = () => {
     try {
       setLoading(true);
       console.log("if call");
-      const { data } = await axios.get("/admin/notification");
+      const { data } = await axios.get("/admin/notification/sent");
       console.log("🚀 ~ getTasks ~ data:", data);
       if (data.success === true) {
         setNotificationData(data?.data);
