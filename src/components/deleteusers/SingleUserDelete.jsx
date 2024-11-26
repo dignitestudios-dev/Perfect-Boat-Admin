@@ -17,6 +17,10 @@ const SingleUserDelete = ({
       const { data } = await axios.get(
         `/admin/user/deleted?isSingleUser=true&page=${currentPage}&pageSize=12`
       );
+      if (searchValue) {
+        url += `&search=${encodeURIComponent(searchValue)}`;
+      }
+
       setSingleUserData(data?.data?.data);
       setPageDetails(data?.data?.paginationDetails || []);
       setTotalPages(data?.data?.paginationDetails?.totalPages);
@@ -40,8 +44,12 @@ const SingleUserDelete = ({
   useEffect(() => {}, [singleUserData, searchValue]);
 
   useEffect(() => {
-    deleteSingleUser();
-  }, [currentPage]);
+    const delayDebounce = setTimeout(() => {
+      deleteSingleUser();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, currentPage]);
   return (
     <div className="w-full  rounded-lg overflow-hidden">
       <div className="grid grid-cols-[2fr_2fr_2fr_1.5fr_1.5fr_1fr_0.5fr] gap-4  p-4 text-[#FFFFFF80] text-[12px] font-semibold">

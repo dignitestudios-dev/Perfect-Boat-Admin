@@ -18,6 +18,8 @@ const RevenueAnalysis = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
+
+  
   const getRevenueTableData = async () => {
     try {
       setLoading(true);
