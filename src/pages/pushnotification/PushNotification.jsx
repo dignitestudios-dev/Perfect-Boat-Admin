@@ -7,12 +7,13 @@ import SendNotification from "../../components/Modal/SendNotification";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import moment from "moment";
+import Skeleton from "../../components/global/Skeleton";
 
 const PushNotification = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState([]);
   const [notificationData, setNotificationData] = useState([]);
-  console.log("🚀 ~ PushNotification ~ notificationData:", notificationData);
+
   const [loading, setLoading] = useState(false);
 
   const getPushNotifications = async () => {
@@ -48,21 +49,32 @@ const PushNotification = () => {
           </button>
         </>
       </div>
-
-      {notificationData?.map((item, index) => (
-        <div className="w-[1005px] mt-7 border-b border-[#243347] pb-6">
-          <div className="flex items-center justify-between">
-            <h1 className="text-[16px] font-[700]">{item?.title}</h1>
-            <p className="text-[#FFFFFF80]">
-              {" "}
-              {moment(item?.createdAt).format("h:mm A")}
-            </p>
-          </div>
-          <p className="text-[16px] mt-3 font-[400] text-[#FFFFFF80]">
-            {item?.description}
-          </p>
-        </div>
-      ))}
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <>
+          {notificationData?.length === 0 ? (
+            <div>No data found</div>
+          ) : (
+            <>
+              {notificationData?.map((item, index) => (
+                <div className="w-[1005px] mt-7 border-b border-[#243347] pb-6">
+                  <div className="flex items-center justify-between">
+                    <h1 className="text-[16px] font-[700]">{item?.title}</h1>
+                    <p className="text-[#FFFFFF80]">
+                      {" "}
+                      {moment(item?.createdAt).format("h:mm A")}
+                    </p>
+                  </div>
+                  <p className="text-[16px] mt-3 font-[400] text-[#FFFFFF80]">
+                    {item?.description}
+                  </p>
+                </div>
+              ))}
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };

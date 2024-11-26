@@ -1,53 +1,15 @@
 import React, { useState } from "react";
 
-const ToggleBtn = () => {
-  const [settings, setSettings] = useState([
-    {
-      title: "Task Assignment",
-      para: "Receive notifications on task assignments across teams. Stay updated on progress and ensure timely completion.",
-      isEnabled: true,
-    },
-    {
-      title: "Boats Alerts",
-      para: "Monitor all boats under your management. Stay informed about status changes, locations, and important updates.",
-      isEnabled: true,
-    },
-    {
-      title: "Maintenance Alerts",
-      para: "Keep track of upcoming maintenance for your fleet. Ensure all tasks are completed to keep operations running smoothly.",
-      isEnabled: true,
-    },
-    {
-      title: "Billing Updates",
-      para: "Receive billing-related updates and reminders.",
-      isEnabled: true,
-    },
-    {
-      title: "Security Alerts",
-      para: "Receive instant alerts in case of security breaches or critical events. Safety first!",
-      isEnabled: true,
-    },
-    {
-      title: "New Task Request",
-      para: "Get instant notifications when your team members submit new task request.",
-      isEnabled: true,
-    },
-    {
-      title: "Text",
-      para: "Pause text notifications and enjoy uninterrupted moments.",
-      isEnabled: true,
-    },
-    {
-      title: "Email",
-      para: "Pause  email notifications and reclaim your inbox for moments of calm.",
-      isEnabled: true,
-    },
-  ]);
-
+const ToggleBtn = ({ settings, setSettings }) => {
   const handleToggle = (index) => {
     setSettings((prevSettings) =>
       prevSettings.map((setting, i) =>
-        i === index ? { ...setting, isEnabled: !setting.isEnabled } : setting
+        i === index
+          ? {
+              ...setting,
+              [Object.keys(setting)[1]]: !setting[Object.keys(setting)[1]],
+            }
+          : setting
       )
     );
   };
@@ -70,7 +32,7 @@ const ToggleBtn = () => {
             <label className="inline-flex items-center mt-7 cursor-pointer">
               <input
                 type="checkbox"
-                checked={setting?.isEnabled}
+                checked={setting[Object.keys(setting)[1]] || false}
                 onChange={() => handleToggle(index)}
                 className="sr-only peer"
               />

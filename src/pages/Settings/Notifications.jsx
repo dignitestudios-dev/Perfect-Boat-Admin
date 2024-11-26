@@ -1,19 +1,70 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { AuthMockup } from "../../assets/export";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { sampleNotifications } from "../../constant/notification";
+import axios from "../../axios";
+import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
+import { GlobalContext } from "../../contexts/GlobalContext";
+import { FiLoader } from "react-icons/fi";
+import NotificationRow from "../../components/notification/NotificationRow";
 
 const Notifications = () => {
   const [activeTab, setActiveTab] = useState("All");
+  const [updateLoading, setUpdateLoading] = useState(false);
+  const [notificationLoading, setNotificationLoading] = useState(false);
+  const [filteredNotifications, setFilteredNotifications] = useState([]);
+  const navigate = useNavigate();
 
-  const filterNotifications = () => {
-    if (activeTab === "Read") {
-      return sampleNotifications.filter((notification) => notification.read);
-    } else if (activeTab === "Unread") {
-      return sampleNotifications.filter((notification) => !notification.read);
+  const {
+    notifications,
+    setNotifications,
+    notificationUpdate,
+    setNotificationUpdate,
+  } = useContext(GlobalContext);
+
+  const getNotifications = async () => {
+    setNotificationLoading(true);
+    try {
+      const { data } = await axios.get("/admin/notification");
+      setNotifications(data?.data?.reverse());
+    } catch (err) {
+    } finally {
+      setNotificationLoading(false);
     }
-    return sampleNotifications;
+  };
+  useEffect(() => {
+    getNotifications();
+  }, [notificationUpdate]);
+
+  // Calculate unread notifications count
+  const unreadCount = notifications.filter(
+    (notification) => !notification.isRead
+  ).length;
+
+  useEffect(() => {
+    setFilteredNotifications(
+      notifications.filter((notification) => {
+        if (activeTab === "Read") return notification?.isRead;
+        if (activeTab === "Unread") return !notification?.isRead;
+        return true; // for "all" tab
+      })
+    );
+  }, [activeTab, notifications]);
+
+  const readAll = async () => {
+    setUpdateLoading(true);
+    try {
+      const response = await axios.put("/admin/notification/read");
+      if (response?.status == 200) {
+        setNotificationUpdate((prev) => !prev);
+        SuccessToast("Notification cleared successfully.");
+      }
+    } catch (err) {
+      ErrorToast(err?.response?.data?.message);
+    } finally {
+      setUpdateLoading(true);
+    }
   };
 
   return (
@@ -51,53 +102,30 @@ const Notifications = () => {
             >
               <span>Unread</span>
               <span className="bg-[#199BD1] text-white w-[18px] h-[18px] rounded-full text-[10px] flex items-center justify-center">
-                15
+                {unreadCount}
               </span>
             </button>
           </div>
           <button
-            className={'w-[107px] h-[32px] mb-2 text-[11px] font-bold rounded-[10px] text-white bg-[#199BD1]'}
+            onClick={readAll}
+            className={
+              "w-[107px] h-[32px] mb-2 text-[11px] font-bold rounded-[10px] text-white bg-[#199BD1] flex justify-center items-center"
+            }
           >
             Clear All
+            {updateLoading && (
+              <FiLoader className="animate-spin text-lg ml-1" />
+            )}
           </button>
         </div>
-      
+
         <div className="w-full">
-          {filterNotifications().map((notification) => (
-            <Link
-              key={notification.id}
-              className={`w-full grid grid-cols-1 md:grid-cols-5 notification border-b-[1px] border-white/10 gap-x-4 ${
-                notification.read ? "read" : "unread"
-              }`}
-              style={{textDecoration:"none"}}
-            >
-              <div className="col-span-3 flex gap-2 justify-start items-start py-2 lg:py-4">
-                <img
-                  src={AuthMockup}
-                  alt=""
-                  className="w-16 h-16 rounded-full"
-                />
-                <div className="w-[90%] flex flex-col justify-start items-start">
-                  <span className="text-md font-semibold text-white">
-                    Employee Name
-                  </span>
-                  <p className="w-full font-normal text-sm text-[#fff]/[0.5]">
-                    {notification.message}
-                  </p>
-                </div>
-              </div>
-              <div className="col-span-1 text-end  py-2 lg:py-4">
-                <p className="text-[#199BD1] text-sm font-medium pt-1">
-                  9:00 PM
-                </p>
-              </div>
-              <div className="col-span-1 text-end py-4">
-                <button className="w-[73px] bg-[#199BD126] text-[11px] text-[#199BD1] font-medium rounded-full flex items-center justify-center gap-1 py-2 float-end">
-                  <FaTrash />
-                  Delete
-                </button>
-              </div>
-            </Link>
+          {filteredNotifications?.map((notification) => (
+            <NotificationRow
+              notification={notification}
+              key={notification?._id}
+              setNotificationUpdate={setNotificationUpdate}
+            />
           ))}
         </div>
       </div>
