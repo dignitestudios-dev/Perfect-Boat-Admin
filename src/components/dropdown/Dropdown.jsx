@@ -13,7 +13,7 @@ const Dropdown = ({ label, items, handleTimePeriod, selectedValue }) => {
     <div className="relative bg-[#042742] w-[100px] h-[27px] rounded-[20px] flex items-center justify-center">
       <button
         onClick={toggleDropdown}
-        className="flex items-center gap-1 text-[#199BD1] text-[11px] font-[500]"
+        className="flex items-center gap-3 text-[#199BD1] text-[11px] font-[500]"
       >
         {selectedValue || "Yearly"}{" "}
         {isOpen ? <img src={Upicon} alt="" className="w-[8.75px] h-[5.25px]" /> : <img src={Dropup} alt="" className="w-[8.75px] h-[5.25px]" /> }
