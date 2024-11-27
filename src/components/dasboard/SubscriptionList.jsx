@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DateModal from "../global/DateModal";
 import { Calender } from "../../assets/export";
@@ -6,11 +6,26 @@ import { Calender } from "../../assets/export";
 const SubscriptionList = () => {
   const [tab, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState("");
+  const [inputError, setInputError] = useState("");
+
   const navigate = useNavigate();
 
   const location = useLocation();
   const ownerDetail = location?.state || {};
+
+  const filteredData = ownerDetail?.subscription?.user?.filter((user) => {
+    const userCreatedAt = new Date(user?.createdAt).toISOString().slice(0, 10);
+
+    return !dueDate || userCreatedAt === dueDate?.normal;
+  });
+
+  useEffect(() => {}, [dueDate]);
+
+
+
+
+
   const totalPriceowner = ownerDetail?.subscription?.owner?.reduce(
     (sum, user) => {
       return sum + (user?.price || 0);
@@ -62,24 +77,45 @@ const SubscriptionList = () => {
                   : "bg-[#042742] text-[#199BD1]"
               }`}
             >
-              Employee
+              User
             </button>
           </div>
           {tab === "2" && (
             <div>
               <button
-                className="flex items-center justify-center rounded-[100px] gap-2 bg-[#199BD126] h-[27px] w-[99px] "
+                className={`flex items-center justify-center rounded-[100px] gap-2 h-[27px] w-[120px] ${
+                  dueDate
+                    ? "bg-[#199BD1] text-white"
+                    : "bg-[#199BD126] text-[#199BD1]"
+                }`}
                 onClick={() => setCalenderOpen(true)}
               >
-                <img className="w-[12px] h-[13.33px]" src={Calender} alt="" />
-                <span className="text-[12px] font-[500] text-[#199BD1] ">
-                  Select
+                <img
+                  className="w-[12px] h-[13.33px]"
+                  src={Calender}
+                  alt="calendar"
+                />
+                <span className="text-[12px] font-[500]">
+                  {dueDate.normal ? dueDate.normal : "Select date"}
                 </span>
+                {dueDate && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDueDate("");
+                      getRevenueTableData();
+                    }}
+                    className=" bg-red-500 rounded-full p-[2px] h-[20px] w-[20px] text-white text-xs"
+                  >
+                    ✕
+                  </button>
+                )}
               </button>
               <DateModal
                 isOpen={calendarOpen}
                 setIsOpen={setCalenderOpen}
-                setDueDate={setDate}
+                setDueDate={setDueDate}
+                setInputError={setInputError}
               />
             </div>
           )}
@@ -122,29 +158,28 @@ const SubscriptionList = () => {
         )}
         {tab === "2" && (
           <div className="grid gap-4">
-            <div className="grid grid-cols-4 gap-4 p-4  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
+            <div className="grid grid-cols-4 gap-4 p-4 text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
               <div>Date</div>
               <div>Users Onboard</div>
               <div className="text-center">Per User Cost</div>
               <div className="text-end">Total Cost of Users</div>
             </div>
-            {ownerDetail?.subscription?.user?.length === 0 ? (
+            {filteredData.length === 0 ? (
               <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
-              ownerDetail?.subscription?.user?.map((item, index) => (
+              filteredData.map((item, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-4 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                  className="grid grid-cols-4 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white"
                 >
                   <div className="font-medium">
-                    {" "}
                     {new Date(item?.createdAt).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "2-digit",
                       day: "2-digit",
                     })}
                   </div>
-                  <div className="">{item?.totalluser || "Not Found"}</div>
+                  <div>{item?.totalluser || "Not Found"}</div>
                   <div className="text-center">
                     {item?.perUserCost || "Not Found"}
                   </div>

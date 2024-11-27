@@ -10,7 +10,8 @@ import Skeleton from "../global/Skeleton";
 const RevenueAnalysis = () => {
   const [tab, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
-  const [dueDate, setDueDate] = useState(new Date());
+  const [dueDate, setDueDate] = useState("");
+
   const [inputError, setInputError] = useState("");
   const [loading, setLoading] = useState(false);
   const [revenueTableData, setRevenueTableData] = useState([]);
@@ -18,8 +19,8 @@ const RevenueAnalysis = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
+  const [loadingDownload, setloadingDownload] = useState(false);
 
-  
   const getRevenueTableData = async () => {
     try {
       setLoading(true);
@@ -30,6 +31,9 @@ const RevenueAnalysis = () => {
         url = `/admin/revenue/subscription/details?isSingleUser=true&page=${currentPage}&pageSize=12`;
       }
 
+      if (dueDate?.normal) {
+        url += `&startDate=${dueDate?.normal}&endDate=${dueDate?.normal}`;
+      }
       if (searchValue) {
         url += `&search=${encodeURIComponent(searchValue)}`;
       }
@@ -51,15 +55,45 @@ const RevenueAnalysis = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue, tab, currentPage]);
+  }, [searchValue, tab, currentPage, dueDate]);
 
   useEffect(() => {
     setCurrentPage(1);
+    setDueDate("");
   }, [tab]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
     console.log("Search Value:", e.target.value);
+  };
+
+  const handleDownload = async () => {
+    setloadingDownload(true);
+    try {
+      const response = await axios.get(
+        "/admin/revenue/subscription/details/csv"
+      );
+      console.log("response is - ", response);
+      if (response?.status === 200) {
+        const result = response?.data;
+        if (result?.success && result?.data) {
+          const downloadUrl = result?.data.file;
+          const filename = downloadUrl.split("/")[0];
+          const link = document.createElement("a");
+          link.href = downloadUrl;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } else {
+          console.error("Failed to fetch download link:", response?.message);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching revenue data:", error);
+    } finally {
+      setloadingDownload(false);
+    }
   };
   return (
     <div className="">
@@ -112,23 +146,52 @@ const RevenueAnalysis = () => {
           <div>
             <div className="flex items-center gap-3">
               <button
-                className="flex items-center justify-center rounded-[100px] gap-2 bg-[#199BD126] h-[27px] w-[99px] "
+                className={`flex items-center justify-center rounded-[100px] gap-2 h-[27px] w-[120px] ${
+                  dueDate
+                    ? "bg-[#199BD1] text-white"
+                    : "bg-[#199BD126] text-[#199BD1]"
+                }`}
                 onClick={() => setCalenderOpen(true)}
               >
-                <img className="w-[12px] h-[13.33px]" src={Calender} alt="" />
-                <span className="text-[12px] font-[500] text-[#199BD1] ">
-                  Select date
+                <img
+                  className="w-[12px] h-[13.33px]"
+                  src={Calender}
+                  alt="calendar"
+                />
+                <span className="text-[12px] font-[500]">
+                  {dueDate.normal ? dueDate.normal : "Select date"}
                 </span>
+                {dueDate && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDueDate("");
+                      getRevenueTableData();
+                    }}
+                    className=" bg-red-500 rounded-full p-[2px] h-[20px] w-[20px] text-white text-xs"
+                  >
+                    ✕
+                  </button>
+                )}
               </button>
+
               <DateModal
                 isOpen={calendarOpen}
                 setIsOpen={setCalenderOpen}
                 setDueDate={setDueDate}
                 setInputError={setInputError}
               />
+
               <div>
-                <button className="bg-[#199BD1] w-[95px] h-[32px] rounded-[100px] text-[12px]">
-                  Download
+                <button
+                  className="bg-[#199BD1] flex items-center justify-center text-center w-[95px] h-[32px] rounded-[100px] text-[12px] text-white"
+                  onClick={handleDownload}
+                >
+                  {loadingDownload ? (
+                    <div className="animate-spin flex items-center justify-center text-center rounded-full border-t-2 border-white w-4 h-4"></div> // Spinner styling
+                  ) : (
+                    <div>Download</div>
+                  )}
                 </button>
               </div>
             </div>
