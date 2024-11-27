@@ -17,7 +17,6 @@ const OwnerList = () => {
 
   const navigate = useNavigate();
 
-
   const toggleDropdown = (id) => {
     setDropdownStates((prevState) => ({
       ...prevState,
@@ -43,6 +42,10 @@ const OwnerList = () => {
       setTotalPages(data?.data?.paginationDetails?.totalPages || 1);
     } catch (error) {
       console.error("Error fetching owner data:", error);
+      if (error?.response?.status === 401) {
+        Cookies.remove("token");
+        navigate("/login");
+      }
     } finally {
       setLoading(false);
     }
