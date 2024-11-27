@@ -92,9 +92,9 @@ const SingleUserList = () => {
       <div className="p-5 bg-[#001229] rounded-[20px] h-[944px] overflow-y-auto  scrollbar-thin">
         <div className="desktop_screen">
           <div className=" mb-4">
-            <h3 className="text-[18px] font-800 mb-3">Single User List</h3>
+            <h3 className="text-[18px] font-[700] mb-3">Single User List</h3>
             <SearchInput
-              placeholder="Search by name or email"
+              placeholder="Search here"
               value={searchValue}
               onChange={handleSearchChange}
             />
@@ -110,13 +110,13 @@ const SingleUserList = () => {
               <div className="text-center left-10 relative">
                 <button
                   onClick={() => toggleDropdown("dropdown1")}
-                  className="flex items-center justify-center gap-1 text-[#FFFFFF80] text-[11px] font-[500]"
+                  className="flex  gap-1 text-[#FFFFFF80] text-[11px] font-[500]"
                 >
                   Subscription <IoMdArrowDropdown size={20} color="#FFFFFF80" />
                 </button>
                 {dropdownStates["dropdown1"] && (
                   <div
-                    className="absolute top-8 left-1/2 transform -translate-x-1/2 w-[100px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
+                    className="absolute text-start top-8 left-10 px-3 transform -translate-x-1/2 w-[100px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <p

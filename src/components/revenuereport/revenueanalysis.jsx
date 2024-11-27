@@ -104,7 +104,7 @@ const RevenueAnalysis = () => {
         <div>
           <div>
             <SearchInput
-              placeholder="Search here...."
+              placeholder="Search here"
               value={searchValue}
               onChange={handleSearchChange}
             />

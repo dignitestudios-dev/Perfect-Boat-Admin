@@ -1,7 +1,6 @@
-import React, { useContext, useRef, useState } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
-  CoinIcon,
   Gray1,
   Gray2,
   Gray3,
@@ -11,7 +10,6 @@ import {
   Gray7,
   Gray8,
   Gray9,
-  SideBarLogo,
   White1,
   White2,
   White3,
@@ -21,32 +19,40 @@ import {
   White7,
   White8,
   White9,
+  SideBarLogo,
 } from "../../assets/export";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import LogoutModal from "../Modal/LogoutModal";
 import { AuthContext } from "../../contexts/AuthContext";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
-  const [activeDropdown, setActiveDropdown] = useState("");
+  const [activeDropdowns, setActiveDropdowns] = useState({});
   const [isModalOpen, setModalOpen] = useState(false);
   const { logout } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [activeParent, setActiveParent] = useState("");
 
   const handleLogout = () => {
     console.log("User logged out");
     setModalOpen(false);
     logout();
   };
-
   const handleToggleDropdown = (label) => {
-    setActiveDropdown((prev) => (prev === label ? "" : label));
-  };
+    setActiveDropdowns((prev) => {
+      const newState = { ...prev, [label]: !prev[label] };
 
-  const handleNavigation = (path) => {
-    setActiveDropdown("");
+      // Redirect to "Owner" page when the "Customers" dropdown is opened
+      if (label === "Customers" && newState[label]) {
+        navigate("/ownerlist");
+      }
+
+      return newState;
+    });
+  };
+  const handleNavigation = (path, isSubLink = false) => {
+    if (!isSubLink) {
+      setActiveDropdowns({});
+    }
     toggleSidebar();
     navigate(path);
   };
@@ -54,7 +60,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const sidebarItems = [
     { to: "/home", label: "Dashboard", grayicon: Gray1, whiteicons: White1 },
     {
-      to: "/customers",
+      to: "/ownerlist",
       label: "Customers",
       grayicon: Gray2,
       whiteicons: White2,
@@ -97,9 +103,9 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   ];
 
   return (
-    <div className="md:relative ">
+    <div className="md:relative">
       <div
-        className={`fixed lg:static inset-0 z-20 bg-black bg-opacity-50    transition-opacity md:hidden ${
+        className={`fixed lg:static inset-0 z-20 bg-black bg-opacity-50 transition-opacity md:hidden ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
         onClick={toggleSidebar}
@@ -112,19 +118,19 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       >
         <div className="p-6">
           <div
-            className="text-2xl font-bold cursor-pointer "
-            onClick={() => navigate("/home")}
+            className="text-2xl font-bold cursor-pointer"
+            onClick={() => handleNavigation("/home")}
           >
             <img
               src={SideBarLogo}
-              className="w-[190.36px] h-[117.18px] top-18px left-24px"
+              className="w-[140.36px] h-[100.18px] top-18px left-24px"
               alt="Sidebar Logo"
             />
           </div>
 
-          <ul className="flex flex-col gap-6 mt-5">
-            {sidebarItems.map((item, index) => {
-              const isDropdownActive = activeDropdown === item.label;
+          <ul className="flex flex-col gap-6 mt-9">
+            {sidebarItems?.map((item, index) => {
+              const isDropdownActive = activeDropdowns[item?.label];
 
               return (
                 <li key={index}>
@@ -136,7 +142,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                             ? "bg-[#199BD1] text-white"
                             : "text-[#FFFFFF80]"
                         }`}
-                        onClick={() => handleToggleDropdown(item.label)}
+                        onClick={() => handleToggleDropdown(item?.label)}
                       >
                         <img
                           src={
@@ -165,9 +171,11 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                     ? "text-[#199BD1]"
                                     : "text-[#FFFFFF80]"
                                 } hover:text-white`}
-                                onClick={() => handleNavigation(subLink.to)}
+                                onClick={() =>
+                                  handleNavigation(subLink.to, true)
+                                }
                               >
-                                {subLink.label}
+                                {subLink?.label}
                               </button>
                             </li>
                           ))}
@@ -177,15 +185,15 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                   ) : (
                     <button
                       className={`flex items-center gap-3 p-2 text-[13px] w-full text-left ${
-                        activeDropdown === "" && location.pathname === item.to
+                        location.pathname === item.to
                           ? "bg-[#199BD1] text-white rounded-[10px]"
                           : "text-[#FFFFFF80] hover:text-white"
                       }`}
-                      onClick={() => handleNavigation(item.to)}
+                      onClick={() => handleNavigation(item.to, false)}
                     >
                       <img
                         src={
-                          activeDropdown === "" && location.pathname === item.to
+                          location.pathname === item.to
                             ? item.whiteicons
                             : item.grayicon
                         }
