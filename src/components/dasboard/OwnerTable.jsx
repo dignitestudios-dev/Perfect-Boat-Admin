@@ -15,6 +15,7 @@ const OwnerTable = () => {
       );
 
       setOwnerData(data?.data?.data);
+
     } catch (error) {
       console.error("Error fetching owner data:", error);
     } finally {
@@ -30,7 +31,7 @@ const OwnerTable = () => {
       <div className="card bg-[#001229] p-5 rounded-[20px]">
         <div className="flex justify-between">
           <h3 className="text-[14px]">
-            Owners <span className="text-[#FFFFFF80]">(120)</span>
+            Owners
           </h3>
           <Link
             to={"/ownerlist"}
