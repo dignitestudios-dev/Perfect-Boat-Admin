@@ -117,8 +117,8 @@ const DetailOwner = () => {
       <div className="card bg-[#001229] p-10 rounded-[16px] mt-4  ">
         <div className="flex items-center mx-5 gap-4">
           <img
-            src={ownerDetail?.customer?.profilePicture || OwnerProfile}
-            className="w-[80px] h-[80px]"
+            src={ownerDetail?.customer?.profilePicture || "https://placehold.co/400"}
+            className="w-[80px] h-[80px] rounded-full"
             alt=""
           />
           <div className="text-[24px] font-[700]">

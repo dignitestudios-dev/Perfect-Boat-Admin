@@ -38,7 +38,7 @@ const DetailUser = () => {
 
       <div className="card bg-[#001229] p-10 rounded-[16px] mt-4  ">
         <div className="flex items-center mx-5 gap-4">
-          <img src={userDetail?.customer?.profilePicture || Singleuserprofile} className="w-[80px] h-[80px]" alt="" />
+          <img src={userDetail?.customer?.profilePicture || "https://placehold.co/400"} className="w-[80px] rounded-full h-[80px]" alt="" />
           <div className="text-[24px] font-[700]">{userDetail?.customer?.name}</div>
         </div>
         <div className="grid gap-5 lg:grid-cols-2 sm:grid-cols-1 mt-5">
