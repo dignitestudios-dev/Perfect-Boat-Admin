@@ -79,7 +79,7 @@ const BlogsCard = ({ blog }) => {
       <div className="w-full h-[calc(100%-220px)] flex flex-col gap-2 justify-start items-start p-4">
         <span className="text-[10px] font-medium text-[#199BD1]">
           {blog?.isAdmin ? "Admin" : "Owner"} |
-          {" Author name | December 20th, 2023"}
+        
           {new Date(blog?.createdAt)?.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
