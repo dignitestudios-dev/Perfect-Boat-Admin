@@ -61,7 +61,7 @@ const ForgotPassword = () => {
           <h1 className=" text-[48px] font-bold text-white leading-[64.8px] tracking-[-1.2px]">
             Forgot Password
           </h1>
-          <p className="w-[90%] font-normal text-[16px] text-white leading-[21.6px] tracking-[-1.2px]">
+          <p className="w-[90%]  text-[16px] leading-[25.6px] text-[#FFFFFF] font-[400]  mt-4">
             No worries, we’ve got you covered. Enter your registered email
             address below, and we will send you a code to reset your password.
             Get back to enjoying a seamless experience in just a few simple
@@ -77,8 +77,8 @@ const ForgotPassword = () => {
                 message: "Please enter a valid email address.",
               },
             })}
-            text={"Email Address"}
-            placeholder={"Type your email address here"}
+            text={"Email "}
+            placeholder={"Enter your email  here"}
             type={"text"}
             error={errors.email}
           />

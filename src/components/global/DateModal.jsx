@@ -51,7 +51,7 @@ const DateModal = ({
         ref={dateRef}
         className="relative w-full lg:w-[748px] h-auto md:h-[557px] divide-x-2 divide-[#1A293D] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex justify-start items-start bg-[#243347] rounded-3xl"
       >
-        {/* Close button */}
+      
         <button
           className="absolute top-4 right-4 text-[#199BD1] text-2xl font-bold"
           onClick={() => setIsOpen(false)}

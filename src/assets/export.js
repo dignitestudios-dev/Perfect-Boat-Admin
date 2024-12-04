@@ -61,6 +61,9 @@ import Bellblue from "./bellblue.png";
 import BlueLock from "./blueLock.png";
 import Whitepro from "./whitepro.png";
 import SuccessVector from "./success_vector.png";
+import Searchicon from "./searchicon.png";
+import Upicon from "./upicon.png";
+import Dropup from "./downicon.png";
 
 export {
   AuthMockup,
@@ -108,7 +111,9 @@ export {
   Bellblue,
   BlueLock,
   Whitepro,
-
+  Searchicon,
+  Dropup,
+  Upicon,
   //side bar icons start
   Gray1,
   Gray2,

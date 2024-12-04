@@ -63,7 +63,10 @@ const DetailOwner = () => {
   useEffect(() => {
     getDashboardData();
   }, []);
-
+  const formatNameWithSpaces = (name) => {
+    if (!name) return "Not Found";
+    return name?.replace(/([A-Z])/g, " $1").trim(); 
+  };
   return (
     <div>
       <div className="flex flex-wrap lg:justify-start gap-3">
@@ -109,7 +112,6 @@ const DetailOwner = () => {
           <span className="text-[12px]">Per Employee Fee ($10 PE)</span>
         </div>
         <div className="relative w-full h-full">
-          
           <OwnerDetailLineChart timerange={timerange} id={id} />
         </div>
       </div>
@@ -117,12 +119,16 @@ const DetailOwner = () => {
       <div className="card bg-[#001229] p-10 rounded-[16px] mt-4  ">
         <div className="flex items-center mx-5 gap-4">
           <img
-            src={ownerDetail?.customer?.profilePicture || OwnerProfile}
-            className="w-[80px] h-[80px]"
+            src={
+              ownerDetail?.customer?.profilePicture ||
+              "https://placehold.co/400"
+            }
+            className="w-[80px] h-[80px] rounded-full"
             alt=""
           />
           <div className="text-[24px] font-[700]">
-            {ownerDetail?.customer?.name || "Not Found"}
+            {formatNameWithSpaces(ownerDetail?.customer?.name)}
+          
           </div>
         </div>
         <div className="grid gap-5 lg:grid-cols-2 sm:grid-cols-1 mt-5">

@@ -5,12 +5,15 @@ import RevenueAnalysis from "../../components/revenuereport/revenueanalysis";
 import axios from "../../axios";
 
 const RevenueReport = () => {
-  const [activeTimePeriods, setActiveTimePeriods] = useState(["Weekly", "Weekly", "Weekly"]);
+  const [activeTimePeriods, setActiveTimePeriods] = useState([
+    "Weekly",
+    "Weekly",
+    "Weekly",
+  ]);
   const [activeSubscription, setActiveSubscription] = useState({});
   const [renewalsData, setRenewalsData] = useState({});
   const [revenueData, setRevenueData] = useState({});
   const [loading, setLoading] = useState(false);
-
   const cardData = [
     {
       icon: Toolicon,
@@ -116,9 +119,15 @@ const RevenueReport = () => {
                   />
                 </div>
                 <div>
-                  <h3 className="text-[18px] font-bold text-white">
-                    {card?.getData(activeTimePeriods[index])}
-                  </h3>
+                  {loading ? (
+                    <div className="text-gray-400 text-[18px] animate-pulse">
+                      0...
+                    </div>
+                  ) : (
+                    <h3 className="text-[18px] font-bold text-white">
+                      {card?.getData(activeTimePeriods[index])}
+                    </h3>
+                  )}
                   <p className="text-[13px] text-nowrap leading-[18.9px] text-[#FFFFFF80]">
                     {card?.label}
                   </p>
@@ -128,7 +137,10 @@ const RevenueReport = () => {
                 <Dropdown
                   label={activeTimePeriods[index]}
                   items={["Weekly", "Monthly", "Yearly", "Custom"]}
-                  handleTimePeriod={(value) => handleTimePeriodChange(value, index)}
+                  handleTimePeriod={(value) =>
+                    handleTimePeriodChange(value, index)
+                  }
+                  selectedValue={activeTimePeriods[index]}
                 />
               </div>
             </div>

@@ -50,7 +50,7 @@ const AddBoat = ({ isOpen, onClose, getTasks }) => {
 
   return (
     <div className="fixed top-0 right-0 w-screen h-screen z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#001229] rounded-lg w-[587px] p-6 shadow-lg">
+      <div className="bg-[#001229]   rounded-lg w-[587px] p-6 shadow-lg">
         <div className="flex justify-between">
           <div>
             <h2 className="text-[18px] font-bold text-white text-start">
@@ -71,7 +71,7 @@ const AddBoat = ({ isOpen, onClose, getTasks }) => {
           </div>
         </div>
         <div className="mt-4">
-          <div className="mt-4">
+          <div className="mt-4 h-[400px] overflow-y-auto">
             {boats?.map((boat, index) => (
               <div key={index} className="flex flex-col gap-2 mb-3">
                 <TextFields

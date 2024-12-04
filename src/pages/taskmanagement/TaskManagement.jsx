@@ -57,7 +57,7 @@ const TaskManagement = ({ isOpen }) => {
     <div className="bg-[#0E1B31] rounded-[10px] p-4">
       <div className="flex items-center justify-between">
         <div>
-          <div className="text-[20px] font-[700]">To-Do-List</div>
+          <div className="text-[20px] font-[700]">Task and Boat Management</div>
           <p className="text-[13px] text-[#818181] mt-3 mb-3">
             Here’s a comprehensive list of tasks to keep you on track. Review
             and manage your daily responsibilities effortlessly.

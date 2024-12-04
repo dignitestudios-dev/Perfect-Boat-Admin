@@ -17,7 +17,6 @@ const OwnerList = () => {
 
   const navigate = useNavigate();
 
-
   const toggleDropdown = (id) => {
     setDropdownStates((prevState) => ({
       ...prevState,
@@ -43,6 +42,10 @@ const OwnerList = () => {
       setTotalPages(data?.data?.paginationDetails?.totalPages || 1);
     } catch (error) {
       console.error("Error fetching owner data:", error);
+      if (error?.response?.status === 401) {
+        Cookies.remove("token");
+        navigate("/login");
+      }
     } finally {
       setLoading(false);
     }
@@ -80,7 +83,7 @@ const OwnerList = () => {
             <div>
               <h3 className="text-[18px] font-[700] mb-3">Owners List</h3>
               <SearchInput
-                placeholder="Search by name or email"
+                placeholder="Search here"
                 value={searchValue}
                 onChange={handleSearchChange}
               />
@@ -103,7 +106,7 @@ const OwnerList = () => {
                 </button>
                 {dropdownStates["dropdown1"] && (
                   <div
-                    className="absolute top-8 left-1/2 transform -translate-x-1/2 w-[100px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
+                    className="absolute text-start top-8 left-10 px-3 transform -translate-x-1/2 w-[100px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <p

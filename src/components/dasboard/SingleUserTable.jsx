@@ -34,7 +34,7 @@ const SingleUserTable = () => {
       <div className="card bg-[#001229] p-5 col-span-3 rounded-[20px]">
         <div className="flex justify-between">
           <h3 className="text-[14px]">
-            Single Users <span className="text-[#FFFFFF80]">(20)</span>
+            Single Users 
           </h3>
 
           <Link

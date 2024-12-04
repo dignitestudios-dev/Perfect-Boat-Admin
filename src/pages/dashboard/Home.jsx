@@ -125,7 +125,7 @@ const Home = () => {
             <h4 className="text-[14px] text-white font-[700] leading-[18.9px]">
               Customer Overview
             </h4>
-            <div className="relative bg-[#042742] w-[70px] h-[27px] rounded-[20px] flex items-center justify-center">
+            <div className="relative bg-[#042742] rounded-[20px] flex items-center justify-center">
               <Dropdown
                 label="Yearly"
                 items={["Weekly", "Monthly", "Yearly"]}
