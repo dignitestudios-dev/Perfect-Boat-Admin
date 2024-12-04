@@ -24,7 +24,6 @@ const ProfileManagement = () => {
           </div>
 
           <div className="mt-6">
-         
             <div
               className="flex items-center gap-5 cursor-pointer"
               onClick={() => setTabs("1")}
@@ -43,7 +42,6 @@ const ProfileManagement = () => {
               </h2>
             </div>
 
-          
             <div
               className="flex items-center gap-5 mt-8 cursor-pointer"
               onClick={() => setTabs("2")}
@@ -62,7 +60,6 @@ const ProfileManagement = () => {
               </h2>
             </div>
 
-         
             <div
               className="flex items-center gap-5 mt-8 cursor-pointer"
               onClick={() => setTabs("3")}
@@ -84,7 +81,6 @@ const ProfileManagement = () => {
         </div>
 
         <div className="col-span-12 lg:col-span-8 rounded-md text-white">
-    
           {tabs === "1" && <UserInformation />}
           {tabs === "2" && <UserNotifications />}
           {tabs === "3" && <UserChangePass />}
