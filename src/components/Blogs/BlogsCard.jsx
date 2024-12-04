@@ -76,10 +76,9 @@ const BlogsCard = ({ blog }) => {
         </div>
       </div>
 
-      <div className="w-full h-[calc(100%-220px)] flex flex-col gap-2 justify-start items-start p-4">
+      <div className="w-full h-[calc(100%-210px)] flex flex-col gap-2 justify-start items-start p-4">
         <span className="text-[10px] font-medium text-[#199BD1]">
           {blog?.isAdmin ? "Admin" : "Owner"} |
-        
           {new Date(blog?.createdAt)?.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
@@ -90,7 +89,9 @@ const BlogsCard = ({ blog }) => {
         <div className="relative w-full flex flex-col justify-start items-start gap-2">
           <div>
             <h1 className="text-[16px] font-bold leading-[21.6px] text-white">
-              {blog?.title || "Blog Heading Here"}
+              {blog?.title?.length > 40
+                ? blog?.title?.slice(0, 40) + "..."
+                : blog?.title || "Blog Heading Here"}
             </h1>
             {parseHTML(blog?.story)?.length > 140
               ? parseHTML(blog?.story)?.slice(0, 140) + "..."

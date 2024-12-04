@@ -28,6 +28,7 @@ const Publish = () => {
     setDueDate,
     dueDate,
   } = useContext(BlogContext);
+
   const { state } = useLocation();
 
   const [loading, setLoading] = useState(false);
@@ -176,6 +177,18 @@ const Publish = () => {
                 />
                 <span className="ml-3 text-white text-[14px]">
                   Only for Employees
+                </span>
+              </label>
+              <label className="flex items-center mt-2">
+                <input
+                  type="checkbox"
+                  value="singleuser"
+                  checked={selectedOption === "singleuser"}
+                  onChange={handleOptionChange}
+                  className="form-radio text-[#199BD1] bg-[#001229] focus:ring-[#199BD1] focus:ring-2 h-5 w-5"
+                />
+                <span className="ml-3 text-white text-[14px]">
+                  Only for Single Users
                 </span>
               </label>
             </div>

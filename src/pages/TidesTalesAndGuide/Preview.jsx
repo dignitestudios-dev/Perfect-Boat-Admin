@@ -88,6 +88,9 @@ const Preview = () => {
       formdata.append("cover", coverFile);
       formdata.append("subTitle", subTitle);
       formdata.append("imageTitle", imageText);
+      if (dueDate?.unix) {
+        formdata.append("scheduleDate", dueDate?.unix);
+      }
       formdata.append("story", createHtmlTemplate(story, title, subTitle));
       formdata.append("viewer", viewers);
       const response = await axios.post(`/owner/blog/`, formdata);
@@ -180,7 +183,7 @@ const Preview = () => {
                   </span>
                 </p>
                 <p className="text-[12px] font-normal mt-2">
-                  {moment.unix(dueDate?.unix)?.format("DD/MM/YY hh:mmA")}/
+                  {moment.unix(dueDate?.unix)?.format("DD/MM/YY hh:mmA")}
                 </p>
               </div>
               <button
