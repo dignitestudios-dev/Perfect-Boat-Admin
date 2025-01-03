@@ -37,8 +37,8 @@ const Checkbox = ({ selectedOption, setSelectedOption, setErrors }) => {
           <label className="flex items-center mt-2">
             <input
               type="radio"
-              value="employees"
-              checked={selectedOption === "employees"}
+              value="employee"
+              checked={selectedOption === "employee"}
               onChange={handleOptionChange}
               className="form-radio text-[#199BD1] bg-[#001229] focus:ring-[#199BD1] focus:ring-2 h-5 w-5"
             />
