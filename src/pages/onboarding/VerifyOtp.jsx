@@ -174,7 +174,7 @@ const VerifyOtp = () => {
       </form>
       <div className="w-1/2 lg:flex hidden relative h-full">
         <span className="w-20 h-full grad-blur2 absolute top-0 -left-4"></span>
-        <img src={AuthMockup} alt="auth_mockup" className="w-full h-full" />
+        <img src={AuthMockup} alt="auth_mockup" className="w-full object-cover h-full" />
       </div>
     </div>
   );
