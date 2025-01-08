@@ -5,14 +5,14 @@ import {
   Legend,
   LinearScale,
   LineElement,
-  PointElement, 
+  PointElement,
   Tooltip,
 } from "chart.js";
 import React, { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
-Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip); 
+Chart.register(CategoryScale, LinearScale, LineElement, PointElement, Tooltip);
 
 const options = {
   responsive: true,
@@ -21,7 +21,7 @@ const options = {
       position: "top",
       display: false,
     },
-   
+
     tooltip: {
       callbacks: {
         label: function (context) {
@@ -35,21 +35,27 @@ const options = {
       grid: {
         display: false,
       },
+
+      ticks: {
+        display: true,
+      },
+      border: {
+        color: "#FFFFFF3D",
+      },
     },
     y: {
       grid: {
-        display: true,
+        display: false,
       },
       ticks: {
         display: true,
       },
       border: {
-        display: false,
+        color: "#FFFFFF3D",
       },
     },
   },
 };
-
 
 const LineChartDash = ({ timerange }) => {
   const [loading, setLoading] = useState(false);
@@ -112,9 +118,8 @@ const LineChartDash = ({ timerange }) => {
     getOwnerTableData();
   }, [timerange]);
 
-
   return (
-    <div className="mt-12 w-full">
+    <div className="mt-12  w-full">
       {loading ? <Skeleton /> : <Line data={chartData} options={options} />}
     </div>
   );

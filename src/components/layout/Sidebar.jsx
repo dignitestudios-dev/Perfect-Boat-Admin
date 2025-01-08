@@ -95,7 +95,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     },
     {
       to: "/deleteusers",
-      label: "Delete Users",
+      label: "Deleted Users",
       grayicon: Gray7,
       whiteicons: White7,
     },

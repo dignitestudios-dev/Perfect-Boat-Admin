@@ -31,6 +31,20 @@ const BlogsCard = ({ blog }) => {
     div.innerHTML = html;
     return div.textContent || div.innerText || "";
   };
+ 
+  const truncateText = (text, maxLength = 60) => {
+    if (!text) return "";
+
+    const parsedText = parseHTML(text);
+
+    if (parsedText.length > maxLength) {
+      return parsedText.slice(0, maxLength) + "...";
+    }
+
+    return parsedText;
+  };
+
+  const truncatedStory = truncateText(blog?.story, 80);
 
   return (
     <div
@@ -79,11 +93,13 @@ const BlogsCard = ({ blog }) => {
       <div className="w-full h-[calc(100%-210px)] flex flex-col gap-2 justify-start items-start p-4">
         <span className="text-[10px] font-medium text-[#199BD1]">
           {blog?.isAdmin ? "Admin" : "Owner"} |
+          <span className="mx-1 ">
           {new Date(blog?.createdAt)?.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",
           })}
+          </span>
         </span>
 
         <div className="relative w-full flex flex-col justify-start items-start gap-2">
@@ -93,9 +109,7 @@ const BlogsCard = ({ blog }) => {
                 ? blog?.title?.slice(0, 40) + "..."
                 : blog?.title || "Blog Heading Here"}
             </h1>
-            {parseHTML(blog?.story)?.length > 140
-              ? parseHTML(blog?.story)?.slice(0, 140) + "..."
-              : parseHTML(blog?.story)}
+            <h3>{truncatedStory}</h3>
           </div>
         </div>
       </div>

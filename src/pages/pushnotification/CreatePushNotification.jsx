@@ -109,7 +109,7 @@ const CreatePushNotification = () => {
             </div>
             <div className="flex justify-between mt-5">
               <h4 className="text-[16px]">Description</h4>
-              <p className="text-[16px] text-[#FFFFFF80]">0/150</p>
+              <p className="text-[16px] text-[#FFFFFF80]">{description.length}/150</p>
             </div>
             <textarea
               name="description"
@@ -120,7 +120,8 @@ const CreatePushNotification = () => {
                 setDescription(e.target.value);
                 setErrors((prev) => ({ ...prev, description: "" }));
               }}
-              className="w-full  h-[221px] bg-[#1A293D] outline-none p-3 rounded-xl focus:border-[1px] focus:border-[#55C9FA]"
+              maxLength={150}
+              className="w-full  h-[221px] placeholder:text-[#6B737E] bg-[#1A293D] outline-none p-3 rounded-xl focus:border-[1px] focus:border-[#55C9FA]"
             ></textarea>
             {errors.description && (
               <p className="text-red-500 text-sm mt-1">{errors.description}</p>
@@ -188,6 +189,7 @@ const CreatePushNotification = () => {
               setIsOpen={setCalenderOpen}
               setDueDate={setDate}
               setInputError={setInputError}
+              
             />
             <SendNotification
               isOpen={isModalOpen}

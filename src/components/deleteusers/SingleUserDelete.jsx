@@ -63,7 +63,7 @@ const SingleUserDelete = ({
           <Skeleton />
         </div>
       ) : singleUserData?.length === 0 ? (
-        <div className="p-4 text-center text-white">No data found</div>
+        <div className="p-4 text-center text-white">No deleted users</div>
       ) : (
         singleUserData?.map((item, index) => (
           <div

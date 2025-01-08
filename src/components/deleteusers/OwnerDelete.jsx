@@ -65,7 +65,7 @@ const OwnerDelete = ({
             <Skeleton />
           </div>
         ) : deleteOwnerlist?.length === 0 ? (
-          <div className="p-4 text-center text-white">No data available</div>
+          <div className="p-4 text-center text-white">No deleted users</div>
         ) : (
           deleteOwnerlist?.map((item, index) => (
             <div

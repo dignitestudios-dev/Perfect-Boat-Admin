@@ -23,6 +23,7 @@ const AuthInput2 = ({ state, setState, text, type, error, placeholder }) => {
             className="w-full outline-none  rounded-[12px] placeholder:text-[13px] placeholder:font-normal placeholder:text-[#6B737E] text-white bg-[#001229] h-full px-3 text-sm font-medium "
             value={state}
             onChange={(e) => setState(e.target.value)}
+            
           />
           <button
             type="button"

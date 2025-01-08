@@ -77,7 +77,7 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
         </div>
         {tab === "1" && (
           <div className="grid gap-4">
-            <div className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-4  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
+            <div className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
               <div>Name</div>
               <div>Job Title</div>
               <div>Onboarding Date</div>
@@ -90,7 +90,7 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
               filteredManagers?.slice(0, 4)?.map((item, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white"
+                  className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-2 text-[11px] border-[#FFFFFF24] border-b-2 text-white"
                 >
                   <div className="truncate">{item?.name || "Not Found"}</div>
                   <div className="truncate">

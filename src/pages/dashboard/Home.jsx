@@ -12,7 +12,7 @@ const Home = () => {
   const [cardData, setCardData] = useState([]);
 
   const cardDataTemplate = [
-    { icon: UserIcon, key: "owner", label: "Managers" },
+    { icon: UserIcon, key: "owner", label: "Owners" },
     { icon: User_icon2, key: "user", label: "Single Users" },
     { icon: BoatIcon, key: "boat", label: "Boats" },
     { icon: BookIcon, key: "task", label: "Tasks" },

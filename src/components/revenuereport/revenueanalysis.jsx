@@ -32,7 +32,7 @@ const RevenueAnalysis = () => {
       }
 
       if (dueDate?.normal) {
-        url += `&startDate=${dueDate?.normal}&endDate=${dueDate?.normal}`;
+        url += `&startDate=${dueDate?.calender}&endDate=${dueDate?.calender}`;
       }
       if (searchValue) {
         url += `&search=${encodeURIComponent(searchValue)}`;
@@ -73,7 +73,7 @@ const RevenueAnalysis = () => {
       const response = await axios.get(
         "/admin/revenue/subscription/details/csv"
       );
-      console.log("response is - ", response);
+
       if (response?.status === 200) {
         const result = response?.data;
         if (result?.success && result?.data) {
@@ -95,6 +95,21 @@ const RevenueAnalysis = () => {
       setloadingDownload(false);
     }
   };
+
+  // const generateYears = (startYear) => {
+  //   const currentYear = new Date().getFullYear();
+  //   const years = [];
+  //   for (let i = startYear; i <= currentYear; i++) {
+  //     years.push(i);
+  //   }
+  //   return years;
+  // };
+
+  // useEffect(() => {
+  //   const years = generateYears(2000);
+  //   setAllYears(years);
+  // }, []);
+
   return (
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[820px] overflow-y-auto  scrollbar-thin ">
@@ -134,7 +149,7 @@ const RevenueAnalysis = () => {
             </button>
             <button
               onClick={() => setTabs("3")}
-              className={`w-[76px] h-[35px] rounded-full text-[11px] font-semibold ${
+              className={`w-[86px] h-[35px] rounded-full text-[11px] font-semibold ${
                 tab === "3"
                   ? "bg-[#199BD1] text-white"
                   : "bg-[#042742] text-[#199BD1]"
@@ -180,6 +195,8 @@ const RevenueAnalysis = () => {
                 setIsOpen={setCalenderOpen}
                 setDueDate={setDueDate}
                 setInputError={setInputError}
+                minDate={new Date(2024, 0, 4)}
+                // maxDate={new Date(2025, 0, 4)}
               />
 
               <div>
@@ -206,7 +223,7 @@ const RevenueAnalysis = () => {
               <div>Subscription Plan</div>
               <div>Subscription Fee</div>
               <div>Per User Cost</div>
-              <div>Total Cost of users</div>
+              <div>Total Cost of Users</div>
               <div>Total Revenue</div>
             </div>
 
@@ -231,10 +248,10 @@ const RevenueAnalysis = () => {
                       <div>{item?.name || "N/A"}</div>
                       <div>{item?.totalUser || "N/A"}</div>
                       <div>{item?.subscriptionPlan?.name || "N/A"}</div>
-                      <div>{item?.subscriptionPrice || "N/A"}</div>
-                      <div>{item?.perUserPrice || "N/A"}</div>
-                      <div>{item?.perUserPrice || "N/A"}</div>
-                      <div>{item?.totallRevenue || "N/A"}</div>
+                      <div>${item?.subscriptionPrice || "N/A"}</div>
+                      <div>${item?.perUserPrice || "N/A"}</div>
+                      <div>${item?.perUserPrice || "N/A"}</div>
+                      <div>${item?.totallRevenue || "N/A"}</div>
                     </div>
                   </Link>
                 ))

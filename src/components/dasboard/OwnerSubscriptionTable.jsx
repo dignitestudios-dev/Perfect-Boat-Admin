@@ -56,37 +56,39 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
             ) : ownerDetail?.subscription?.owner?.length === 0 ? (
               <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
-              ownerDetail?.subscription?.owner?.slice(0, 4)?.map((item, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-[2fr_2fr_1fr]  gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-                >
-                  <div className="font-medium">
-                    {" "}
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+              ownerDetail?.subscription?.owner
+                ?.slice(0, 4)
+                ?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-[2fr_2fr_1fr]  gap-4 p-2 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                  >
+                    <div className="font-medium">
+                      {" "}
+                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </div>
+                    <div className="">{item?.price}</div>
+                    <div className="">
+                      {new Date(item?.updatedAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </div>
                   </div>
-                  <div className="">{item?.price}</div>
-                  <div className="">
-                    {new Date(item?.updatedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </div>
-                </div>
-              ))
+                ))
             )}
           </div>
         )}
         {tab === "2" && (
           <div className="grid gap-4">
-            <div className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-4  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
-              <div>Date</div>
-              <div>Users Onboard</div>
+            <div className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
+              <div>Paid On</div>
+              <div>Users Onboarded</div>
               <div>Per User Cost</div>
             </div>
             {loading ? (
@@ -94,22 +96,28 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
             ) : ownerDetail?.subscription?.user?.length === 0 ? (
               <div className="text-center h-10 font-bold">Data Not Found</div>
             ) : (
-              ownerDetail?.subscription?.user?.slice(0, 4)?.map((item, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
-                >
-                  <div className="font-medium">
-                    {new Date(item?.updatedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+              ownerDetail?.subscription?.user
+                ?.slice(0, 4)
+                ?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-2 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                  >
+                    <div className="font-medium">
+                      {new Date(item?.updatedAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </div>
+                    <div className="">{item?.totalluser || "Not Found"}</div>
+
+                    <div className="">
+                      {" "}
+                      {item?.totalluser * item?.perUserCost || "Not Found"}
+                    </div>
                   </div>
-                  <div className="">{item?.totalluser || "Not Found"}</div>
-                  <div className="">{item?.perUserCost || "Not Found"}</div>
-                </div>
-              ))
+                ))
             )}
           </div>
         )}

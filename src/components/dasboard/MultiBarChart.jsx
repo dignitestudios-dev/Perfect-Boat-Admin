@@ -37,6 +37,12 @@ const options = {
       grid: {
         display: false,
       },
+
+      border: {
+        display: true,
+
+        color: "#FFFFFF3D",
+      },
     },
     y: {
       stacked: false,
@@ -47,7 +53,10 @@ const options = {
         display: true,
       },
       border: {
-        display: false,
+        display: true,
+        
+          color: "#FFFFFF3D",
+        
       },
     },
   },

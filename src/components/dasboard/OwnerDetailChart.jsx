@@ -35,6 +35,10 @@ const options = {
       grid: {
         display: false,
       },
+      border:{
+        color: "#FFFFFF3D",
+
+      }
     },
     y: {
       grid: {
@@ -43,9 +47,10 @@ const options = {
       ticks: {
         display: true,
       },
-      border: {
-        display: false,
-      },
+      border:{
+        color: "#FFFFFF3D",
+
+      }
     },
   },
 };
@@ -91,7 +96,7 @@ const OwnerDetailLineChart = ({ timerange, id }) => {
         labels = graphData.map((item) => item?.day || "Unknown day");
       } else if (timerange === "Weekly") {
         graphData = data?.data?.graph?.weekly || [];
-        labels = graphData.map((item) => item?.dayOfWeek || "Unknown Day");
+        labels = graphData.map((item) => item?.day || "Unknown Day");
       }
 
       const subscription = graphData?.map(

@@ -39,22 +39,7 @@ const Step1 = ({
               />
             </div>
             <div className="mt-3">
-              <AuthInput
-                register={register("email", {
-                  required: "Please enter email address.",
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Please enter a valid email address.",
-                  },
-                })}
-                text={"Email"}
-                placeholder={"Enter email here"}
-                type={"text"}
-                error={errors.email}
-              />
-            </div>
-            <div className="mt-3">
-              <AuthInput
+            <AuthInput
                 text={"Job Title"}
                 placeholder={"Dock manager"}
                 type={"text"}
@@ -64,21 +49,8 @@ const Step1 = ({
                 error={errors.jobTitle}
               />
             </div>
-          </div>
-          <div className="col-span-6">
             <div className="mt-3">
-              <AuthInput
-                text={"Location"}
-                placeholder={"East California dock"}
-                type={"text"}
-                register={register("location", {
-                  required: "Please enter location",
-                })}
-                error={errors.location}
-              />
-            </div>
-            <div className="mt-3">
-              <AuthInput
+            <AuthInput
                 text={"Phone Number"}
                 placeholder={"000 0000 0000"}
                 type={"text"}
@@ -93,6 +65,37 @@ const Step1 = ({
                 maxLength="12"
                 error={errors.phoneNumber}
               />
+            </div>
+          </div>
+          <div className="col-span-6">
+            <div className="mt-3">
+            <AuthInput
+                register={register("email", {
+                  required: "Please enter email address.",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email address.",
+                  },
+                })}
+                text={"Email"}
+                placeholder={"Enter email here"}
+                type={"text"}
+                error={errors.email}
+              />
+            
+            </div>
+            <div className="mt-3">
+            <AuthInput
+                text={"Location"}
+                placeholder={"East California dock"}
+                type={"text"}
+                register={register("location", {
+                  required: "Please enter location",
+                })}
+                error={errors.location}
+              />
+           
+            
             </div>
             <div className="mt-3">
               <AuthInput

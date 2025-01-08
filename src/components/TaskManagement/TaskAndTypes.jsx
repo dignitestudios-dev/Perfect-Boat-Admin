@@ -63,7 +63,7 @@ const TaskAndTypes = ({
             }}
           >
             {item?.task?.map((line, index) => (
-              <li key={index} className="mb-2 text-[13px] font-[400]">
+              <li key={index} className="mb-2 mx-5 leading-[17.55px] text-[#FFFFFF] text-[13px] font-[400]">
                 {line}
               </li>
             ))}

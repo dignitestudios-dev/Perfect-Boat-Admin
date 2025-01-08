@@ -14,7 +14,7 @@ const SendNotification = ({ isOpen, onClose }) => {
           <img src={Ringbell} className="w-[88px] h-[92px]  " alt="" />
         </div>
         <div className="text-[24px] font-[700] mt-4 text-white text-center">
-          Notification Send
+          Notification Sent
         </div>
         <div className="text-center text-[16px] font-[500] mt-3">Notification has been sent to all owners successfully.</div>
       </div>

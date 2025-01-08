@@ -53,6 +53,7 @@ const DetailOwner = () => {
       icon: CoinIcon,
       number: ownerDetail?.dashboard?.totallRevenue,
       label: "Total Revenue",
+      sing: "$",
     },
   ];
   const [timerange, setTimerange] = useState("Yearly");
@@ -65,7 +66,7 @@ const DetailOwner = () => {
   }, []);
   const formatNameWithSpaces = (name) => {
     if (!name) return "Not Found";
-    return name?.replace(/([A-Z])/g, " $1").trim(); 
+    return name?.replace(/([A-Z])/g, " $1").trim();
   };
   return (
     <div>
@@ -84,7 +85,11 @@ const DetailOwner = () => {
                 />
               </div>
               <div>
-                <h3 className="text-[18px] font-[700]">{card?.number}</h3>
+                <h3 className="text-[18px] font-[700]">
+                {card?.sing}  {card?.number}
+                
+                </h3>
+
                 <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
                   {card?.label}
                 </h3>
@@ -107,7 +112,7 @@ const DetailOwner = () => {
         </div>
         <div className="flex gap-3">
           <div className="h-[15px] w-[15px] bg-[#FB7B2C] rounded"></div>
-          <span className="text-[12px]">Licensed Fee</span>
+          <span className="text-[12px]">License Fee</span>
           <div className="h-[15px] w-[15px] bg-[#199BD1] rounded"></div>
           <span className="text-[12px]">Per Employee Fee ($10 PE)</span>
         </div>
@@ -117,18 +122,17 @@ const DetailOwner = () => {
       </div>
 
       <div className="card bg-[#001229] p-10 rounded-[16px] mt-4  ">
-        <div className="flex items-center mx-5 gap-4">
-          <img
+        <div className="flex items-center gap-4">
+          {/* <img
             src={
               ownerDetail?.customer?.profilePicture ||
               "https://placehold.co/400"
             }
             className="w-[80px] h-[80px] rounded-full"
             alt=""
-          />
+          /> */}
           <div className="text-[24px] font-[700]">
             {formatNameWithSpaces(ownerDetail?.customer?.name)}
-          
           </div>
         </div>
         <div className="grid gap-5 lg:grid-cols-2 sm:grid-cols-1 mt-5">

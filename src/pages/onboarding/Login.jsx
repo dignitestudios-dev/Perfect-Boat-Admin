@@ -50,7 +50,7 @@ const Login = () => {
         className="w-full lg:w-1/2 h-full bg-[#001229] px-4 py-8 lg:p-20 z-10 flex flex-col overflow-y-auto justify-start items-center gap-8"
       >
         <h1 className="w-full justify-start items-start text-[48px] font-bold text-white leading-[64.8px] tracking-[-1.2px]">
-          Log in
+          Log In
         </h1>
         <div className="w-full h-auto flex flex-col justify-start items-start gap-4">
           <AuthInput

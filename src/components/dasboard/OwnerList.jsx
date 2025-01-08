@@ -88,6 +88,14 @@ const OwnerList = () => {
                 onChange={handleSearchChange}
               />
             </div>
+            <div className="bg-[#199BD1] text-white w-[93px] h-[32px] rounded-[10px] text-[11px] hover:text-white text-center items-center flex justify-center">
+              <Link
+                to={"/ownerdetail"}
+                className="text-white no-underline hover:no-underline hover:text-white"
+              >
+                + Add Owner
+              </Link>
+            </div>
           </div>
 
           <div className="grid gap-4">
@@ -130,7 +138,7 @@ const OwnerList = () => {
                   </div>
                 )}
               </div>
-              <div className="text-end">Actions</div>
+              <div className="text-end mx-4">Actions</div>
             </div>
 
             {renderNoData() ||
@@ -150,11 +158,12 @@ const OwnerList = () => {
                       day: "2-digit",
                     })}
                   </div>
-                  {item?.isSubscribed ? (
+                  {item?.isSubscribed === true && (
                     <button className="bg-[#199BD1] w-[51px] h-[23px] rounded-full text-white text-[11px]">
                       Active
                     </button>
-                  ) : (
+                  )}
+                  {item?.isSubscribed === false && (
                     <button className="bg-[#9A9A9A] w-[59px] h-[23px] rounded-full text-white text-[11px]">
                       Inactive
                     </button>

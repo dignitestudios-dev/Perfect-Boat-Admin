@@ -50,6 +50,7 @@ const RevenueReport = () => {
           : timePeriod === "Yearly"
           ? revenueData?.yearly
           : revenueData?.custom,
+      sing: "$",
     },
   ];
 
@@ -107,7 +108,7 @@ const RevenueReport = () => {
         {cardData?.map((card, index) => (
           <div
             key={index}
-            className="card bg-[#001229] p-4 rounded-[24px] w-[294px] shadow-lg"
+            className="card bg-[#001229] p-4 rounded-[24px] w-[314px] shadow-lg"
           >
             <div className="flex justify-between">
               <div className="flex gap-3 items-center">
@@ -125,7 +126,11 @@ const RevenueReport = () => {
                     </div>
                   ) : (
                     <h3 className="text-[18px] font-bold text-white">
-                      {card?.getData(activeTimePeriods[index])}
+                      {card?.sing
+                        ? `${card.sing}${card.getData(
+                            activeTimePeriods[index]
+                          )}`
+                        : card?.getData(activeTimePeriods[index])}
                     </h3>
                   )}
                   <p className="text-[13px] text-nowrap leading-[18.9px] text-[#FFFFFF80]">

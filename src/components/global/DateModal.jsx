@@ -19,23 +19,35 @@ const DateModal = ({
   setDueDate,
   setInputError,
   isRange = "",
+  minDate,
 }) => {
   const today = moment();
   const [date, setDate] = useState(today.toDate());
   const dateRef = useRef();
-
+  console.log(date);
   const toggleModal = (e) => {
     if (dateRef.current && !dateRef.current.contains(e.target)) {
       setIsOpen(false);
     }
   };
+  // console.log(maxDate, "mindate");
 
   const handleDueDate = () => {
-    const formattedDate = date.toISOString().slice(0, 10);
-    setDueDate({ normal: formattedDate });
+    const utcDate = date;
 
-    const unixTimestamp = Math.floor(date.getTime() / 1000);
-    setDueDate((prev) => ({ ...prev, unix: unixTimestamp }));
+    const calendarDate = moment(utcDate).format("MM DD YYYY");
+
+    // Convert the UTC time to Unix timestamp (epoch time) in seconds
+    const epochTime = Math.floor(utcDate.getTime() / 1000);
+
+    // Format the UTC date into YYYY-MM-DD format
+    const formattedDate = utcDate.toISOString().slice(0, 10);
+
+    setDueDate({
+      normal: formattedDate,
+      unix: epochTime,
+      calendar: moment(calendarDate).format("DD-MM-YYYY"),
+    });
     setInputError({});
     setIsOpen(false);
   };
@@ -51,7 +63,6 @@ const DateModal = ({
         ref={dateRef}
         className="relative w-full lg:w-[748px] h-auto md:h-[557px] divide-x-2 divide-[#1A293D] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex justify-start items-start bg-[#243347] rounded-3xl"
       >
-      
         <button
           className="absolute top-4 right-4 text-[#199BD1] text-2xl font-bold"
           onClick={() => setIsOpen(false)}
@@ -93,7 +104,7 @@ const DateModal = ({
                   className="h-full bg-[#243347]"
                   id="calendar-1"
                   value={date}
-                  minDate={today.toDate()}
+                  minDate={minDate}
                   onChange={(value) => {
                     setDate(value);
                   }}
