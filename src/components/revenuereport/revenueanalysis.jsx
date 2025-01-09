@@ -246,12 +246,12 @@ const RevenueAnalysis = () => {
                         })}
                       </div>
                       <div>{item?.name || "N/A"}</div>
-                      <div>{item?.totalUser || "N/A"}</div>
+                      <div>{item?.totalUser || 0}</div>
                       <div>{item?.subscriptionPlan?.name || "N/A"}</div>
-                      <div>${item?.subscriptionPrice || "N/A"}</div>
-                      <div>${item?.perUserPrice || "N/A"}</div>
-                      <div>${item?.perUserPrice || "N/A"}</div>
-                      <div>${item?.totallRevenue || "N/A"}</div>
+                      <div>${item?.subscriptionPrice || 0}</div>
+                      <div>${item?.perUserPrice || 0}</div>
+                      <div>${item?.perUserPrice || 0}</div>
+                      <div>${item?.totallRevenue || 0}</div>
                     </div>
                   </Link>
                 ))

@@ -34,10 +34,12 @@ const options = {
     x: {
       grid: {
         display: false,
+        
       },
 
       ticks: {
         display: true,
+        color:"#FFFFFF"
       },
       border: {
         color: "#FFFFFF3D",
@@ -49,6 +51,7 @@ const options = {
       },
       ticks: {
         display: true,
+        color:"#FFFFFF"
       },
       border: {
         color: "#FFFFFF3D",

@@ -148,7 +148,7 @@ const OwnerList = () => {
                   className="grid grid-cols-[1fr_1fr_2fr_1.5fr_1.5fr_1fr_0.5fr] gap-4 p-3 text-[11px] border-b-2 border-[#FFFFFF24] text-white"
                 >
                   <div>{item?.name || "N/A"}</div>
-                  <div>{item?.totalUser || "N/A"}</div>
+                  <div>{item?.totalUser || 0}</div>
                   <div>{item?.email || "N/A"}</div>
                   <div>{item?.phoneNumber || "N/A"}</div>
                   <div>

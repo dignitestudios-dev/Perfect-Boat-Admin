@@ -37,7 +37,10 @@ const options = {
       grid: {
         display: false,
       },
-
+      ticks: {
+        display: true,
+        color: "#FFFFFF",
+      },
       border: {
         display: true,
 
@@ -51,12 +54,12 @@ const options = {
       },
       ticks: {
         display: true,
+        color: "#FFFFFF",
       },
       border: {
         display: true,
-        
-          color: "#FFFFFF3D",
-        
+
+        color: "#FFFFFF3D",
       },
     },
   },
