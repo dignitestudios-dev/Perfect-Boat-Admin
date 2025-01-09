@@ -15,6 +15,7 @@ import axios from "../../axios";
 import { ErrorToast } from "../Toaster/Toaster";
 import Dropdown from "../dropdown/Dropdown";
 import OwnerDetailLineChart from "./OwnerDetailChart";
+import moment from "moment";
 const DetailOwner = () => {
   const { id } = useParams();
 
@@ -68,6 +69,17 @@ const DetailOwner = () => {
     if (!name) return "Not Found";
     return name?.replace(/([A-Z])/g, " $1").trim();
   };
+  console.log(
+    ownerDetail?.customer?.subscriptionPlan?.expireOn,
+    "ownerDetail?.subscription?.owner?.subscriptionPlan.name"
+  );
+  const getUnixDate = (date) => {
+    if (date && moment(date).isValid()) {
+      // Convert Unix timestamp to local time and format it
+      return moment.unix(date).local().format("MM-DD-YYYY");
+    }
+    return undefined;
+  };
   return (
     <div>
       <div className="flex flex-wrap lg:justify-start gap-3">
@@ -86,8 +98,7 @@ const DetailOwner = () => {
               </div>
               <div>
                 <h3 className="text-[18px] font-[700]">
-                {card?.sing}  {card?.number}
-                
+                  {card?.sing} {card?.number}
                 </h3>
 
                 <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">
@@ -204,6 +215,34 @@ const DetailOwner = () => {
                   }
                   isDisabled={true}
                 />
+              </div>
+              <div className="mt-4">
+                <AuthInput
+                  text="Subscription"
+                  type="text"
+                  value={
+                    ownerDetail?.customer?.subscriptionPlan?.name ||
+                    "No Subscription"
+                  }
+                  isDisabled={true}
+                />
+                <div
+                  className={`relative left-[366px] text-[13px] font-[500] bottom-[36px] cursor-pointer ${
+                    ownerDetail?.customer?.isSubscribed === true
+                      ? "text-[#199BD1]"
+                      : " text-white"
+                  }`}
+                >
+                  {ownerDetail?.customer?.isSubscribed === true
+                    ? "Active"
+                    : "Inactive"}
+                </div>
+                {ownerDetail?.customer?.isSubscribed ? (
+                  <div className="text-[#FD0404] text-[13px] font-[500]">
+                    Expires on:{" "}
+                  {moment.unix(ownerDetail?.customer?.subscriptionPlan?.expireOn).local().format("MM-DD-YYYY")}
+                  </div>
+                ) : null}
               </div>
             </>
           )}

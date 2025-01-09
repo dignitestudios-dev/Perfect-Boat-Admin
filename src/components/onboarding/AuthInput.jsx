@@ -11,6 +11,7 @@ const AuthInput = ({
   isDisabled = false,
   isAuth = true,
   maxLength,
+  onChange
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
@@ -35,6 +36,7 @@ const AuthInput = ({
             disabled={isDisabled}
             maxLength={maxLength}
             placeholder={placeholder}
+            onChange={onChange}
             className={`w-full outline-none rounded-[12px] placeholder:text-[13px] placeholder:font-normal
              placeholder:text-[#6B737E] text-white ${
                isAuth ? "bg-transparent" : "bg-[#001229]"

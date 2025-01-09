@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ErrorToast } from "../Toaster/Toaster";
 import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 
 const DetailUser = () => {
   const navigate = useNavigate();
@@ -107,6 +108,37 @@ const DetailUser = () => {
                   }
                   isDisabled={true}
                 />
+              </div>
+              <div className="mt-4">
+                <AuthInput
+                  text="Subscription"
+                  type="text"
+                  value={
+                    userDetail?.customer?.subscriptionPlan?.name ||
+                    "No Subscription"
+                  }
+                  isDisabled={true}
+                />
+                <div
+                  className={`relative left-[366px] text-[13px] font-[500] bottom-[36px] cursor-pointer ${
+                    userDetail?.customer?.isSubscribed === true
+                      ? "text-[#199BD1]"
+                      : " text-white"
+                  }`}
+                >
+                  {userDetail?.customer?.isSubscribed === true
+                    ? "Active"
+                    : "Inactive"}
+                </div>
+                {userDetail?.customer?.isSubscribed ? (
+                  <div className="text-[#FD0404] text-[13px] font-[500]">
+                    Expires on:{" "}
+                    {moment
+                      .unix(userDetail?.customer?.subscriptionPlan?.expireOn)
+                      .local()
+                      .format("MM-DD-YYYY")}
+                  </div>
+                ) : null}
               </div>
             </>
           )}
