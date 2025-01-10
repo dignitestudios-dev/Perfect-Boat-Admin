@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Splash />} />
-      {authRoutes.map((route) => {
+      {authRoutes?.map((route) => {
         return (
           <Route path={route?.url} element={route?.page} key={route?.title} />
         );
