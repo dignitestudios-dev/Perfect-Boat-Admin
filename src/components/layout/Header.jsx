@@ -6,7 +6,10 @@ import Cookies from "js-cookie";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 const Header = ({ toggleSidebar }) => {
-  const { navigate, notifications } = useContext(GlobalContext);
+  const { navigate, notifications,profilepic } = useContext(GlobalContext);
+
+
+
   const unreadCount = notifications.filter(
     (notification) => !notification.isRead
   ).length;
@@ -31,7 +34,10 @@ const Header = ({ toggleSidebar }) => {
         </div>
         <div>
           <img
-            src={`https://ui-avatars.com/api/?name=${Cookies.get("name")}`}
+            src={
+              profilepic ||
+              `https://ui-avatars.com/api/?name=${Cookies.get("name")}`
+            }
             alt="Profile"
             className="w-[28px] h-[28px] rounded-full"
             onClick={() => navigate("/profile", "Profile")}

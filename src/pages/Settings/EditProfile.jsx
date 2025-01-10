@@ -63,6 +63,7 @@ const EditProfile = () => {
                 placeholder={"Mark Taylor"}
                 type={"text"}
                 value={profileData?.name}
+                isDisabled
               />
             </div>
             <div className="mt-3">

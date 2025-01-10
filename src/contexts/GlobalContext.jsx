@@ -18,6 +18,7 @@ export const GlobalContextProvider = ({ children }) => {
 
   // for notifications
   const [show, setShow] = useState(false);
+  const [profilepic, setProfilepic] = useState('');
   const [notification, setNotification] = useState({ title: "", body: "" });
   const [notifications, setNotifications] = useState([]);
   const [notificationUpdate, setNotificationUpdate] = useState(false);
@@ -51,6 +52,8 @@ export const GlobalContextProvider = ({ children }) => {
         setNotifications,
         notificationUpdate,
         setNotificationUpdate,
+        setProfilepic,
+        profilepic
       }}
     >
       {children}
