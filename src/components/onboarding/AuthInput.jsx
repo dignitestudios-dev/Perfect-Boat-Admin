@@ -11,7 +11,7 @@ const AuthInput = ({
   isDisabled = false,
   isAuth = true,
   maxLength,
-  onChange
+  onChange,
 }) => {
   const [isPassVisible, setIsPassVisible] = useState(false);
 
@@ -43,7 +43,7 @@ const AuthInput = ({
              }  h-full px-3 text-sm font-medium `}
             {...register}
           />
-          <button
+          <span
             type="button"
             onClick={() => setIsPassVisible((prev) => !prev)}
             className="absolute top-4 text-lg right-2"
@@ -53,7 +53,7 @@ const AuthInput = ({
           >
             {type == "password" &&
               (!isPassVisible ? <BsEye /> : <BsEyeSlash />)}
-          </button>
+          </span>
         </div>
       </div>
       {error && <p className="text-red-500 text-sm">{error.message}</p>}

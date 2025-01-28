@@ -240,7 +240,10 @@ const DetailOwner = () => {
                 {ownerDetail?.customer?.isSubscribed ? (
                   <div className="text-[#FD0404] text-[13px] font-[500]">
                     Expires on:{" "}
-                  {moment.unix(ownerDetail?.customer?.subscriptionPlan?.expireOn).local().format("MM-DD-YYYY")}
+                    {moment
+                      .unix(ownerDetail?.customer?.subscriptionPlan?.expireOn)
+                      .local()
+                      .format("MM-DD-YYYY")}
                   </div>
                 ) : null}
               </div>

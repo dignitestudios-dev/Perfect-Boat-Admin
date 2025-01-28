@@ -82,6 +82,7 @@ const Login = () => {
               error={errors.password}
             />
             <button
+              type="button"
               onClick={() => navigate("/forgot-password")}
               className="text-[16px] leading-[21.6px] mt-2 font-[500] text-[#FFFFFF]"
             >
@@ -94,7 +95,11 @@ const Login = () => {
       </form>
       <div className="w-1/2 lg:flex hidden relative h-full">
         <span className="w-20 h-full bg-gradient-to-r from-black/70 via-black/30 to-black/0  absolute top-0 -left-4"></span>
-        <img src={AuthMockup} alt="auth_mockup" className="w-full object-cover h-full" />
+        <img
+          src={AuthMockup}
+          alt="auth_mockup"
+          className="w-full object-cover h-full"
+        />
       </div>
     </div>
   );

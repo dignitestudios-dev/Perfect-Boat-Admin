@@ -7,6 +7,7 @@ import DateModal from "../global/DateModal";
 import axios from "../../axios";
 import Pagination from "../paginations/Pagination";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 const RevenueAnalysis = () => {
   const [tab, setTabs] = useState("1");
   const [calendarOpen, setCalenderOpen] = useState(false);
@@ -31,8 +32,8 @@ const RevenueAnalysis = () => {
         url = `/admin/revenue/subscription/details?isSingleUser=true&page=${currentPage}&pageSize=12`;
       }
 
-      if (dueDate?.normal) {
-        url += `&startDate=${dueDate?.calender}&endDate=${dueDate?.calender}`;
+      if (dueDate?.calendar) {
+        url += `&startDate=${dueDate?.calendar}&endDate=${dueDate?.calendar}`;
       }
       if (searchValue) {
         url += `&search=${encodeURIComponent(searchValue)}`;
@@ -174,7 +175,9 @@ const RevenueAnalysis = () => {
                   alt="calendar"
                 />
                 <span className="text-[12px] font-[500]">
-                  {dueDate.normal ? dueDate.normal : "Select date"}
+                  {dueDate.unix
+                    ? moment.unix(dueDate.unix).local().format("MM-DD-YYYY")
+                    : "Select date"}
                 </span>
                 {dueDate && (
                   <button

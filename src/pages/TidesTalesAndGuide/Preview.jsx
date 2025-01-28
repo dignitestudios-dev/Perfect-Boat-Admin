@@ -118,7 +118,7 @@ const Preview = () => {
       navigate("/blog/createnewblog");
     }
   }, []);
-const today=moment()
+  const today = moment();
   return (
     <div className="h-full w-full p-6 flex flex-col gap-4 bg-[#0D1B2A] text-white overflow-y-auto">
       {/* Header */}
@@ -218,7 +218,6 @@ const today=moment()
         setDueDate={setDueDate}
         setInputError={setInputError}
         minDate={today.toDate()}
-
       />
     </div>
   );

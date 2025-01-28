@@ -81,7 +81,6 @@ const UpdateBlog = () => {
     setTitle(state?.title);
     setSubTitle(state?.subTitle);
     setStory(state?.story);
-    setCoverFile(state?.cover);
     setCoverUrl(state?.cover);
     setImageText(state?.imageTitle);
   }, []);

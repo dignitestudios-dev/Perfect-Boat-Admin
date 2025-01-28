@@ -11,6 +11,7 @@ const EditTask = ({ isOpen, onClose, taskEdit, getTasks }) => {
 
   const [taskName, setTaskName] = useState([]);
   const [taskType, setTaskType] = useState("");
+  const [taskTypeError, setTaskTypeError] = useState(null);
   const [submitLoading, setSubmitLoading] = useState("");
 
   useEffect(() => {
@@ -40,6 +41,10 @@ const EditTask = ({ isOpen, onClose, taskEdit, getTasks }) => {
   };
 
   const handleSave = async () => {
+    if (!taskType) {
+      setTaskTypeError("Enter task type");
+      return;
+    }
     try {
       setSubmitLoading(true);
       let obj = {
@@ -96,6 +101,9 @@ const EditTask = ({ isOpen, onClose, taskEdit, getTasks }) => {
             state={taskType}
             setState={setTaskType}
           />
+          {taskTypeError && (
+            <p className="text-xs text-red-600">{taskTypeError}</p>
+          )}
 
           <div className="text-[13px] mt-4">Tasks</div>
           <div className="mt-2 mb-3 overflow-y-auto max-h-[200px]">

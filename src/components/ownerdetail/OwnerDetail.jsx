@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AuthInput from "../onboarding/AuthInput";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthInput2 from "../onboarding/AuthInput2";
 import GenerateCrediantial from "../Modal/GenerateCrediantial";
 import { useForm } from "react-hook-form";
@@ -39,7 +39,7 @@ const Step1 = ({
               />
             </div>
             <div className="mt-3">
-            <AuthInput
+              <AuthInput
                 text={"Job Title"}
                 placeholder={"Dock manager"}
                 type={"text"}
@@ -50,7 +50,7 @@ const Step1 = ({
               />
             </div>
             <div className="mt-3">
-            <AuthInput
+              <AuthInput
                 text={"Phone Number"}
                 placeholder={"000 0000 0000"}
                 type={"text"}
@@ -69,7 +69,7 @@ const Step1 = ({
           </div>
           <div className="col-span-6">
             <div className="mt-3">
-            <AuthInput
+              <AuthInput
                 register={register("email", {
                   required: "Please enter email address.",
                   pattern: {
@@ -82,10 +82,9 @@ const Step1 = ({
                 type={"text"}
                 error={errors.email}
               />
-            
             </div>
             <div className="mt-3">
-            <AuthInput
+              <AuthInput
                 text={"Location"}
                 placeholder={"East California dock"}
                 type={"text"}
@@ -94,8 +93,6 @@ const Step1 = ({
                 })}
                 error={errors.location}
               />
-           
-            
             </div>
             <div className="mt-3">
               <AuthInput
@@ -112,9 +109,12 @@ const Step1 = ({
         </div>
       </div>
       <div className="flex justify-end gap-3 flex-wrap">
-        <Link to={"/settings"} className="hover:no-underline">
+        <Link to={-1} className="hover:no-underline">
           <div className="flex justify-end mt-4">
-            <button className="bg-[#02203A] w-[235px]   h-[54px] rounded-[8px] text-[#199BD1] font-[700]">
+            <button
+              type="button"
+              className="bg-[#02203A] w-[235px]   h-[54px] rounded-[8px] text-[#199BD1] font-[700]"
+            >
               Back
             </button>
           </div>
@@ -142,6 +142,8 @@ const Step2 = ({
   setValue,
   handleSubmit,
   loading,
+
+  setStep,
 }) => {
   const onFormSubmit = (data) => {
     console.log("Step 2 Data:", data);
@@ -223,8 +225,9 @@ const Step2 = ({
         </div>
         <div className="flex justify-end mt-4">
           <button
+            type="button"
             className="bg-[#199BD1] w-[235px]  h-[54px] rounded-[8px] text-white"
-            onClick={() => setTab("1")}
+            onClick={() => setStep(1)}
           >
             Back
           </button>
@@ -235,6 +238,7 @@ const Step2 = ({
 };
 
 const OwnerDetail = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -265,6 +269,7 @@ const OwnerDetail = () => {
       if (response.status === 200) {
         setLoading(false);
         SuccessToast("Added Successfully");
+        navigate("/ownerlist");
       }
     } catch (err) {
       ErrorToast(err?.response?.data?.message);
@@ -297,182 +302,10 @@ const OwnerDetail = () => {
             setValue={setValue}
             handleSubmit={handleSubmit}
             loading={loading}
+            setStep={setStep}
           />
         )}
       </div>
-
-      {/* {tab === "1" && (
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="bg-[#001229] h-[410px] rounded-[18px] ">
-            <h2 className="text-[18px] font-[700] p-4 ">Owner Details</h2>
-            <div className="grid grid-cols-12 gap-4 p-4">
-              <div className="col-span-6">
-                <div className="mt-3">
-                  <AuthInput
-                    register={register("name", {
-                      required: "Please enter name",
-                    })}
-                    text={"Name"}
-                    placeholder={"Enter name here"}
-                    type={"text"}
-                    error={errors.name}
-                  />
-                </div>
-                <div className="mt-3">
-                  <AuthInput
-                    register={register("email", {
-                      required: "Please enter email address.",
-                      pattern: {
-                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                        message: "Please enter a valid email address.",
-                      },
-                    })}
-                    text={"Email"}
-                    placeholder={"Enter email here"}
-                    type={"text"}
-                    error={errors.email}
-                  />
-                </div>
-                <div className="mt-3">
-                  <AuthInput
-                    text={"Job Title"}
-                    placeholder={"Dock manager"}
-                    type={"text"}
-                    register={register("jobTitle", {
-                      required: "Please enter job title",
-                    })}
-                    error={errors.jobTitle}
-                  />
-                </div>
-              </div>
-              <div className="col-span-6">
-                <div className="mt-3">
-                  <AuthInput
-                    text={"Location"}
-                    placeholder={"East California dock"}
-                    type={"text"}
-                    register={register("location", {
-                      required: "Please enter location",
-                    })}
-                    error={errors.location}
-                  />
-                </div>
-                <div className="mt-3">
-                  <AuthInput
-                    text={"Phone Number"}
-                    placeholder={"000 0000 0000"}
-                    type={"text"}
-                    register={register("phoneNumber", {
-                      required: "Please enter your phone number.",
-                      pattern: {
-                        value: /^\+1\d{10}$/,
-                        message:
-                          "Phone number must start with '+1' and contain exactly 10 digits following '+1'.",
-                      },
-                    })}
-                    maxLength="12"
-                    error={errors.phoneNumber}
-                  />
-                </div>
-                <div className="mt-3">
-                  <AuthInput text={"Onboarding Date"} type={"date"} />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end gap-3 flex-wrap">
-            <Link to={"/settings"} className="hover:no-underline">
-              <div className="flex justify-end mt-4">
-                <button className="bg-[#02203A] w-[235px]   h-[54px] rounded-[8px] text-[#199BD1] font-[700]">
-                  Back
-                </button>
-              </div>
-            </Link>
-            <div className="flex justify-end mt-4">
-              <button
-                type="submit"
-                className="bg-[#199BD1] w-[235px]  h-[54px] rounded-[8px] text-white"
-                // onClick={() => setTab("2")}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        </form>
-      )}
-      {tab === "2" && (
-        <div>
-          <div className="bg-[#001229] h-[594px] rounded-[18px] flex justify-center items-center">
-            <div className="w-[536px] h-[565px] bg-[#1A293D] rounded-[18px] flex flex-col items-center justify-center">
-              <div className="w-full px-12">
-                <div className="text-start mb-6">
-                  <div className="text-[20px] font-[700] text-white mb-2">
-                    Preview Details
-                  </div>
-                  <div className="text-[#FFFFFF80] text-[13px]">
-                    Please ensure the accuracy of the information provided.
-                    Incorrect details may result in the employee not receiving
-                    their credentials.
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center">
-                  <div className="w-full mb-5">
-                    <AuthInput
-                      register={register("name", {
-                        required: "Please enter name",
-                      })}
-                      text={"Name"}
-                      placeholder={"Enter name here"}
-                      type={"text"}
-                      isAuth={false}
-                      error={errors.name}
-                    />
-                  </div>
-                  <div className="w-full mb-5">
-                    <AuthInput
-                      register={register("password", {
-                        required: "Please enter password.",
-                        minLength: {
-                          value: 8,
-                          message:
-                            "Password must be at least 8 characters long.",
-                        },
-                        pattern: {
-                          value:
-                            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
-                          message:
-                            "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-                        },
-                      })}
-                      maxLength={12}
-                      text={"Password"}
-                      placeholder={"Enter password here"}
-                      type={"password"}
-                      error={errors.password}
-                      isAuth={false}
-                    />
-                  </div>
-                </div>
-                <button
-                  type="submit"
-                  className="bg-[#199BD1] w-[436px] h-[50px] rounded-[8px] font-[700] text-[16px]"
-                >
-                  Generate Credentials
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end mt-4">
-            <button
-              className="bg-[#199BD1] w-[235px]  h-[54px] rounded-[8px] text-white"
-              onClick={() => setTab("1")}
-            >
-              Back
-            </button>
-          </div>
-        </div>
-      )} */}
       <GenerateCrediantial
         isOpen={generateOpen}
         onClose={() => setGenerateOpen(false)}

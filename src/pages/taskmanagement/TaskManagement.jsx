@@ -31,7 +31,6 @@ const TaskManagement = ({ isOpen }) => {
     try {
       setLoading(true);
       if (tab == "tasks") {
-        console.log("if call");
         const { data } = await axios.get("/admin/management/task");
         if (data.success === true) {
           setTaskData(data?.data);

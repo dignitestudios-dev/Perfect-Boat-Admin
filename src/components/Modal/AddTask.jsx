@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CancelIcon, Dustbinicon } from "../../assets/export";
 import TextFields from "../onboarding/TextFields";
 import CustomBtn from "../onboarding/CustomBtn";
@@ -8,6 +8,7 @@ import { ErrorToast, SuccessToast } from "../Toaster/Toaster";
 
 const AddTask = ({ isOpen, onClose, getTasks }) => {
   const [taskType, setTaskType] = useState("");
+  const [taskTypeError, setTaskTypeError] = useState(null);
 
   const [tasks, setTasks] = useState([{ id: 1, text: "" }]);
   console.log("🚀 ~ AddTask ~ tasks:", tasks);
@@ -34,6 +35,10 @@ const AddTask = ({ isOpen, onClose, getTasks }) => {
 
   const handleSave = async () => {
     try {
+      if (!taskType) {
+        setTaskTypeError("Enter task type");
+        return;
+      }
       setSubmitLoading(true);
       let obj = {
         taskType: taskType,
@@ -56,6 +61,10 @@ const AddTask = ({ isOpen, onClose, getTasks }) => {
       setSubmitLoading(false);
     }
   };
+
+  useEffect(() => {
+    setTaskTypeError(null);
+  }, [taskType]);
 
   if (!isOpen) return null;
 
@@ -89,6 +98,9 @@ const AddTask = ({ isOpen, onClose, getTasks }) => {
             state={taskType}
             setState={setTaskType}
           />
+          {taskTypeError && (
+            <p className="text-xs text-red-600 pt-1 pl-1">{taskTypeError}</p>
+          )}
           <div className="mt-4 overflow-y-auto max-h-[260px]">
             {tasks?.map((task, index) => (
               <div key={index} className="flex flex-col gap-2 mb-3">

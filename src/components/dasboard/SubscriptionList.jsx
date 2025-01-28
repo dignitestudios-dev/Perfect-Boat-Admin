@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import DateModal from "../global/DateModal";
 import { Calender } from "../../assets/export";
+import moment from "moment";
 
 const SubscriptionList = () => {
   const [tab, setTabs] = useState("1");
@@ -21,10 +22,6 @@ const SubscriptionList = () => {
   });
 
   useEffect(() => {}, [dueDate]);
-
-
-
-
 
   const totalPriceowner = ownerDetail?.subscription?.owner?.reduce(
     (sum, user) => {
@@ -96,14 +93,16 @@ const SubscriptionList = () => {
                   alt="calendar"
                 />
                 <span className="text-[12px] font-[500]">
-                  {dueDate.normal ? dueDate.normal : "Select date"}
+                  {dueDate.unix
+                    ? moment.unix(dueDate.unix).local().format("MM-DD-YYYY")
+                    : "Select date"}
                 </span>
                 {dueDate && (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       setDueDate("");
-                      getRevenueTableData();
+                      // getRevenueTableData();
                     }}
                     className=" bg-red-500 rounded-full p-[2px] h-[20px] w-[20px] text-white text-xs"
                   >

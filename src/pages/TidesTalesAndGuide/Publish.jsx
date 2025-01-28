@@ -28,6 +28,8 @@ const Publish = () => {
     setDueDate,
     dueDate,
   } = useContext(BlogContext);
+  console.log("🚀 ~ Publish ~ coverFile:", coverFile);
+  console.log("🚀 ~ Publish ~ coverUrl:", coverUrl);
 
   const { state } = useLocation();
 
@@ -57,10 +59,15 @@ const Publish = () => {
 
   const handlePublish = async () => {
     try {
+      console.log("cover", coverFile);
       setLoading(true);
       const formdata = new FormData();
       formdata.append("title", title);
-      formdata.append("cover", coverFile);
+      {
+        coverFile
+          ? formdata.append("cover", coverFile)
+          : formdata.append("updateCover", coverUrl);
+      }
       formdata.append("subTitle", subTitle);
       if (imageText) {
         formdata.append("imageTitle", imageText);
