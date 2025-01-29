@@ -52,8 +52,34 @@ const Notifications = () => {
       })
     );
   }, [activeTab, notifications]);
-
+  // Function to mark all notifications as read
   const readAll = async () => {
+    setUpdateLoading(true);
+    try {
+      const readResponse = await axios.put("/admin/notification/read");
+      console.log("🚀  readAll  readResponse:", readResponse);
+
+      // Ensure that the response status is 200 and has the expected format
+      if (readResponse?.status === 200) {
+        getNotifications();
+      } else {
+        // Handle cases where the status isn't 200, if needed
+        throw new Error("Unexpected response status");
+      }
+    } catch (err) {
+      // Only show the error toast if it's an actual error, and avoid triggering on success.
+      if (err?.response?.data?.message) {
+        ErrorToast(err?.response?.data?.message);
+      } else {
+        // If no specific message, you could display a general error message
+        ErrorToast("An unexpected error occurred.");
+      }
+    } finally {
+      setUpdateLoading(false);
+    }
+  };
+
+  const DeleteAll = async () => {
     setUpdateLoading(true);
     try {
       const response = await axios.delete("/admin/notification");
@@ -67,6 +93,7 @@ const Notifications = () => {
       setUpdateLoading(false);
     }
   };
+  console.log(filteredNotifications,"filteredNotifications")
 
   return (
     <div className="h-full  w-full p-2 lg:p-6 flex flex-col gap-6 justify-start items-start">
@@ -95,7 +122,13 @@ const Notifications = () => {
               Read
             </button>
             <button
-              onClick={() => setActiveTab("Unread")}
+              onClick={() => {
+               
+                  readAll();
+          
+
+                setActiveTab("Unread");
+              }}
               className={`px-2 h-[34px] flex justify-between items-center gap-2 ${
                 activeTab == "Unread" &&
                 "text-[#199BD1]  font-bold border-b-[3px] border-[#199BD1]"
@@ -108,7 +141,7 @@ const Notifications = () => {
             </button>
           </div>
           <button
-            onClick={readAll}
+            onClick={DeleteAll}
             className={
               "w-[107px] h-[32px] mb-2 text-[11px] font-bold rounded-[10px] text-white bg-[#199BD1] flex justify-center items-center"
             }
