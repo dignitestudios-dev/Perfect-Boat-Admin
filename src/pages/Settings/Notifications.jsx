@@ -56,7 +56,7 @@ const Notifications = () => {
   const readAll = async () => {
     setUpdateLoading(true);
     try {
-      const response = await axios.put("/admin/notification/read");
+      const response = await axios.delete("/admin/notification");
       if (response?.status == 200) {
         setNotificationUpdate((prev) => !prev);
         SuccessToast("Notification cleared successfully.");
