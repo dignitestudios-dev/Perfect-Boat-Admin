@@ -46,7 +46,7 @@ const DateModal = ({
     setDueDate({
       normal: formattedDate,
       unix: epochTime,
-      calendar: moment(calendarDate).format("DD-MM-YYYY"),
+      calendar: moment(calendarDate).format("YYYY-MM-DD"),
     });
     setInputError({});
     setIsOpen(false);

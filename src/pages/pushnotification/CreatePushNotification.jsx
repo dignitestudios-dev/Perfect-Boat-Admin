@@ -15,6 +15,7 @@ const CreatePushNotification = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [date, setDate] = useState(new Date());
+  console.log("🚀 ~ CreatePushNotification ~ date:", date);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [inputError, setInputError] = useState({});
@@ -109,7 +110,9 @@ const CreatePushNotification = () => {
             </div>
             <div className="flex justify-between mt-5">
               <h4 className="text-[16px]">Description</h4>
-              <p className="text-[16px] text-[#FFFFFF80]">{description.length}/150</p>
+              <p className="text-[16px] text-[#FFFFFF80]">
+                {description.length}/150
+              </p>
             </div>
             <textarea
               name="description"
@@ -189,7 +192,6 @@ const CreatePushNotification = () => {
               setIsOpen={setCalenderOpen}
               setDueDate={setDate}
               setInputError={setInputError}
-              
             />
             <SendNotification
               isOpen={isModalOpen}

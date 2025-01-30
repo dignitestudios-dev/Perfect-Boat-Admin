@@ -84,6 +84,7 @@ const Notifications = () => {
     try {
       const response = await axios.delete("/admin/notification");
       if (response?.status == 200) {
+        getNotifications();
         setNotificationUpdate((prev) => !prev);
         SuccessToast("Notification cleared successfully.");
       }
@@ -93,7 +94,7 @@ const Notifications = () => {
       setUpdateLoading(false);
     }
   };
-  console.log(filteredNotifications,"filteredNotifications")
+  console.log(filteredNotifications, "filteredNotifications");
 
   return (
     <div className="h-full  w-full p-2 lg:p-6 flex flex-col gap-6 justify-start items-start">
@@ -123,10 +124,9 @@ const Notifications = () => {
             </button>
             <button
               onClick={() => {
-               
+                if (filteredNotifications.some((e) => e?.isRead === false)) {
                   readAll();
-          
-
+                }
                 setActiveTab("Unread");
               }}
               className={`px-2 h-[34px] flex justify-between items-center gap-2 ${
