@@ -259,7 +259,9 @@ const RevenueAnalysis = () => {
                       <div>{item?.name || "N/A"}</div>
                       <div>{item?.totalUser || 0}</div>
                       <div>{item?.subscriptionPlan?.name || "N/A"}</div>
-                      <div>${item?.subscriptionPrice || 0}</div>
+                      <div>
+                        ${parseFloat(item?.subscriptionPrice)?.toFixed(2) || 0}
+                      </div>
                       <div>
                         ${parseFloat(item?.perUserPrice)?.toFixed(2) || 0}
                       </div>
@@ -311,9 +313,15 @@ const RevenueAnalysis = () => {
                     <div>{item?.name || "N/A"}</div>
                     <div>{item?.totalUser || "N/A"}</div>
                     <div>{item?.subscriptionPlan?.name || "N/A"}</div>
-                    <div>{item?.subscriptionPrice || "N/A"}</div>
-                    <div>{item?.perUserPrice || "N/A"}</div>
-                    <div>{item?.totallRevenue || "N/A"}</div>
+                    <div>
+                      {parseFloat(item?.subscriptionPrice)?.toFixed(2) || "N/A"}
+                    </div>
+                    <div>
+                      {parseFloat(item?.perUserPrice)?.toFixed(2) || "N/A"}
+                    </div>
+                    <div>
+                      {parseFloat(item?.totallRevenue)?.toFixed(2) || "N/A"}
+                    </div>
                   </div>
                 </Link>
               ))
@@ -358,8 +366,12 @@ const RevenueAnalysis = () => {
                     </div>
                     <div>{item?.name || "N/A"}</div>
                     <div>{item?.subscriptionPlan?.name || "N/A"}</div>
-                    <div>{item?.subscriptionPrice || "N/A"}</div>
-                    <div>{item?.totallRevenue || "N/A"}</div>
+                    <div>
+                      {parseFloat(item?.subscriptionPrice)?.toFixed(2) || "N/A"}
+                    </div>
+                    <div>
+                      {parseFloat(item?.totallRevenue)?.toFixed(2) || "N/A"}
+                    </div>
                   </div>
                 </Link>
               ))

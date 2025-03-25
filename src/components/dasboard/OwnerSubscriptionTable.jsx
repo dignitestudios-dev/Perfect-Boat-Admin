@@ -117,10 +117,10 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
                       {" "}
                       $
                       {parseFloat(item?.totalluser * item?.perUserCost).toFixed(
-                        1
+                        2
                       ) || "Not Found"}
                     </div>
-                    <div>${parseFloat(item?.price).toFixed(1)}</div>
+                    <div>${parseFloat(item?.price).toFixed(2)}</div>
                   </div>
                 ))
             )}

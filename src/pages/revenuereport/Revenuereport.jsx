@@ -44,11 +44,11 @@ const RevenueReport = () => {
       label: "Total Revenue",
       getData: (timePeriod) =>
         timePeriod === "Weekly"
-          ? revenueData?.weekly
+          ? parseFloat(revenueData?.weekly).toFixed(2)
           : timePeriod === "Monthly"
-          ? revenueData?.monthly
+          ? parseFloat(revenueData?.monthly).toFixed(2)
           : timePeriod === "Yearly"
-          ? revenueData?.yearly
+          ? parseFloat(revenueData?.yearly).toFixed(2)
           : revenueData?.custom,
       sing: "$",
     },
@@ -142,7 +142,7 @@ const RevenueReport = () => {
               <div>
                 <Dropdown
                   label={activeTimePeriods[index]}
-                  items={["Weekly", "Monthly", "Yearly", "Custom"]}
+                  items={["Weekly", "Monthly", "Yearly"]}
                   handleTimePeriod={(value) =>
                     handleTimePeriodChange(value, index)
                   }

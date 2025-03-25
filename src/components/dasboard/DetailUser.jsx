@@ -176,8 +176,8 @@ const DetailUser = () => {
                       })}
                     </div>
                     <div>{item?.subscriptionPlan?.name || "N/A"}</div>
-                    <div>{item?.price || "N/A"}</div>
-                    <div>{item?.price || "N/A"}</div>
+                    <div>{parseFloat(item?.price)?.toFixed(2) || "N/A"}</div>
+                    <div>{parseFloat(item?.price)?.toFixed(2) || "N/A"}</div>
                   </div>
                 ))
               )}
