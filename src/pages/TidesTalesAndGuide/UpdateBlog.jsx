@@ -15,6 +15,7 @@ const UpdateBlog = () => {
   const navigate = useNavigate();
   const editorRef = useRef(null);
   const { state } = useLocation();
+
   const { id } = useParams();
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedSize, setSelectedSize] = useState(16); // Default font size
@@ -263,7 +264,7 @@ const UpdateBlog = () => {
         <div className="w-full flex items-center justify-center">
           <input
             type="text"
-            value={imageText || "a"}
+            value={imageText || "Blog"}
             onChange={(e) => setImageText(e.target.value)}
             placeholder="Add caption for image (optional)"
             className="w-60 text-[10px] placeholder:text-[10px] text-center placeholder:font-bold text-gray-300 bg-transparent border-none focus:outline-none my-2"
@@ -271,7 +272,7 @@ const UpdateBlog = () => {
         </div>
 
         {/* Title, Subtitle, and Content Section */}
-        <div className="mt-4 w-full">
+        <div className="mt-4 w-full font-satoshi">
           <input
             type="text"
             placeholder="Title"

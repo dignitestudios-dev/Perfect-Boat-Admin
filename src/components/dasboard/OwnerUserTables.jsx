@@ -72,7 +72,7 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
                 : "bg-[#042742] text-[#199BD1]"
             }`}
           >
-            Employee
+            Employees
           </button>
         </div>
         {tab === "1" && (

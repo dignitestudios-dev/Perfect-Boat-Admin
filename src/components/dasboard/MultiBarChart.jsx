@@ -95,8 +95,6 @@ const MultiBarChart = ({ customertimerange }) => {
       let graphData = [];
       let labels = [];
 
-      console.log("Full API Response: ", data);
-
       if (customertimerange === "Yearly") {
         graphData = data?.data?.yearly || [];
         labels = graphData?.map((item) => item?.month || "Unknown Month");
@@ -108,15 +106,10 @@ const MultiBarChart = ({ customertimerange }) => {
         labels = graphData?.map((item) => item?.dayOfWeek || "Unknown Day");
       }
 
-      console.log("Graph Data: ", graphData);
-
       const ownerData = graphData.map((item) => item?.owner?.count || 0);
       const singleUserData = graphData.map(
         (item) => item?.singleUser?.count || 0
       );
-
-      console.log("Owner Data: ", ownerData);
-      console.log("Single User Data: ", singleUserData);
 
       setChartData((prevState) => ({
         ...prevState,

@@ -25,25 +25,23 @@ const Checkbox = ({ selectedOption, setSelectedOption, setErrors }) => {
           <label className="flex items-center mt-2">
             <input
               type="radio"
-              value="manager"
-              checked={selectedOption === "manager"}
+              value="owner"
+              checked={selectedOption === "owner"}
               onChange={handleOptionChange}
               className="form-radio text-[#199BD1] bg-[#001229] focus:ring-[#199BD1] focus:ring-2 h-5 w-5"
             />
-            <span className="ml-3 text-white text-[14px]">
-              Only for Managers
-            </span>
+            <span className="ml-3 text-white text-[14px]">Only for Owners</span>
           </label>
           <label className="flex items-center mt-2">
             <input
               type="radio"
-              value="employee"
-              checked={selectedOption === "employee"}
+              value="singleuser"
+              checked={selectedOption === "singleuser"}
               onChange={handleOptionChange}
               className="form-radio text-[#199BD1] bg-[#001229] focus:ring-[#199BD1] focus:ring-2 h-5 w-5"
             />
             <span className="ml-3 text-white text-[14px]">
-              Only for Employees
+              Only for Single Users
             </span>
           </label>
         </div>

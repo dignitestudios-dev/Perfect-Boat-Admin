@@ -1,8 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FaTrash } from "react-icons/fa";
-import { AuthMockup } from "../../assets/export";
-import { Link, useNavigate } from "react-router-dom";
-import { sampleNotifications } from "../../constant/notification";
+
 import axios from "../../axios";
 import { ErrorToast, SuccessToast } from "../../components/Toaster/Toaster";
 import { GlobalContext } from "../../contexts/GlobalContext";
@@ -15,7 +12,6 @@ const Notifications = () => {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [notificationLoading, setNotificationLoading] = useState(false);
   const [filteredNotifications, setFilteredNotifications] = useState([]);
-  const navigate = useNavigate();
 
   const {
     notifications,
@@ -30,6 +26,7 @@ const Notifications = () => {
       const { data } = await axios.get("/admin/notification");
       setNotifications(data?.data?.reverse());
     } catch (err) {
+      console.log(" ~ getNotifications ~ err:", err);
     } finally {
       setNotificationLoading(false);
     }
@@ -94,7 +91,6 @@ const Notifications = () => {
       setUpdateLoading(false);
     }
   };
-  console.log(filteredNotifications, "filteredNotifications");
 
   return (
     <div className="h-full  w-full p-2 lg:p-6 flex flex-col gap-6 justify-start items-start">

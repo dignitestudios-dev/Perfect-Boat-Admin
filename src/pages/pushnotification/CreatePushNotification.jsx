@@ -15,7 +15,7 @@ const CreatePushNotification = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const [date, setDate] = useState(new Date());
-  console.log("🚀 ~ CreatePushNotification ~ date:", date);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [inputError, setInputError] = useState({});

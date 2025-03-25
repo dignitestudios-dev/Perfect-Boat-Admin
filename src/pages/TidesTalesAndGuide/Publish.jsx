@@ -158,7 +158,7 @@ const Publish = () => {
                   value="everyone"
                   checked={selectedOption === "everyone"}
                   onChange={handleOptionChange}
-                  className="form-radio text-[#199BD1] bg-[#001229] focus:ring-[#199BD1] focus:ring-2 h-5 w-5"
+                  className="form-checkbox text-[#199BD1] bg-[#001229] focus:ring-[#199BD1] focus:ring-2 h-5 w-5"
                 />
                 <span className="ml-3 text-white text-[14px]">Everyone</span>
               </label>

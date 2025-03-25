@@ -9,11 +9,9 @@ const SingleUserTable = () => {
   const getSingleUserTableData = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        "/admin/customer?isSingleUser=true&page=1&pageSize=6"
-      );
+      const { data } = await axios.get("/admin/customer?isSingleUser=true");
 
-      setSingleUserData(data?.data?.data);
+      setSingleUserData(data?.data);
       console.log(
         singleUserData,
         "singleUserDatasingleUserDatasingleUserDatasingleUserData"
@@ -34,7 +32,7 @@ const SingleUserTable = () => {
       <div className="card bg-[#001229] p-5 col-span-3 rounded-[20px]">
         <div className="flex justify-between">
           <h3 className="text-[14px]">
-            Single Users  ({singleUserData?.length})
+            Single Users ({singleUserData?.length})
           </h3>
 
           <Link
@@ -57,7 +55,7 @@ const SingleUserTable = () => {
           ) : singleUserData?.length === 0 ? (
             <p>No data available.</p>
           ) : (
-            singleUserData?.map((item, index) => (
+            singleUserData?.slice(0, 6)?.map((item, index) => (
               <div
                 key={index}
                 className="grid grid-cols-3 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "

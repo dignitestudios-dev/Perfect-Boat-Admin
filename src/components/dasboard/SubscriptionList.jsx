@@ -41,17 +41,27 @@ const SubscriptionList = () => {
       <div className="card bg-[#001229] p-5 rounded-[20px] h-[944px] overflow-y-auto  scrollbar-thin ">
         <div className="flex justify-between mt-2">
           <h3 className="text-[18px] font-[700]">Subscription History</h3>
-          <div className="flex gap-2">
-            <h5 className="text-[13px] text-[#199BD1] font-[500] content-end">
-              Total Revenue
-            </h5>
-            {tab === "1" && (
-              <h3 className="text-[24px] font-[500]">{totalPriceowner}</h3>
-            )}
-            {tab === "2" && (
-              <h3 className="text-[24px] font-[500]">{totalPriceuser}</h3>
-            )}
-          </div>
+          {tab === "1" && (
+            <div className="pr-2">
+              <h5 className="text-[13px] text-[#199BD1] font-[500] content-end">
+                Total Revenue
+              </h5>
+
+              <h3 className="text-[26px] font-[500]">
+                ${parseFloat(totalPriceowner).toFixed(1)}
+              </h3>
+            </div>
+          )}
+          {tab === "2" && (
+            <div className="flex justify-center items-center">
+              <h5 className="text-[13px] text-[#199BD1] font-[500] content-end pr-1 pt-2">
+                Total Revenue
+              </h5>
+              <h3 className="text-[26px] font-[500]">
+                ${parseFloat(totalPriceuser).toFixed(2)}
+              </h3>
+            </div>
+          )}
         </div>
 
         <div className="flex gap-x-2 justify-between mt-4">

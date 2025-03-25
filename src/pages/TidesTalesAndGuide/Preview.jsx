@@ -65,11 +65,11 @@ const Preview = () => {
     <style>
       /* You can add custom styles here */
       body {
-        font-family: Arial, sans-serif;
+        font-family: Satoshi, sans-serif;
         margin: 0;
         padding: 20px;
         background-color: #f4f4f4;
-        color: #333;
+        color: #fff;
       }
     </style>
   </head>
@@ -203,12 +203,12 @@ const Preview = () => {
         </div>
       </div>
       {/* Title and Description */}
-      <div className="w-full mt-4">
+      <div className="w-full mt-4 font-satoshi">
         <h2 className="text-white text-[28px] font-bold">{title}</h2>
         <p className="text-white text-[16px]">{subTitle}</p>
       </div>
       {/* Story Input */}
-      <div className="text-[10px] text-gray-200">
+      <div className="text-[10px] text-gray-200 font-satoshi">
         <div dangerouslySetInnerHTML={{ __html: story }} />
       </div>
       {/* Date Modal */}

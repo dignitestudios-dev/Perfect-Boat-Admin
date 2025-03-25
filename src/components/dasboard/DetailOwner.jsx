@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BoatIcon,
-  BookIcon,
-  CoinIcon,
-  OwnerProfile,
-  User_icon2,
-  UserIcon,
-} from "../../assets/export";
+import { CoinIcon, User_icon2, UserIcon } from "../../assets/export";
 import OwnerUserTables from "./OwnerUserTables";
 import OwnerSubscriptionTable from "./OwnerSubscriptionTable";
 import AuthInput from "../onboarding/AuthInput";
@@ -60,26 +53,16 @@ const DetailOwner = () => {
   const [timerange, setTimerange] = useState("Yearly");
   const handleSaleTimePeriodChange = (value) => {
     setTimerange(value);
-    console.log("Selected Time Range:", value);
   };
   useEffect(() => {
     getDashboardData();
   }, []);
+
   const formatNameWithSpaces = (name) => {
     if (!name) return "Not Found";
     return name?.replace(/([A-Z])/g, " $1").trim();
   };
-  console.log(
-    ownerDetail?.customer?.subscriptionPlan?.expireOn,
-    "ownerDetail?.subscription?.owner?.subscriptionPlan.name"
-  );
-  const getUnixDate = (date) => {
-    if (date && moment(date).isValid()) {
-      // Convert Unix timestamp to local time and format it
-      return moment.unix(date).local().format("MM-DD-YYYY");
-    }
-    return undefined;
-  };
+
   return (
     <div>
       <div className="flex flex-wrap lg:justify-start gap-3">
@@ -98,7 +81,8 @@ const DetailOwner = () => {
               </div>
               <div>
                 <h3 className="text-[18px] font-[700]">
-                  {card?.sing} {card?.number}
+                  {card?.sing}{" "}
+                  {card?.number ? parseFloat(card.number).toFixed(1) : 0}
                 </h3>
 
                 <h3 className="text-[14px] text-[#FFFFFF80] leading-[18.9px]">

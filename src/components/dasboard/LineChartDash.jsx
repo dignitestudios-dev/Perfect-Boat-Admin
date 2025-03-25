@@ -34,12 +34,11 @@ const options = {
     x: {
       grid: {
         display: false,
-        
       },
 
       ticks: {
         display: true,
-        color:"#FFFFFF"
+        color: "#FFFFFF",
       },
       border: {
         color: "#FFFFFF3D",
@@ -51,7 +50,10 @@ const options = {
       },
       ticks: {
         display: true,
-        color:"#FFFFFF"
+        color: "#FFFFFF",
+        callback: function (value) {
+          return "$" + value;
+        },
       },
       border: {
         color: "#FFFFFF3D",
@@ -88,10 +90,10 @@ const LineChartDash = ({ timerange }) => {
 
       let graphData = [];
       let labels = [];
-      console.log("graphData", graphData);
+
       if (timerange === "Yearly") {
         graphData = data?.data?.yearly || [];
-        labels = graphData.map((item) => item?.month || "Unknown Month");
+        labels = graphData?.map((item) => item?.month || "Unknown Month");
       } else if (timerange === "Monthly") {
         graphData = data?.data?.monthly || [];
         labels = graphData.map((item) => item?.day || "Unknown day");
@@ -100,8 +102,11 @@ const LineChartDash = ({ timerange }) => {
         labels = graphData.map((item) => item?.dayOfWeek || "Unknown Day");
       }
 
-      const ownerData = graphData.map((item) => item?.owner?.count || 0);
-      const singleUserData = graphData.map((item) => item?.user?.count || 0);
+      const ownerData = graphData.map((item) => item?.owner?.totalPrice || 0);
+      const singleUserData = graphData.map(
+        (item) => item?.user?.totalPrice || 0
+      );
+
       setChartData((prevState) => ({
         ...prevState,
         labels: labels,

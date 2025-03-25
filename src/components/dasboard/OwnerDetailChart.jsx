@@ -39,10 +39,9 @@ const options = {
         display: true,
         color: "#FFFFFF",
       },
-      border:{
+      border: {
         color: "#FFFFFF3D",
-
-      }
+      },
     },
     y: {
       grid: {
@@ -50,12 +49,14 @@ const options = {
       },
       ticks: {
         display: true,
-        color:"#FFFFFF"
+        color: "#FFFFFF",
+        callback: function (value) {
+          return "$" + value;
+        },
       },
-      border:{
+      border: {
         color: "#FFFFFF3D",
-
-      }
+      },
     },
   },
 };
@@ -85,14 +86,9 @@ const OwnerDetailLineChart = ({ timerange, id }) => {
       setLoading(true);
 
       const { data } = await axios.get(`/admin/customer/${id}`);
-      console.log(
-        data?.data?.graph?.monthly[0]?.subscription?.count,
-        "GraphDatasubscription"
-      );
-      console.log(data?.data?.graph?.monthly[0]?.user?.count, "GraphDatauser");
+
       let graphData = [];
       let labels = [];
-      console.log("graphData", graphData);
       if (timerange === "Yearly") {
         graphData = data?.data?.graph?.yearly || [];
         labels = graphData.map((item) => item?.month || "Unknown Month");

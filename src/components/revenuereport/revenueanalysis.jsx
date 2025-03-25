@@ -237,7 +237,15 @@ const RevenueAnalysis = () => {
                 <p>No data available.</p>
               ) : (
                 revenueTableData?.map((item, index) => (
-                  <Link key={index} to="#" style={{ textDecoration: "none" }}>
+                  <Link
+                    key={index}
+                    to={
+                      item?.isSingleUser
+                        ? `/detailuser/${item?._id}`
+                        : `/detailowner/${item?._id}`
+                    }
+                    style={{ textDecoration: "none" }}
+                  >
                     <div
                       className={`grid grid-cols-8 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
                     >
@@ -252,9 +260,15 @@ const RevenueAnalysis = () => {
                       <div>{item?.totalUser || 0}</div>
                       <div>{item?.subscriptionPlan?.name || "N/A"}</div>
                       <div>${item?.subscriptionPrice || 0}</div>
-                      <div>${item?.perUserPrice || 0}</div>
-                      <div>${item?.perUserPrice || 0}</div>
-                      <div>${item?.totallRevenue || 0}</div>
+                      <div>
+                        ${parseFloat(item?.perUserPrice)?.toFixed(2) || 0}
+                      </div>
+                      <div>
+                        ${parseFloat(item?.totalUserCost)?.toFixed(2) || 0}
+                      </div>
+                      <div>
+                        ${parseFloat(item?.totallRevenue)?.toFixed(2) || 0}
+                      </div>
                     </div>
                   </Link>
                 ))
@@ -279,7 +293,11 @@ const RevenueAnalysis = () => {
               <p>No data available.</p>
             ) : (
               revenueTableData?.map((item, index) => (
-                <Link key={index} to="#" style={{ textDecoration: "none" }}>
+                <Link
+                  key={index}
+                  to={`/detailowner/${item?._id}`}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className={`grid grid-cols-7 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
                   >
@@ -312,18 +330,22 @@ const RevenueAnalysis = () => {
               <div>Revenue</div>
             </div>
             {loading ? (
-              <div class="animate-pulse">
-                <div class="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
-                <div class="h-4 bg-gray-500 mb-6 rounded"></div>
+              <div className="animate-pulse">
+                <div className="h-4 bg-gray-500 mt-3 mb-6 rounded"></div>
+                <div className="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div className="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div className="h-4 bg-gray-500 mb-6 rounded"></div>
+                <div className="h-4 bg-gray-500 mb-6 rounded"></div>
               </div>
             ) : revenueTableData?.length === 0 ? (
               <p>No data available.</p>
             ) : (
               revenueTableData?.map((item, index) => (
-                <Link key={index} to="#" style={{ textDecoration: "none" }}>
+                <Link
+                  key={index}
+                  to={`/detailuser/${item?._id}`}
+                  style={{ textDecoration: "none" }}
+                >
                   <div
                     className={`grid grid-cols-5 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
                   >

@@ -86,10 +86,11 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
         )}
         {tab === "2" && (
           <div className="grid gap-4">
-            <div className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-3  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
+            <div className="grid grid-cols-[2fr_2fr_2fr_2fr] gap-4 p-3  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
               <div>Paid On</div>
-              <div>Users Onboarded</div>
+              <div>Users Onboard</div>
               <div>Per User Cost</div>
+              <div>Total Cost of Users</div>
             </div>
             {loading ? (
               <Skeleton />
@@ -101,7 +102,7 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
                 ?.map((item, index) => (
                   <div
                     key={index}
-                    className="grid grid-cols-[2fr_2fr_1fr] gap-4 p-2 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
+                    className="grid grid-cols-[2fr_2fr_2fr_2fr] gap-4 p-2 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
                   >
                     <div className="font-medium">
                       {new Date(item?.updatedAt).toLocaleDateString("en-US", {
@@ -114,8 +115,12 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
 
                     <div className="">
                       {" "}
-                      {item?.totalluser * item?.perUserCost || "Not Found"}
+                      $
+                      {parseFloat(item?.totalluser * item?.perUserCost).toFixed(
+                        1
+                      ) || "Not Found"}
                     </div>
+                    <div>${parseFloat(item?.price).toFixed(1)}</div>
                   </div>
                 ))
             )}

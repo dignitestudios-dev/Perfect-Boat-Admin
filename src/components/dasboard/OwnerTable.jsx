@@ -10,12 +10,9 @@ const OwnerTable = () => {
   const getOwnerTableData = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(
-        "/admin/customer?isSingleUser=false&page=1&pageSize=6"
-      );
+      const { data } = await axios.get("/admin/customer?isSingleUser=false");
 
-      setOwnerData(data?.data?.data);
-
+      setOwnerData(data?.data);
     } catch (error) {
       console.error("Error fetching owner data:", error);
     } finally {
@@ -30,9 +27,7 @@ const OwnerTable = () => {
     <div className="">
       <div className="card bg-[#001229] p-5 rounded-[20px]">
         <div className="flex justify-between">
-          <h3 className="text-[14px]">
-            Owners  ({ownerData?.length})
-          </h3>
+          <h3 className="text-[14px]">Owners ({ownerData?.length})</h3>
           <Link
             to={"/ownerlist"}
             className="text-[#199BD1] underline text-[12px]"
@@ -43,8 +38,8 @@ const OwnerTable = () => {
         <div className="grid gap-4">
           <div className="grid grid-cols-4 gap-4 p-4  text-[#FFFFFF80] border-b-2 border-[#FFFFFF24] text-[11px] font-semibold rounded-t-lg">
             <div>Name</div>
-            <div >Num of Users</div>
-            <div >Onboarding Date</div>
+            <div>Num of Users</div>
+            <div>Onboarding Date</div>
             <div className="text-end mx-4">Actions</div>
           </div>
           {loading ? (
@@ -54,7 +49,7 @@ const OwnerTable = () => {
           ) : ownerData?.length === 0 ? (
             <p>No data available.</p>
           ) : (
-            ownerData?.map((item, index) => (
+            ownerData?.slice(0, 6)?.map((item, index) => (
               <div
                 key={item?.id || index}
                 className="grid grid-cols-4 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white"

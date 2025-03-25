@@ -5,6 +5,7 @@ import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
 import Pagination from "../../components/paginations/Pagination";
 import SearchInput from "../inputs/SearchInput";
+import Cookies from "js-cookie";
 
 const OwnerList = () => {
   const [dropdownStates, setDropdownStates] = useState({});

@@ -7,6 +7,15 @@ body {
   font-family: "Manrope", sans-serif;
   overflow-x: hidden;
 }
+
+.editor {
+  color: white; /* Your default text color */
+}
+
+.editor * {
+  color: inherit !important;
+}
+
 .bg-gradient {
   background: linear-gradient(to right, #199ad13d, #06afb2);
 }
@@ -30,6 +39,17 @@ body {
 .calender{
   background-color: #243347 !important;
 
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: #ffffff;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px #23232329;
+  caret-color: #ffffff;
 }
 
 @media screen and (max-width: 768px) {

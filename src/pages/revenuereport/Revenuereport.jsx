@@ -89,6 +89,7 @@ const RevenueReport = () => {
       setLoading(true);
       const { data } = await axios.get(`/admin/revenue/subscription/revenue`);
       setRevenueData(data?.data);
+      console.log("🚀 ~ getRevenueData ~ data:", data);
     } catch (error) {
       console.error("Error fetching Revenue data:", error);
     } finally {

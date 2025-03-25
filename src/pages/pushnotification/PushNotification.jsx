@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { GoPlus } from "react-icons/go";
-import TextFields from "../../components/onboarding/TextFields";
-import Checkbox from "../../components/onboarding/Checkbox";
-import DateTime from "../../components/global/DateTime";
-import SendNotification from "../../components/Modal/SendNotification";
+
 import { useNavigate } from "react-router-dom";
 import axios from "../../axios";
 import moment from "moment";
@@ -11,7 +8,7 @@ import Skeleton from "../../components/global/Skeleton";
 
 const PushNotification = () => {
   const navigate = useNavigate();
-  const [date, setDate] = useState([]);
+
   const [notificationData, setNotificationData] = useState([]);
 
   const [loading, setLoading] = useState(false);
@@ -58,7 +55,10 @@ const PushNotification = () => {
           ) : (
             <>
               {notificationData?.map((item, index) => (
-                <div className="w-[1005px] mt-7 border-b border-[#243347] pb-6">
+                <div
+                  key={index}
+                  className="w-[1005px] mt-7 border-b border-[#243347] pb-6"
+                >
                   <div className="flex items-center justify-between">
                     <h1 className="text-[16px] font-[700]">{item?.title}</h1>
                     <p className="text-[#FFFFFF80]">

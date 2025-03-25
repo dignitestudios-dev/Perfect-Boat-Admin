@@ -9,6 +9,7 @@ const BlogDetails = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { state } = useLocation();
+  console.log("🚀 ~ BlogDetails ~ state:", state);
 
   const [deleteId, setDeleteId] = useState(null);
 
@@ -47,7 +48,11 @@ const BlogDetails = () => {
               <div className="w-full flex items-center justify-between relative">
                 <span className="text-[10px] font-medium text-[#199BD1]">
                   {state?.isAdmin ? "Admin" : "Owner"} |
-                  {"Author name | December 20th, 2023 "}
+                  {` ${new Date(state?.createdAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  })}`}
                   {/* {new Date(state?.createdAt).toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
@@ -90,25 +95,23 @@ const BlogDetails = () => {
                   </div>
                 )}
               </div>
-              <h2 className="text-[28px] font-bold text-white leading-[37.7px]">
+              <h2 className="text-[28px] font-bold text-white leading-[37.7px] font-satoshi">
                 {state?.title ||
                   "Sailing Serenity: A Windward Voyage Into Maritime bliss"}
               </h2>
-              <span className="text-[16px] font-normal leading-[21.6px] text-white/80">
+              <span className="text-[16px] font-normal leading-[21.6px] text-white/80 font-satoshi">
                 {state?.subTitle ||
                   "Discove The Tranquil Tales That Unfold Beyond The Horizon "}
               </span>
             </div>
 
-            <div className="w-full h-auto flex justify-start items-start py-6">
+            <div className="w-full h-auto flex justify-start items-start py-6 ">
               <div
                 className={`w-full ${
                   state?.story.length < 2500 ? "h-[150px]" : "h-auto"
                 } relative`}
                 dangerouslySetInnerHTML={{
-                  __html:
-                    state?.story ||
-                    "Lorem ipsum dolor sit amet consectetur. Tellus ornare viverra arcu at gravida sed. Bibendum egestas tellus sollicitudin tortor porta arcu morbi. Aliquam quis feugiat nam accumsan. Viverra pellentesque mattis leo malesuada quis tortor pellentesque mauris a. Nec nulla tortor non egestas porta. Sit ut egestas ipsum quisque. Ullamcorper vulputate integer malesuada in tincidunt sed arcu. Nunc feugiat ultricies enim adipiscing maecenas amet diam metus diam. Amet magna id amet aliquet molestie. Purus enim venenatis integer adipiscing morbi. Tempus malesuada accumsan ornare quam elit tellus. Eros tellus imperdiet massa a. Quis odio non sapien molestie sit.",
+                  __html: state?.story || "",
                 }}
               />
             </div>

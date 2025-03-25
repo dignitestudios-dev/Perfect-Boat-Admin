@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const ToggleBtn = ({ settings, setSettings }) => {
+  console.log("🚀 ~ ToggleBtn ~ settings:", settings);
   const handleToggle = (index) => {
     setSettings((prevSettings) =>
       prevSettings.map((setting, i) =>
@@ -16,13 +17,13 @@ const ToggleBtn = ({ settings, setSettings }) => {
 
   return (
     <div className="space-y-4 ">
-      {settings.map((setting, index) => (
+      {settings?.map((setting, index) => (
         <div
           key={index}
           className="w-full flex items-start justify-between   rounded-lg"
         >
           <div className="flex flex-col mt-7 ">
-            <h1 className="text-[16px] font-medium leading-[21.6px] text-white">
+            <h1 className="text-[16px] font-medium leading-[21.6px] text-white capitalize">
               {setting?.title}
             </h1>
             <p className="text-[12px] text-[#FFFFFF80] mt-2">{setting?.para}</p>

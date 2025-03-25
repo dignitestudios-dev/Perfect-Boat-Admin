@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { BoatIcon, BookIcon, User_icon2, UserIcon } from "../../assets/export";
 import LineChartDash from "../../components/dasboard/LineChartDash";
 import MultiBarChart from "../../components/dasboard/MultiBarChart";
-import { IoMdArrowDropdown } from "react-icons/io";
 import OwnerTable from "../../components/dasboard/OwnerTable";
 import SingleUserTable from "../../components/dasboard/SingleUserTable";
 import Dropdown from "../../components/dropdown/Dropdown";
@@ -17,15 +16,6 @@ const Home = () => {
     { icon: BoatIcon, key: "boat", label: "Boats" },
     { icon: BookIcon, key: "task", label: "Tasks" },
   ];
-
-  const [dropdownStates, setDropdownStates] = useState({});
-
-  const toggleDropdown = (id) => {
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
-  };
 
   const [loading, setLoading] = useState(false);
 
@@ -67,8 +57,11 @@ const Home = () => {
     <>
       <div className="flex flex-wrap gap-3">
         {loading ? (
-          [1, 2, 3, 4]?.map(() => (
-            <div className="card h-[100px] bg-[#001229] p-2 rounded-[24px] w-[214px]">
+          [1, 2, 3, 4]?.map((_) => (
+            <div
+              key={_}
+              className="card h-[100px] bg-[#001229] p-2 rounded-[24px] w-[214px]"
+            >
               {" "}
             </div>
           ))
