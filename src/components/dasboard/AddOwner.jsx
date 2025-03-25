@@ -43,6 +43,7 @@ const AddOwner = () => {
               text="Location"
               placeholder="East California dock"
               type="text"
+              maxLength={80}
             />
           </div>
           <div className="mt-4">

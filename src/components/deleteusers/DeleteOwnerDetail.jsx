@@ -155,6 +155,7 @@ const DeleteOwnerDetail = () => {
                   type="text"
                   value={ownerDetail?.customer?.location || "Not Found"}
                   isDisabled={true}
+                  maxLength={80}
                 />
               </div>
               <div className="mt-4">

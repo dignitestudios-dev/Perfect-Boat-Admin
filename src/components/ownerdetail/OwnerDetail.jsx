@@ -88,6 +88,7 @@ const Step1 = ({
                 text={"Location"}
                 placeholder={"East California dock"}
                 type={"text"}
+                maxLength={80}
                 register={register("location", {
                   required: "Please enter location",
                 })}
