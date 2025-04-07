@@ -9,6 +9,7 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
   const handleViewAllClick = () => {
     navigate("/subscriptionlist", { state: ownerDetail });
   };
+
   return (
     <div className="">
       <div className="card bg-[#001229] overflow-y-auto h-[477px] p-5 rounded-[20px] ">

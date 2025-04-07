@@ -58,10 +58,20 @@ const OwnerList = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue, filterStatus, currentPage]);
+  }, [currentPage]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      setCurrentPage(1);
+      getOwnerTableData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, filterStatus]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
+    setCurrentPage(1);
   };
 
   const handleFilterChange = (status) => {

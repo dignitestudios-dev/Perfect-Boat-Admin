@@ -56,7 +56,16 @@ const RevenueAnalysis = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue, tab, currentPage, dueDate]);
+  }, [tab, currentPage]);
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      setCurrentPage(1);
+      getRevenueTableData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, dueDate]);
 
   useEffect(() => {
     setCurrentPage(1);

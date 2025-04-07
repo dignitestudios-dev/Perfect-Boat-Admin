@@ -68,7 +68,15 @@ const UserInformation = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue, filterStatus, currentPage, tabs]);
+  }, [currentPage, tabs]);
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      setCurrentPage(1);
+      getsettingsData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [searchValue, filterStatus]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -220,11 +228,11 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {item?.isPaid === true ? (
+                      {item?.isSubscribed === true ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
                           Active
                         </button>
-                      ) : item?.isPaid === false ? (
+                      ) : item?.isSubscribed === false ? (
                         <button className="bg-[#9A9A9A] px-3 py-1 rounded-full text-white text-[11px]">
                           Inactive
                         </button>
@@ -326,11 +334,11 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {item?.isPaid === true ? (
+                      {item?.isSubscribed === true ? (
                         <button className="bg-[#199BD1] px-3 py-1 rounded-full text-white text-[11px]">
                           Active
                         </button>
-                      ) : item?.isPaid === false ? (
+                      ) : item?.isSubscribed === false ? (
                         <button className="bg-[#9A9A9A] px-3 py-1 rounded-full text-white text-[11px]">
                           Inactive
                         </button>
