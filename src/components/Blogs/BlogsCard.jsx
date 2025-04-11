@@ -3,8 +3,10 @@ import { GoKebabHorizontal } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import DeleteBlog from "../../pages/TidesTalesAndGuide/DeleteBlog";
 import { Blogsimg, CoinIcon } from "../../assets/export";
+import moment from "moment";
 
 const BlogsCard = ({ blog }) => {
+  console.log("🚀 ~ BlogsCard ~ blog:", blog);
   const navigate = useNavigate();
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -94,22 +96,22 @@ const BlogsCard = ({ blog }) => {
         <span className="text-[10px] font-medium text-[#199BD1]">
           {blog?.isAdmin ? "Admin" : "Owner"} |
           <span className="mx-1 ">
-            {new Date(blog?.createdAt)?.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+            {moment(blog?.createdAt).format("MM-DD-YYYY")}
           </span>
         </span>
 
         <div className="relative w-full flex flex-col justify-start items-start gap-2">
-          <div>
+          <div className="space-y-2">
             <h1 className="text-[16px] font-bold leading-[21.6px] text-white">
               {blog?.title?.length > 38
                 ? blog?.title?.slice(0, 38) + "..."
                 : blog?.title || "Blog Heading Here"}
             </h1>
-            <h3>{truncatedStory}</h3>
+            <p className="text-[12px] font-normal leading-[16.2px] text-white/50">
+              {blog?.subTitle?.length > 150
+                ? blog?.subTitle?.slice(0, 150) + "..."
+                : blog?.subTitle}
+            </p>
           </div>
         </div>
       </div>
