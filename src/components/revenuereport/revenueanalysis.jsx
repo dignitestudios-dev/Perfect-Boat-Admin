@@ -21,10 +21,12 @@ const RevenueAnalysis = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
   const [loadingDownload, setloadingDownload] = useState(false);
+  const [pageDisable, setPageDisable] = useState(false);
 
   const getRevenueTableData = async () => {
     try {
       setLoading(true);
+      setPageDisable(true);
       let url = `/admin/revenue/subscription/details?page=${currentPage}&pageSize=12`;
       if (tab === "2") {
         url = `/admin/revenue/subscription/details?isSingleUser=false&page=${currentPage}&pageSize=12`;
@@ -46,16 +48,13 @@ const RevenueAnalysis = () => {
     } catch (error) {
       console.error("Error fetching revenue data:", error);
     } finally {
+      setPageDisable(false);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      getRevenueTableData();
-    }, 500);
-
-    return () => clearTimeout(delayDebounce);
+    getRevenueTableData();
   }, [tab, currentPage]);
 
   useEffect(() => {
@@ -375,6 +374,7 @@ const RevenueAnalysis = () => {
         setCurrentPage={setCurrentPage}
         totalPages={totalPages}
         setTotalPages={setTotalPages}
+        pageDisable={pageDisable}
       />
     </div>
   );

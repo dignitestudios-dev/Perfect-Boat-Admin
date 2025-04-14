@@ -5,6 +5,7 @@ const Pagination = ({
   setCurrentPage,
   totalPages,
   setTotalPages,
+  pageDisable = false,
 }) => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -22,7 +23,7 @@ const Pagination = ({
     <div className="flex  items-center mt-4 w-full">
       <button
         onClick={handlePreviousPage}
-        disabled={currentPage === 1}
+        disabled={currentPage === 1 || pageDisable === true}
         className={`px-4 py-2 rounded-xl transition-all duration-300 bg-[#199BD5] text-white text-[11px] ${
           currentPage === 1
             ? "opacity-50 cursor-not-allowed"
@@ -38,7 +39,7 @@ const Pagination = ({
 
       <button
         onClick={handleNextPage}
-        disabled={currentPage === totalPages}
+        disabled={currentPage === totalPages || pageDisable === true}
         className={`px-8 py-2 rounded-xl transition-all duration-300 bg-[#199BD1] text-white text-[11px] ${
           currentPage === totalPages
             ? "opacity-50 cursor-not-allowed"
