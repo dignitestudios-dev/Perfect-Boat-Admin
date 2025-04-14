@@ -8,6 +8,7 @@ import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
 import Pagination from "../paginations/Pagination";
 import SearchInput from "../inputs/SearchInput";
+import moment from "moment";
 const SingleUserList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
   const [filterStatus, setFilterStatus] = useState("all");
@@ -156,11 +157,7 @@ const SingleUserList = () => {
                     {item?.phoneNumber || "N/A"}
                   </div>
                   <div className="text-center">
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+                    {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                   </div>
                   <div className="text-center">
                     {item?.isSubscribed === true && (

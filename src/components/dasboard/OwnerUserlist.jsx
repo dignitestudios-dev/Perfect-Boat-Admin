@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SearchInput from "../inputs/SearchInput";
+import moment from "moment";
 
 const OwnerUserlist = () => {
   const location = useLocation();
@@ -91,14 +92,7 @@ const OwnerUserlist = () => {
                   <div>{item?.location}</div>
                   <div>{item?.email}</div>
                   <div>{item?.phoneNumber || "Not Found"}</div>
-                  <div>
-                    {" "}
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </div>
+                  <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                 </div>
               ))
             )}
@@ -130,12 +124,7 @@ const OwnerUserlist = () => {
                   <div className="">{item?.email}</div>
                   <div className="">{item?.phoneNumber}</div>
                   <div className="">
-                    {" "}
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+                    {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                   </div>
                 </div>
               ))

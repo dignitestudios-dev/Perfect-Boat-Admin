@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
 import Pagination from "../paginations/Pagination";
+import moment from "moment";
 
 const OwnerDelete = ({
   currentPage,
@@ -80,13 +81,7 @@ const OwnerDelete = ({
 
               <div>{item?.phoneNumber || "N/A"}</div>
 
-              <div>
-                {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })}
-              </div>
+              <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
 
               <div>
                 {new Date(item?.updatedAt).toLocaleDateString("en-US", {

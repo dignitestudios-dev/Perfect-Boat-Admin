@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SearchInput from "../inputs/SearchInput";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 
 const OwnerUserTables = ({ ownerDetail, loading }) => {
   const navigate = useNavigate();
@@ -96,13 +97,7 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
                   <div className="truncate">
                     {item?.jobtitle || "Not Found"}
                   </div>
-                  <div>
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </div>
+                  <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                 </div>
               ))
             )}
@@ -130,11 +125,7 @@ const OwnerUserTables = ({ ownerDetail, loading }) => {
                     {item?.jobtitle || "Not Found"}
                   </div>
                   <div className="">
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+                    {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                   </div>
                 </div>
               ))

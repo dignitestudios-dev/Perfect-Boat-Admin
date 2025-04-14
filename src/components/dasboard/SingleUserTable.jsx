@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 const SingleUserTable = () => {
   const [loading, setLoading] = useState(false);
   const [singleUserData, setSingleUserData] = useState([]);
@@ -62,11 +63,7 @@ const SingleUserTable = () => {
               >
                 <div className="font-medium">{item?.name}</div>
                 <div className="">
-                  {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  })}
+                  {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                 </div>
                 <Link
                   to={`/detailuser/${item?._id}`}

@@ -258,13 +258,7 @@ const RevenueAnalysis = () => {
                     <div
                       className={`grid grid-cols-8 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
                     >
-                      <div>
-                        {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })}
-                      </div>
+                      <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                       <div>{item?.name || "N/A"}</div>
                       <div>{item?.totalUser || 0}</div>
                       <div>{item?.subscriptionPlan?.name || "N/A"}</div>
@@ -312,13 +306,7 @@ const RevenueAnalysis = () => {
                   <div
                     className={`grid grid-cols-7 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
                   >
-                    <div>
-                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </div>
+                    <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                     <div>{item?.name || "N/A"}</div>
                     <div>{item?.totalUser || "N/A"}</div>
                     <div>{item?.subscriptionPlan?.name || "N/A"}</div>
@@ -366,13 +354,7 @@ const RevenueAnalysis = () => {
                   <div
                     className={`grid grid-cols-5 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white`}
                   >
-                    <div>
-                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </div>
+                    <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                     <div>{item?.name || "N/A"}</div>
                     <div>{item?.subscriptionPlan?.name || "N/A"}</div>
                     <div>

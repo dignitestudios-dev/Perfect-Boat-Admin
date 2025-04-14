@@ -145,12 +145,7 @@ const SubscriptionList = () => {
                   className="grid grid-cols-3 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
                 >
                   <div className="font-medium">
-                    {" "}
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+                    {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                   </div>
                   <div className="text-center">{item?.price}</div>
                   <div className="text-end">
@@ -182,11 +177,7 @@ const SubscriptionList = () => {
                   className="grid grid-cols-4 gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2 text-white"
                 >
                   <div className="font-medium">
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
+                    {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                   </div>
                   <div>{item?.totalluser || "Not Found"}</div>
                   <div className="text-center">

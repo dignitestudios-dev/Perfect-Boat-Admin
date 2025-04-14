@@ -2,6 +2,7 @@ import axios from "../../axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 
 const OwnerTable = () => {
   const [loading, setLoading] = useState(false);
@@ -57,11 +58,7 @@ const OwnerTable = () => {
                 <div className="font-medium">{item?.name || "N/A"}</div>
                 <div className="">{item?.totalUser || 0}</div>
                 <div className="">
-                  {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  })}
+                  {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                 </div>
                 <Link
                   to={`/detailowner/${item?._id}`}

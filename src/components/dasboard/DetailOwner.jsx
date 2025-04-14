@@ -188,13 +188,9 @@ const DetailOwner = () => {
                   type="text"
                   value={
                     ownerDetail?.customer?.createdAt
-                      ? new Date(
-                          ownerDetail?.customer?.createdAt
-                        ).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })
+                      ? moment(ownerDetail?.customer?.createdAt).format(
+                          "MM-DD-YYYY"
+                        )
                       : "Not Found"
                   }
                   isDisabled={true}

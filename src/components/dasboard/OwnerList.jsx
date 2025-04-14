@@ -6,6 +6,7 @@ import Skeleton from "../global/Skeleton";
 import Pagination from "../../components/paginations/Pagination";
 import SearchInput from "../inputs/SearchInput";
 import Cookies from "js-cookie";
+import moment from "moment";
 
 const OwnerList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
@@ -162,13 +163,7 @@ const OwnerList = () => {
                   <div>{item?.totalUser || 0}</div>
                   <div>{item?.email || "N/A"}</div>
                   <div>{item?.phoneNumber || "N/A"}</div>
-                  <div>
-                    {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })}
-                  </div>
+                  <div>{moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                   {item?.isSubscribed === true && (
                     <button className="bg-[#199BD1] w-[51px] h-[23px] rounded-full text-white text-[11px]">
                       Active

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SearchInput from "../inputs/SearchInput";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 
 const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
   const [tab, setTabs] = useState("1");
@@ -65,20 +66,11 @@ const OwnerSubscriptionTable = ({ ownerDetail, loading }) => {
                     className="grid grid-cols-[2fr_2fr_1fr]  gap-4 p-2 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
                   >
                     <div className="font-medium">
-                      {" "}
-                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
+                      {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                     </div>
                     <div className="">{item?.price}</div>
                     <div className="">
-                      {new Date(item?.updatedAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
+                      {moment(item?.updatedAt)?.format("MM-DD-YYYY")}
                     </div>
                   </div>
                 ))

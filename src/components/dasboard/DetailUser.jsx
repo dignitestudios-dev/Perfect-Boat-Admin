@@ -97,13 +97,9 @@ const DetailUser = () => {
                   type="text"
                   value={
                     userDetail?.customer?.createdAt
-                      ? new Date(
-                          userDetail.customer.createdAt
-                        ).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })
+                      ? moment(userDetail?.customer?.createdAt)?.format(
+                          "MM-DD-YYYY"
+                        )
                       : "Not Found"
                   }
                   isDisabled={true}
@@ -167,14 +163,7 @@ const DetailUser = () => {
                     key={index}
                     className="grid grid-cols-[2fr_2fr_1fr_1fr] gap-4 p-3 text-[11px] border-[#FFFFFF24] border-b-2  text-white "
                   >
-                    <div>
-                      {" "}
-                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
-                    </div>
+                    <div> {moment(item?.createdAt)?.format("MM-DD-YYYY")}</div>
                     <div>{item?.subscriptionPlan?.name || "N/A"}</div>
                     <div>{parseFloat(item?.price)?.toFixed(2) || "N/A"}</div>
                     <div>{parseFloat(item?.price)?.toFixed(2) || "N/A"}</div>

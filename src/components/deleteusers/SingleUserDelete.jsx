@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../axios";
 import Skeleton from "../global/Skeleton";
+import moment from "moment";
 
 const SingleUserDelete = ({
   currentPage,
@@ -42,7 +43,6 @@ const SingleUserDelete = ({
 
   return (
     <div className="w-full rounded-lg overflow-hidden">
-
       <div className="grid grid-cols-[2fr_2fr_2fr_1.5fr_1.5fr_1fr_0.5fr] gap-4 p-4 text-[#FFFFFF80] text-[12px] font-semibold">
         {[
           "Single User Name",
@@ -75,20 +75,12 @@ const SingleUserDelete = ({
             <div>{item?.phoneNumber || "N/A"}</div>
             <div>
               {item?.createdAt
-                ? new Date(item?.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  })
+                ? moment(item?.createdAt)?.format("MM-DD-YYYY")
                 : "N/A"}
             </div>
             <div>
               {item?.updatedAt
-                ? new Date(item?.updatedAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  })
+                ? moment(item?.updatedAt)?.format("MM-DD-YYYY")
                 : "N/A"}
             </div>
             <div>

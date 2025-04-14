@@ -8,6 +8,7 @@ import RemoveSingleUser from "../Modal/RemoveSingleUser";
 import RemoveOwner from "../Modal/RemoveOwner";
 import Skeleton from "../global/Skeleton";
 import Pagination from "../paginations/Pagination";
+import moment from "moment";
 
 const UserInformation = () => {
   const [tabs, setTabs] = useState("1");
@@ -220,11 +221,7 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
+                      {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                     </div>
 
                     <div className="text-center">
@@ -326,11 +323,7 @@ const UserInformation = () => {
                     </div>
 
                     <div className="text-center">
-                      {new Date(item?.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })}
+                      {moment(item?.createdAt)?.format("MM-DD-YYYY")}
                     </div>
 
                     <div className="text-center">

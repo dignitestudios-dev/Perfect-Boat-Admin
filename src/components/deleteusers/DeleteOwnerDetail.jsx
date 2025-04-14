@@ -15,6 +15,7 @@ import { ErrorToast } from "../Toaster/Toaster";
 import OwnerDetailLineChart from "../dasboard/OwnerDetailChart";
 import OwnerUserTables from "../dasboard/OwnerUserTables";
 import OwnerSubscriptionTable from "../dasboard/OwnerSubscriptionTable";
+import moment from "moment";
 const DeleteOwnerDetail = () => {
   const { id } = useParams();
 
@@ -164,13 +165,9 @@ const DeleteOwnerDetail = () => {
                   type="text"
                   value={
                     ownerDetail?.customer?.createdAt
-                      ? new Date(
-                          ownerDetail?.customer?.createdAt
-                        ).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })
+                      ? moment(ownerDetail?.customer?.createdAt)?.format(
+                          "MM-DD-YYYY"
+                        )
                       : "Not Found"
                   }
                   isDisabled={true}
