@@ -11,6 +11,7 @@ import SearchInput from "../inputs/SearchInput";
 import moment from "moment";
 const SingleUserList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
+  const [onboardingFilter, setOnboardingFilter] = useState("latest");
   const [filterStatus, setFilterStatus] = useState("all");
   const [loading, setLoading] = useState(false);
   const [singleUserData, setSingleUserData] = useState([]);
@@ -21,13 +22,23 @@ const SingleUserList = () => {
   const navigate = useNavigate();
 
   const toggleDropdown = (id) => {
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+    setDropdownStates((prevState) => {
+      const newState = {};
+      if (prevState[id]) {
+        return newState;
+      }
+      newState[id] = true;
+      return newState;
+    });
   };
+
   const closeDropdown = () => {
     setDropdownStates({});
+  };
+
+  const handleOnboardingFilterChange = (value) => {
+    setOnboardingFilter(value);
+    closeDropdown();
   };
 
   const filteredUsers = singleUserData
@@ -53,6 +64,7 @@ const SingleUserList = () => {
       if (searchValue) url += `&search=${encodeURIComponent(searchValue)}`;
       if (filterStatus === "active") url += `&subscription=active`;
       if (filterStatus === "inactive") url += `&subscription=inactive`;
+      if (onboardingFilter) url += `&onboarding=${onboardingFilter}`;
 
       const { data } = await axios.get(url);
       setSingleUserData(data?.data?.data || []);
@@ -70,7 +82,7 @@ const SingleUserList = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue, filterStatus, currentPage]);
+  }, [searchValue, filterStatus, currentPage, onboardingFilter]);
 
   const handleFilterChange = (status) => {
     setFilterStatus(status);
@@ -106,7 +118,33 @@ const SingleUserList = () => {
               <div className="text-left">Single User Name</div>
               <div className="text-left">Email</div>
               <div className="text-center">Phone Number</div>
-              <div className="text-center">Onboarding Date</div>
+              <div className="text-center relative left-14">
+                <button
+                  onClick={() => toggleDropdown("dropdown2")}
+                  className="flex items-center justify-center gap-1 text-[#FFFFFF80] text-[11px] font-[500]"
+                >
+                  Onboarding <IoMdArrowDropdown size={20} color="#FFFFFF80" />
+                </button>
+                {dropdownStates["dropdown2"] && (
+                  <div
+                    className="absolute text-start top-8 left-10 px-3 transform -translate-x-1/2 w-[120px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <p
+                      onClick={() => handleOnboardingFilterChange("latest")}
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2 "
+                    >
+                      Latest
+                    </p>
+                    <p
+                      onClick={() => handleOnboardingFilterChange("earliest")}
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2"
+                    >
+                      Earliest
+                    </p>
+                  </div>
+                )}
+              </div>
               <div className="text-center left-10 relative">
                 <button
                   onClick={() => toggleDropdown("dropdown1")}

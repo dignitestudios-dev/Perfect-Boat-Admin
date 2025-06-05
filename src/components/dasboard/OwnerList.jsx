@@ -11,6 +11,7 @@ import moment from "moment";
 const OwnerList = () => {
   const [dropdownStates, setDropdownStates] = useState({});
   const [filterStatus, setFilterStatus] = useState("all");
+  const [onboardingFilter, setOnboardingFilter] = useState("latest");
   const [loading, setLoading] = useState(false);
   const [ownerData, setOwnerData] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -20,14 +21,23 @@ const OwnerList = () => {
   const navigate = useNavigate();
 
   const toggleDropdown = (id) => {
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      [id]: !prevState[id],
-    }));
+    setDropdownStates((prevState) => {
+      const newState = {};
+      if (prevState[id]) {
+        return newState;
+      }
+      newState[id] = true;
+      return newState;
+    });
   };
 
   const closeDropdown = () => {
     setDropdownStates({});
+  };
+
+  const handleOnboardingFilterChange = (value) => {
+    setOnboardingFilter(value);
+    closeDropdown();
   };
 
   const getOwnerTableData = async () => {
@@ -38,6 +48,7 @@ const OwnerList = () => {
       if (searchValue) url += `&search=${encodeURIComponent(searchValue)}`;
       if (filterStatus === "active") url += `&subscription=active`;
       if (filterStatus === "inactive") url += `&subscription=inactive`;
+      if (onboardingFilter) url += `&onboarding=${onboardingFilter}`;
 
       const { data } = await axios.get(url);
       setOwnerData(data?.data?.data || []);
@@ -68,7 +79,7 @@ const OwnerList = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounce);
-  }, [searchValue, filterStatus]);
+  }, [searchValue, filterStatus, onboardingFilter]);
 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
@@ -116,7 +127,33 @@ const OwnerList = () => {
               <div>Total No. of Users</div>
               <div>Email</div>
               <div>Phone Number</div>
-              <div>Onboarding Date</div>
+              <div className="text-center relative">
+                <button
+                  onClick={() => toggleDropdown("dropdown2")}
+                  className="flex items-center justify-center gap-1 text-[#FFFFFF80] text-[11px] font-[500]"
+                >
+                  Onboarding <IoMdArrowDropdown size={20} color="#FFFFFF80" />
+                </button>
+                {dropdownStates["dropdown2"] && (
+                  <div
+                    className="absolute text-start top-8 left-10 px-3 transform -translate-x-1/2 w-[120px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <p
+                      onClick={() => handleOnboardingFilterChange("latest")}
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2 "
+                    >
+                      Latest
+                    </p>
+                    <p
+                      onClick={() => handleOnboardingFilterChange("earliest")}
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2"
+                    >
+                      Earliest
+                    </p>
+                  </div>
+                )}
+              </div>
               <div className="text-center relative">
                 <button
                   onClick={() => toggleDropdown("dropdown1")}
@@ -126,24 +163,24 @@ const OwnerList = () => {
                 </button>
                 {dropdownStates["dropdown1"] && (
                   <div
-                    className="absolute text-start top-8 left-10 px-3 transform -translate-x-1/2 w-[100px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
+                    className="absolute text-start top-8 left-10 px-3 transform -translate-x-1/2 w-[120px] rounded-md shadow-lg p-2 cursor-pointer z-10 bg-[#1A293D]"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <p
                       onClick={() => handleFilterChange("all")}
-                      className="text-white text-[11px] mt-2 cursor-pointer"
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2"
                     >
                       All
                     </p>
                     <p
                       onClick={() => handleFilterChange("active")}
-                      className="text-white text-[11px] mt-2 cursor-pointer"
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2"
                     >
                       Active
                     </p>
                     <p
                       onClick={() => handleFilterChange("inactive")}
-                      className="text-white text-[11px] mt-2 cursor-pointer"
+                      className="text-white text-[11px] mt-2 cursor-pointer hover:bg-[#294161] hover:rounded-md p-2"
                     >
                       Inactive
                     </p>
